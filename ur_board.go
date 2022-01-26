@@ -14,15 +14,13 @@ const (
 	Left  = 1
 	Right = -1
 )
+const PATH_LENGTH = 14
 
 type board struct {
 	board [20]int
 
 	left_player_queue  int
 	right_player_queue int
-
-	left_pawns  [7]int
-	right_pawns [7]int
 
 	left_pawn_path_positions  [7]int
 	right_pawn_path_positions [7]int
@@ -32,13 +30,106 @@ type board struct {
 
 	pawn_per_player int
 
-	Current_player       int
+	Current_player            int
 	Current_player_path_moves map[int]int
 	Current_dice              int
+	Current_winner            int
+}
+
+var rosette_positions map[int]bool = map[int]bool{0: true, 2: true, 10: true, 14: true, 16: true}
+
+func (r *board) RuneAtBoardPosition(pos int) string {
+	if r.board[pos] == 0 {
+		_, ok := rosette_positions[pos]
+		if ok {
+			return "*"
+		} else {
+			return " "
+		}
+	} else if r.board[pos] == 1 {
+		return "x"
+	} else {
+		return "o"
+	}
+}
+
+func (r *board) String() string {
+	left_player_indicator := " "
+	right_player_indicator := " "
+	if r.Current_player == Left {
+		left_player_indicator = "v"
+		right_player_indicator = " "
+	} else {
+		left_player_indicator = " "
+		right_player_indicator = "v"
+	}
+	board_str := "\n " + left_player_indicator + "   " + right_player_indicator
+
+	board_str += "\n _ _ _\n|"
+	board_str += r.RuneAtBoardPosition(0)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(1)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(2)
+	board_str += "|\n|"
+
+	board_str += r.RuneAtBoardPosition(3)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(4)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(5)
+	board_str += "|\n|"
+
+	board_str += r.RuneAtBoardPosition(6)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(7)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(8)
+	board_str += "|\n|"
+
+	board_str += r.RuneAtBoardPosition(9)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(10)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(11)
+	board_str += "|\n ¯|"
+
+	board_str += r.RuneAtBoardPosition(12)
+	board_str += "|¯\n _|"
+	board_str += r.RuneAtBoardPosition(13)
+	board_str += "|_\n|"
+
+	board_str += r.RuneAtBoardPosition(14)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(15)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(16)
+	board_str += "|\n|"
+
+	board_str += r.RuneAtBoardPosition(17)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(18)
+	board_str += "|"
+	board_str += r.RuneAtBoardPosition(19)
+	board_str += "|\n ¯ ¯ ¯\n"
+
+	return board_str
+
+	/*
+		 _ _ _
+		|*| |*|
+		| | | |
+		| | | |
+		| |*| |
+		 ¯| |¯
+		 _| |_
+		|*| |*|
+		| | | |
+		 ¯ ¯ ¯
+	*/
 }
 
 func NewBoard(pawn_per_player int) *board {
-
 	p := board{
 		pawn_per_player:    pawn_per_player,
 		left_player_queue:  pawn_per_player,
@@ -75,7 +166,7 @@ func ThrowDice() int {
 func (r *board) AsArray(for_player int) [20]int {
 	var board_array [20]int
 
-	copy(r.board[:], board_array[:])
+	copy(board_array[:], r.board[:])
 
 	if for_player == Right {
 		for i := 0; i < len(board_array); i++ {
@@ -83,6 +174,20 @@ func (r *board) AsArray(for_player int) [20]int {
 		}
 	}
 	return board_array
+}
+
+func (r *board) PawnsQueue(for_player int) (int, int) {
+	if for_player == Left {
+		return r.left_player_queue, r.right_player_queue
+	}
+	return r.right_player_queue, r.left_player_queue
+}
+
+func (r *board) PawnsOut(for_player int) (int, int) {
+	if for_player == Left {
+		return r.left_player_out, r.right_player_out
+	}
+	return r.right_player_out, r.left_player_out
 }
 
 func leftPlayerPath() [14]int {
@@ -94,6 +199,9 @@ func rightPlayerPath() [14]int {
 }
 
 func (r *board) Play(pawn int) {
+	if r.Current_winner != 0 {
+		panic("Somebody won, please stop playing")
+	}
 	pawn_in_play := 0
 	var path_positions *[7]int
 	var enemy_path_positions *[7]int
@@ -132,7 +240,7 @@ func (r *board) Play(pawn int) {
 		path_positions[pawn_in_play] = new_pawn_path_position
 		pawn_in_play++
 		r.board[new_pawn_board_position] = r.Current_player
-	} else if new_pawn_path_position == 14 { // out! (14 is len(path))
+	} else if new_pawn_path_position == PATH_LENGTH { // out! (PATH_LENGTH is len(path))
 		current_pawn_board_position := path[path_positions[pawn]]
 		*out++
 		r.board[current_pawn_board_position] = 0
@@ -175,11 +283,9 @@ func (r *board) Play(pawn int) {
 		r.board[new_pawn_board_position] = r.Current_player
 	}
 
-	r.Current_dice = ThrowDice()
-
-	for r.Current_dice == 0 {
-		r.Current_player *= -1
-		r.Current_dice = ThrowDice()
+	if *out == r.pawn_per_player {
+		r.Current_winner = r.Current_player
+		return
 	}
 
 	// Player plays again
@@ -187,8 +293,18 @@ func (r *board) Play(pawn int) {
 		r.Current_player *= -1
 	}
 
-	r.Current_player_path_moves = r.PlayerValidMoves(r.Current_dice, r.Current_player)
+	for {
+		r.Current_dice = ThrowDice()
 
+		for r.Current_dice == 0 {
+			r.Current_player *= -1
+			r.Current_dice = ThrowDice()
+		}
+		r.Current_player_path_moves = r.PlayerValidMoves(r.Current_dice, r.Current_player)
+		if len(r.Current_player_path_moves) > 0 {
+			break
+		}
+	}
 }
 
 func (r *board) PlayerValidMoves(dice int, player int) map[int]int {
@@ -220,9 +336,9 @@ func (r *board) PlayerValidMoves(dice int, player int) map[int]int {
 	for i := 0; i < pawn_in_play; i++ {
 		pawn_position_in_course := pawns_path_positions[i]
 		pawn_course_position_after_dice := pawn_position_in_course + dice
-		if pawn_course_position_after_dice == 14 { // fixed size, equivalent to len(path)
-			possible_course_moves[i] = 14 // Out
-		} else if pawn_course_position_after_dice < 14 { // fixed size, equivalent to len(path)
+		if pawn_course_position_after_dice == PATH_LENGTH { // fixed size, equivalent to len(path)
+			possible_course_moves[i] = PATH_LENGTH // Out
+		} else if pawn_course_position_after_dice < PATH_LENGTH { // fixed size, equivalent to len(path)
 			board_position_after_dice := path[pawn_course_position_after_dice]
 			if board_position_after_dice == 10 { // Center rosette
 				if r.board[board_position_after_dice] == 0 {
