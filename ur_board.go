@@ -38,7 +38,7 @@ type board struct {
 
 var rosette_positions map[int]bool = map[int]bool{0: true, 2: true, 10: true, 14: true, 16: true}
 
-func (r *board) RuneAtBoardPosition(pos int) string {
+func (r *board) runeAtBoardPosition(pos int) string {
 	if r.board[pos] == 0 {
 		_, ok := rosette_positions[pos]
 		if ok {
@@ -51,6 +51,17 @@ func (r *board) RuneAtBoardPosition(pos int) string {
 	} else {
 		return "o"
 	}
+}
+
+func (r *board) Copy() board {
+	p := *r
+	copy(p.board[:], r.board[:])
+	copy(p.left_pawn_path_positions[:], r.left_pawn_path_positions[:])
+	copy(p.right_pawn_path_positions[:], r.right_pawn_path_positions[:])
+	for k, v := range r.Current_player_path_moves {
+		p.Current_player_path_moves[k] = v
+	}
+	return p
 }
 
 func (r *board) String() string {
@@ -66,51 +77,51 @@ func (r *board) String() string {
 	board_str := "\n " + left_player_indicator + "   " + right_player_indicator
 
 	board_str += "\n _ _ _\n|"
-	board_str += r.RuneAtBoardPosition(0)
+	board_str += r.runeAtBoardPosition(0)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(1)
+	board_str += r.runeAtBoardPosition(1)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(2)
+	board_str += r.runeAtBoardPosition(2)
 	board_str += "|\n|"
 
-	board_str += r.RuneAtBoardPosition(3)
+	board_str += r.runeAtBoardPosition(3)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(4)
+	board_str += r.runeAtBoardPosition(4)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(5)
+	board_str += r.runeAtBoardPosition(5)
 	board_str += "|\n|"
 
-	board_str += r.RuneAtBoardPosition(6)
+	board_str += r.runeAtBoardPosition(6)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(7)
+	board_str += r.runeAtBoardPosition(7)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(8)
+	board_str += r.runeAtBoardPosition(8)
 	board_str += "|\n|"
 
-	board_str += r.RuneAtBoardPosition(9)
+	board_str += r.runeAtBoardPosition(9)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(10)
+	board_str += r.runeAtBoardPosition(10)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(11)
+	board_str += r.runeAtBoardPosition(11)
 	board_str += "|\n ¯|"
 
-	board_str += r.RuneAtBoardPosition(12)
+	board_str += r.runeAtBoardPosition(12)
 	board_str += "|¯\n _|"
-	board_str += r.RuneAtBoardPosition(13)
+	board_str += r.runeAtBoardPosition(13)
 	board_str += "|_\n|"
 
-	board_str += r.RuneAtBoardPosition(14)
+	board_str += r.runeAtBoardPosition(14)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(15)
+	board_str += r.runeAtBoardPosition(15)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(16)
+	board_str += r.runeAtBoardPosition(16)
 	board_str += "|\n|"
 
-	board_str += r.RuneAtBoardPosition(17)
+	board_str += r.runeAtBoardPosition(17)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(18)
+	board_str += r.runeAtBoardPosition(18)
 	board_str += "|"
-	board_str += r.RuneAtBoardPosition(19)
+	board_str += r.runeAtBoardPosition(19)
 	board_str += "|\n ¯ ¯ ¯\n"
 
 	return board_str
