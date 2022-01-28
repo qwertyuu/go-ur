@@ -1,0 +1,83 @@
+# The seed genome configuration for GenomeBuilder testing
+genome:
+  id: 1102
+  # The traits used in this genome
+  traits:
+    - {id: 1,  params: [0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 2,  params: [0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 3,  params: [0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 4,  params: [0.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 5,  params: [0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 6,  params: [0.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 7,  params: [0.7, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 8,  params: [0.8, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 9,  params: [0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 10, params: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 11, params: [1.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 12, params: [1.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 13, params: [1.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 14, params: [1.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+    - {id: 15, params: [1.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+
+  # The neuron nodes for this genome
+  nodes:
+    - {id: 1,  trait_id: 0, type: BIAS, activation: NullActivation}
+    # The input nodes - sensors
+    - {id: 2,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 3,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 4,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 5,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 6,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 7,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 8,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 9,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 10,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 11,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 12,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 13,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 14,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 15,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 16,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 17,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 18,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 19,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 20,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 21,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 22,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 23,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 24,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 25,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 26,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 27,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 28,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 29,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 30,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 31,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 32,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 33,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 34,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 35,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 36,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 37,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 38,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 39,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 40,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 41,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 42,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 43,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 44,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 45,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 46,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 47,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 48,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 49,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 50,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 51,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 52,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 53,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 54,  trait_id: 0, type: INPT, activation: NullActivation}
+    # The output nodes - actuators
+    - {id: 55,  trait_id: 0, type: OUTP, activation: SigmoidBipolarActivation}
+
+  # The genes - connection between neuron nodes within this genome
+  genes:

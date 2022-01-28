@@ -53,7 +53,7 @@ func (r *board) runeAtBoardPosition(pos int) string {
 	}
 }
 
-func (r *board) Copy() board {
+func (r *board) Copy() *board {
 	p := *r
 	copy(p.board[:], r.board[:])
 	copy(p.left_pawn_path_positions[:], r.left_pawn_path_positions[:])
