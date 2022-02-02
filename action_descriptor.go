@@ -1,23 +1,23 @@
 package gour
 
-type current_board_descriptor struct {
+type current_board_descriptor struct { // 26 features
 	board_state        [20]int
-	my_pawn_in_play    float32 // 0-1 percent from total
-	my_pawn_queue      float32 // 0-1 percent from total
-	my_pawn_out        float32 // 0-1 percent from total
-	enemy_pawn_in_play float32 // 0-1 percent from total
-	enemy_pawn_queue   float32 // 0-1 percent from total
-	enemy_pawn_out     float32 // 0-1 percent from total
+	my_pawn_in_play    float64 // 0-1 percent from total
+	my_pawn_queue      float64 // 0-1 percent from total
+	my_pawn_out        float64 // 0-1 percent from total
+	enemy_pawn_in_play float64 // 0-1 percent from total
+	enemy_pawn_queue   float64 // 0-1 percent from total
+	enemy_pawn_out     float64 // 0-1 percent from total
 }
 
-type potential_board_descriptor struct {
+type potential_board_descriptor struct { // 28 features
 	board_state        [20]int
-	my_pawn_in_play    float32 // 0-1 percent from total
-	my_pawn_queue      float32 // 0-1 percent from total
-	my_pawn_out        float32 // 0-1 percent from total
-	enemy_pawn_in_play float32 // 0-1 percent from total
-	enemy_pawn_queue   float32 // 0-1 percent from total
-	enemy_pawn_out     float32 // 0-1 percent from total
+	my_pawn_in_play    float64 // 0-1 percent from total
+	my_pawn_queue      float64 // 0-1 percent from total
+	my_pawn_out        float64 // 0-1 percent from total
+	enemy_pawn_in_play float64 // 0-1 percent from total
+	enemy_pawn_queue   float64 // 0-1 percent from total
+	enemy_pawn_out     float64 // 0-1 percent from total
 
 	winner int // 1: me, 0, no one, -1 ennemy
 	turn   int // 1: me, -1 ennemy
@@ -69,15 +69,15 @@ func GetPotentialBoardDescriptor(b *board, for_player int) potential_board_descr
 		}
 	}
 
-	f_pawn_per_player := float32(b.pawn_per_player)
+	f_pawn_per_player := float64(b.pawn_per_player)
 	return potential_board_descriptor{
 		board_state:        b.AsArray(for_player),
-		my_pawn_in_play:    float32(my_pawn_in_play) / f_pawn_per_player,
-		my_pawn_queue:      float32(my_pawn_queue) / f_pawn_per_player,
-		my_pawn_out:        float32(my_pawn_out) / f_pawn_per_player,
-		enemy_pawn_in_play: float32(enemy_pawn_in_play) / f_pawn_per_player,
-		enemy_pawn_queue:   float32(enemy_pawn_queue) / f_pawn_per_player,
-		enemy_pawn_out:     float32(enemy_pawn_out) / f_pawn_per_player,
+		my_pawn_in_play:    float64(my_pawn_in_play) / f_pawn_per_player,
+		my_pawn_queue:      float64(my_pawn_queue) / f_pawn_per_player,
+		my_pawn_out:        float64(my_pawn_out) / f_pawn_per_player,
+		enemy_pawn_in_play: float64(enemy_pawn_in_play) / f_pawn_per_player,
+		enemy_pawn_queue:   float64(enemy_pawn_queue) / f_pawn_per_player,
+		enemy_pawn_out:     float64(enemy_pawn_out) / f_pawn_per_player,
 		turn:               turn,
 		winner:             winner,
 	}
@@ -107,15 +107,15 @@ func GetCurrentBoardDescriptor(b *board, for_player int) current_board_descripto
 		enemy_pawn_out = b.left_player_out
 	}
 
-	f_pawn_per_player := float32(b.pawn_per_player)
+	f_pawn_per_player := float64(b.pawn_per_player)
 	return current_board_descriptor{
 		board_state:        b.AsArray(for_player),
-		my_pawn_in_play:    float32(my_pawn_in_play) / f_pawn_per_player,
-		my_pawn_queue:      float32(my_pawn_queue) / f_pawn_per_player,
-		my_pawn_out:        float32(my_pawn_out) / f_pawn_per_player,
-		enemy_pawn_in_play: float32(enemy_pawn_in_play) / f_pawn_per_player,
-		enemy_pawn_queue:   float32(enemy_pawn_queue) / f_pawn_per_player,
-		enemy_pawn_out:     float32(enemy_pawn_out) / f_pawn_per_player,
+		my_pawn_in_play:    float64(my_pawn_in_play) / f_pawn_per_player,
+		my_pawn_queue:      float64(my_pawn_queue) / f_pawn_per_player,
+		my_pawn_out:        float64(my_pawn_out) / f_pawn_per_player,
+		enemy_pawn_in_play: float64(enemy_pawn_in_play) / f_pawn_per_player,
+		enemy_pawn_queue:   float64(enemy_pawn_queue) / f_pawn_per_player,
+		enemy_pawn_out:     float64(enemy_pawn_out) / f_pawn_per_player,
 	}
 }
 

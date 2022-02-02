@@ -61,7 +61,7 @@ func (r *board) Copy() *board {
 	for k, v := range r.Current_player_path_moves {
 		p.Current_player_path_moves[k] = v
 	}
-	return p
+	return &p
 }
 
 func (r *board) String() string {
@@ -180,8 +180,9 @@ func (r *board) AsArray(for_player int) [20]int {
 	copy(board_array[:], r.board[:])
 
 	if for_player == Right {
+		mirror_map := mirroredBoard()
 		for i := 0; i < len(board_array); i++ {
-			board_array[i] = -board_array[i]
+			board_array[mirror_map[i]] = -r.board[i]
 		}
 	}
 	return board_array
@@ -203,6 +204,10 @@ func (r *board) PawnsOut(for_player int) (int, int) {
 
 func leftPlayerPath() [14]int {
 	return [14]int{9, 6, 3, 0, 1, 4, 7, 10, 12, 13, 15, 18, 17, 14}
+}
+
+func mirroredBoard() [20]int {
+	return [20]int{2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 12, 13, 16, 15, 14, 19, 18, 17}
 }
 
 func rightPlayerPath() [14]int {

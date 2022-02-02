@@ -55,7 +55,7 @@ func TestNeat(t *testing.T) {
 	rand.Seed(1)
 	pcg32.Seed(1, 1)
 
-	outDirPath, contextPath, genomePath := "out/UR", "data/ur.neat", "data/urstartgenes"
+	outDirPath, contextPath, genomePath := "out/UR", "data/ur.neat", "data/urstartgenes.yml"
 
 	// Load Genome
 	fmt.Println("Loading start genome for Ur experiment")
@@ -74,7 +74,7 @@ func TestNeat(t *testing.T) {
 		Trials: make(experiment2.Trials, opts.NumRuns),
 	}
 	err = experiment.Execute(opts.NeatContext(), startGenome, NewUrGenerationEvaluator(outDirPath), nil)
-	require.NoError(t, err, "Failed to perform XOR experiment")
+	require.NoError(t, err, "Failed to perform UR experiment")
 
 	// Find winner statistics
 	avgNodes, avgGenes, avgEvals, _ := experiment.AvgWinner()

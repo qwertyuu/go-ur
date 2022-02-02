@@ -80,4 +80,5 @@ genome:
     - {id: 55,  trait_id: 0, type: OUTP, activation: SigmoidBipolarActivation}
 
   # The genes - connection between neuron nodes within this genome
-  genes:
+  genes: 
+    - {src_id: 1,  tgt_id: 55,  weight: 0.0, trait_id: 1, innov_num: 1,  mut_num: 0, recurrent: false, enabled: true}
