@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	file, err := os.Open("out/UR/1/ur_winner_genome_56-21")
+	file, err := os.Open("trained/ur_winner_genome_57-65")
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +34,6 @@ func main() {
 
 	http.ListenAndServe(":8090", nil)
 }
-
 
 type board_contract struct {
 	Pawn_per_player      int   `json:"pawn_per_player"`
