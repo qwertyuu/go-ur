@@ -25,4 +25,4 @@ my_pawn_positions and enemy_pawn_positions are position that reprensent the inde
 TODO:
 - run tournament in goroutines
 - mess with the neat configurations
-- argument to pick trained genome
+- argument to pick trained genome for inference
