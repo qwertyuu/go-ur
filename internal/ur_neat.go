@@ -8,6 +8,7 @@ package gour
 // XOR suitable for testing NEAT’s ability to evolve structure.
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/yaricom/goNEAT/v2/experiment"
@@ -106,4 +107,73 @@ func (e *urGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epo
 	}
 
 	return err
+}
+
+type Potential_future struct {
+	Pawn  int     `json:"pawn"`
+	Score float64 `json:"score"`
+}
+
+func GetPotentialFutureScore(organism *genetics.Organism, current_board current_board_descriptor, potential_board potential_board_descriptor) (float64, error) {
+	netDepth, err := organism.Phenotype.MaxActivationDepthFast(0) // The max depth of the network to be activated
+	if err != nil {
+		neat.WarnLog(fmt.Sprintf(
+			"Failed to estimate maximal depth of the network with loop:\n%s\nUsing default depth: %d",
+			organism.Genotype, netDepth))
+	}
+	neat.DebugLog(fmt.Sprintf("Network depth: %d for organism: %d\n", netDepth, organism.Genotype.Id))
+	if netDepth == 0 {
+		neat.DebugLog(fmt.Sprintf("ALERT: Network depth is ZERO for Genome: %s", organism.Genotype))
+		return 0, nil
+	}
+
+	success := false // Check for successful activation
+
+	features_transformed := make([]float64, 0)
+
+	for _, v := range current_board.board_state { // 0 to 19
+		features_transformed = append(features_transformed, float64(v))
+	}
+	features_transformed = append(features_transformed, current_board.my_pawn_in_play)    // 20
+	features_transformed = append(features_transformed, current_board.my_pawn_queue)      // 21
+	features_transformed = append(features_transformed, current_board.my_pawn_out)        // 22
+	features_transformed = append(features_transformed, current_board.enemy_pawn_in_play) // 23
+	features_transformed = append(features_transformed, current_board.enemy_pawn_queue)   // 24
+	features_transformed = append(features_transformed, current_board.enemy_pawn_out)     // 25
+
+	for _, v := range potential_board.board_state { // 26 to 45
+		features_transformed = append(features_transformed, float64(v))
+	}
+	features_transformed = append(features_transformed, potential_board.my_pawn_in_play)    // 46
+	features_transformed = append(features_transformed, potential_board.my_pawn_queue)      // 47
+	features_transformed = append(features_transformed, potential_board.my_pawn_out)        // 48
+	features_transformed = append(features_transformed, potential_board.enemy_pawn_in_play) // 49
+	features_transformed = append(features_transformed, potential_board.enemy_pawn_queue)   // 50
+	features_transformed = append(features_transformed, potential_board.enemy_pawn_out)     // 51
+	features_transformed = append(features_transformed, float64(potential_board.winner))    // 52
+	features_transformed = append(features_transformed, float64(potential_board.turn))      // 53
+
+	if err = organism.Phenotype.LoadSensors(features_transformed); err != nil {
+		neat.ErrorLog(fmt.Sprintf("Failed to load sensors: %s", err))
+		return 0, err
+	}
+	// Use depth to ensure full relaxation
+	if success, err = organism.Phenotype.ForwardSteps(netDepth); err != nil {
+		neat.ErrorLog(fmt.Sprintf("Failed to activate network: %s", err))
+		return 0, err
+	}
+
+	out := organism.Phenotype.Outputs[0].Activation
+
+	// Flush network for subsequent use
+	if _, err = organism.Phenotype.Flush(); err != nil {
+		neat.ErrorLog(fmt.Sprintf("Failed to flush network: %s", err))
+		return 0, err
+	}
+
+	if !success {
+		return 0, errors.New("Not success")
+	}
+
+	return out, nil
 }

@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"gour"
+	gour "gour/internal"
 	"os"
 
 	"github.com/pkg/errors"
-	"github.com/yaricom/goNEAT/v2/neat/genetics"
 	"github.com/yaricom/goNEAT/v2/examples/utils"
 	experiment2 "github.com/yaricom/goNEAT/v2/experiment"
 	"github.com/yaricom/goNEAT/v2/neat"
+	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
 func main() {

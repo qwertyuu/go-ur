@@ -30,6 +30,9 @@ type board struct {
 
 	pawn_per_player int
 
+	// Ignore recomputing when playing
+	Soft_mode bool
+
 	Current_player            int
 	Current_player_path_moves map[int]int
 	Current_dice              int
@@ -58,6 +61,7 @@ func (r *board) Copy() *board {
 	copy(p.board[:], r.board[:])
 	copy(p.left_pawn_path_positions[:], r.left_pawn_path_positions[:])
 	copy(p.right_pawn_path_positions[:], r.right_pawn_path_positions[:])
+	p.Soft_mode = true
 	for k, v := range r.Current_player_path_moves {
 		p.Current_player_path_moves[k] = v
 	}
@@ -145,6 +149,7 @@ func NewBoard(pawn_per_player int) *board {
 		pawn_per_player:    pawn_per_player,
 		left_player_queue:  pawn_per_player,
 		right_player_queue: pawn_per_player,
+		Soft_mode:          false,
 	}
 
 	if RandBool() {
@@ -153,18 +158,55 @@ func NewBoard(pawn_per_player int) *board {
 		p.Current_player = Right
 	}
 
-	p.Current_dice = ThrowDice()
+	p.Current_dice = throwDice()
 
 	for p.Current_dice == 0 {
 		p.Current_player *= -1
-		p.Current_dice = ThrowDice()
+		p.Current_dice = throwDice()
 	}
 
-	p.Current_player_path_moves = p.PlayerValidMoves(p.Current_dice, p.Current_player)
+	p.Current_player_path_moves = p.playerValidMoves(p.Current_dice, p.Current_player)
 	return &p
 }
 
-func ThrowDice() int {
+func RestoreBoard(
+	pawn_per_player int,
+	left_player_out int,
+	right_player_out int,
+	current_player int,
+	current_dice int,
+	left_player_pawn_positions []int,
+	right_player_pawn_positions []int,
+) *board {
+	p := board{
+		pawn_per_player:    pawn_per_player,
+		left_player_queue:  pawn_per_player - left_player_out - len(left_player_pawn_positions),
+		right_player_queue: pawn_per_player - right_player_out - len(right_player_pawn_positions),
+
+		left_player_out:  left_player_out,
+		right_player_out: right_player_out,
+
+		Current_player: current_player,
+		Current_dice:   current_dice,
+	}
+
+	left_player_path := leftPlayerPath()
+	for i, position := range left_player_pawn_positions {
+		p.left_pawn_path_positions[i] = position
+		p.board[left_player_path[position]] = Left
+	}
+
+	right_player_path := rightPlayerPath()
+	for i, position := range right_player_pawn_positions {
+		p.right_pawn_path_positions[i] = position
+		p.board[right_player_path[position]] = Right
+	}
+
+	p.Current_player_path_moves = p.playerValidMoves(p.Current_dice, p.Current_player)
+	return &p
+}
+
+func throwDice() int {
 	dice := 0
 	for i := 0; i < 4; i++ {
 		if RandBool() {
@@ -188,30 +230,16 @@ func (r *board) AsArray(for_player int) [20]int {
 	return board_array
 }
 
-func (r *board) PawnsQueue(for_player int) (int, int) {
-	if for_player == Left {
-		return r.left_player_queue, r.right_player_queue
-	}
-	return r.right_player_queue, r.left_player_queue
-}
-
-func (r *board) PawnsOut(for_player int) (int, int) {
-	if for_player == Left {
-		return r.left_player_out, r.right_player_out
-	}
-	return r.right_player_out, r.left_player_out
-}
-
 func leftPlayerPath() [14]int {
 	return [14]int{9, 6, 3, 0, 1, 4, 7, 10, 12, 13, 15, 18, 17, 14}
 }
 
-func mirroredBoard() [20]int {
-	return [20]int{2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 12, 13, 16, 15, 14, 19, 18, 17}
-}
-
 func rightPlayerPath() [14]int {
 	return [14]int{11, 8, 5, 2, 1, 4, 7, 10, 12, 13, 15, 18, 19, 16}
+}
+
+func mirroredBoard() [20]int {
+	return [20]int{2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 12, 13, 16, 15, 14, 19, 18, 17}
 }
 
 func (r *board) Play(pawn int) {
@@ -309,21 +337,23 @@ func (r *board) Play(pawn int) {
 		r.Current_player *= -1
 	}
 
-	for {
-		r.Current_dice = ThrowDice()
+	if !r.Soft_mode {
+		for {
+			r.Current_dice = throwDice()
 
-		for r.Current_dice == 0 {
-			r.Current_player *= -1
-			r.Current_dice = ThrowDice()
-		}
-		r.Current_player_path_moves = r.PlayerValidMoves(r.Current_dice, r.Current_player)
-		if len(r.Current_player_path_moves) > 0 {
-			break
+			for r.Current_dice == 0 {
+				r.Current_player *= -1
+				r.Current_dice = throwDice()
+			}
+			r.Current_player_path_moves = r.playerValidMoves(r.Current_dice, r.Current_player)
+			if len(r.Current_player_path_moves) > 0 {
+				break
+			}
 		}
 	}
 }
 
-func (r *board) PlayerValidMoves(dice int, player int) map[int]int {
+func (r *board) playerValidMoves(dice int, player int) map[int]int {
 	if dice == 0 {
 		return make(map[int]int, 0)
 	}
