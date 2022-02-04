@@ -12,6 +12,30 @@ import (
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
+func main() {
+	file, err := os.Open("out/UR/1/ur_winner_genome_56-21")
+	if err != nil {
+		panic(err)
+	}
+
+	genome, err := genetics.ReadGenome(file, 1)
+	if err != nil {
+		panic(err)
+	}
+
+	file.Close()
+
+	ai, err = genetics.NewOrganism(0, genome, 0)
+	if err != nil {
+		panic(err)
+	}
+
+	http.HandleFunc("/infer", infer)
+
+	http.ListenAndServe(":8090", nil)
+}
+
+
 type board_contract struct {
 	Pawn_per_player      int   `json:"pawn_per_player"`
 	My_pawn_out          int   `json:"my_pawn_out"`
@@ -73,27 +97,4 @@ func infer(w http.ResponseWriter, r *http.Request) {
 		Pawn:         potential_futures[len(potential_futures)-1].Pawn,
 		FutureScores: potential_futures,
 	})
-}
-
-func main() {
-	file, err := os.Open("out/UR/1/ur_winner_genome_56-21")
-	if err != nil {
-		panic(err)
-	}
-
-	genome, err := genetics.ReadGenome(file, 1)
-	if err != nil {
-		panic(err)
-	}
-
-	file.Close()
-
-	ai, err = genetics.NewOrganism(0, genome, 0)
-	if err != nil {
-		panic(err)
-	}
-
-	http.HandleFunc("/infer", infer)
-
-	http.ListenAndServe(":8090", nil)
 }

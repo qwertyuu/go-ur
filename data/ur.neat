@@ -31,5 +31,5 @@ babies_stolen  0
 num_runs  100
 num_generations 100
 log_level info
-epoch_executor sequential
+epoch_executor parallel
 genome_compat_method linear
