@@ -20,7 +20,10 @@ Run `go run cmd/inference/ur_inference_server.go` and call `http://localhost:809
 }
 ```
 
-my_pawn_positions and enemy_pawn_positions are position that reprensent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions
+Notes: 
+
+- my_pawn_positions and enemy_pawn_positions are position that reprensent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions
+- "my" refers to the bot's point of view in this case (my_pawn_positions means the pawn positions of the bot, enemy is the other player)
 
 TODO:
 - run tournament in goroutines
