@@ -54,3 +54,4 @@ TODO:
 - mess with the neat configurations
 - argument to pick trained genome for inference
 - run tournament between all winners of all generations to find best of "best"!
+- run tournament against "random"-playing bots for a baseline
