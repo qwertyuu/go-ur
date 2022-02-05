@@ -32,6 +32,8 @@ type board struct {
 
 	// Ignore recomputing when playing
 	Soft_mode bool
+	// Left/Right mirror when printing
+	Mirror_print_mode bool
 
 	Current_player            int
 	Current_player_path_moves map[int]int
@@ -42,6 +44,10 @@ type board struct {
 var rosette_positions map[int]bool = map[int]bool{0: true, 2: true, 10: true, 14: true, 16: true}
 
 func (r *board) runeAtBoardPosition(pos int) string {
+	if r.Mirror_print_mode {
+		pos = mirroredBoard()[pos]
+	}
+
 	if r.board[pos] == 0 {
 		_, ok := rosette_positions[pos]
 		if ok {
@@ -69,9 +75,14 @@ func (r *board) Copy() *board {
 }
 
 func (r *board) String() string {
+	current_player := r.Current_player
+	if r.Mirror_print_mode {
+		current_player = -current_player
+	}
+
 	left_player_indicator := " "
 	right_player_indicator := " "
-	if r.Current_player == Left {
+	if current_player == Left {
 		left_player_indicator = "v"
 		right_player_indicator = " "
 	} else {

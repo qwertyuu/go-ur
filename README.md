@@ -12,20 +12,45 @@ Run `go run cmd/inference/ur_inference_server.go` and call `http://localhost:809
 ```json
 {
 	"pawn_per_player": 3,
-	"my_pawn_out": 1,
+	"ai_pawn_out": 1,
 	"enemy_pawn_out": 1,
 	"dice": 1,
-	"my_pawn_positions": [7, 13],
+	"ai_pawn_positions": [7, 13],
 	"enemy_pawn_positions": [6, 12]
 }
 ```
 
+Output format:
+```json
+{
+	"pawn": 1,
+	"future_scores": [
+		{
+			"pawn": -1,
+			"score": -1,
+		},
+		{
+			"pawn": 0,
+			"score": -1,
+		},
+		{
+			"pawn": 1,
+			"score": 1,
+		}
+	]
+}
+```
+
+Output pawns are referenced by index of the `ai_pawn_positions` input.
+`future_scores` are ordered ascending, you should have the latest in the root "pawn".
+
 Notes: 
 
-- my_pawn_positions and enemy_pawn_positions are position that reprensent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions
-- "my" refers to the bot's point of view in this case (my_pawn_positions means the pawn positions of the bot, enemy is the other player)
+- ai_pawn_positions and enemy_pawn_positions are position that reprensent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions
+- "ai" refers to the bot's point of view in this case (ai_pawn_positions means the pawn positions of the bot, enemy is the other player)
 
 TODO:
 - run tournament in goroutines
 - mess with the neat configurations
 - argument to pick trained genome for inference
+- run tournament between all winners of all generations to find best of "best"!

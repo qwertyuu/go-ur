@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	file, err := os.Open("trained/ur_winner_genome_57-65")
+	file, err := os.Open("trained/ur_winner_genome_61-206")
 	if err != nil {
 		panic(err)
 	}
@@ -37,10 +37,10 @@ func main() {
 
 type board_contract struct {
 	Pawn_per_player      int   `json:"pawn_per_player"`
-	My_pawn_out          int   `json:"my_pawn_out"`
+	AI_pawn_out          int   `json:"ai_pawn_out"`
 	Enemy_pawn_out       int   `json:"enemy_pawn_out"`
 	Dice                 int   `json:"dice"`
-	My_pawn_positions    []int `json:"my_pawn_positions"`
+	AI_pawn_positions    []int `json:"ai_pawn_positions"`
 	Enemy_pawn_positions []int `json:"enemy_pawn_positions"`
 }
 
@@ -52,6 +52,7 @@ func infer(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&board_input)
 	if err != nil {
 		log.Printf("Error reading body: %v", err)
+		log.Printf("Error reading body: %v", r.Body)
 		http.Error(w, "can't read body", http.StatusBadRequest)
 		return
 	}
@@ -59,13 +60,14 @@ func infer(w http.ResponseWriter, r *http.Request) {
 
 	board := gour.RestoreBoard(
 		board_input.Pawn_per_player,
-		board_input.My_pawn_out,
+		board_input.AI_pawn_out,
 		board_input.Enemy_pawn_out,
 		gour.Left,
 		board_input.Dice,
-		board_input.My_pawn_positions,
+		board_input.AI_pawn_positions,
 		board_input.Enemy_pawn_positions,
 	)
+	board.Mirror_print_mode = true
 	fmt.Println(board.String())
 	fmt.Println(board.Current_player_path_moves)
 	current_board_descriptor := gour.GetCurrentBoardDescriptor(board, gour.Left)
