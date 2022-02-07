@@ -10,6 +10,7 @@ package gour
 import (
 	"errors"
 	"fmt"
+	"sort"
 
 	"github.com/yaricom/goNEAT/v2/experiment"
 	"github.com/yaricom/goNEAT/v2/experiment/utils"
@@ -121,7 +122,7 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 			"Failed to estimate maximal depth of the network with loop:\n%s\nUsing default depth: %d",
 			organism.Genotype, netDepth))
 	}
-	neat.DebugLog(fmt.Sprintf("Network depth: %d for organism: %d\n", netDepth, organism.Genotype.Id))
+	//neat.DebugLog(fmt.Sprintf("Network depth: %d for organism: %d\n", netDepth, organism.Genotype.Id))
 	if netDepth == 0 {
 		neat.DebugLog(fmt.Sprintf("ALERT: Network depth is ZERO for Genome: %s", organism.Genotype))
 		return 0, nil
@@ -176,4 +177,28 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 	}
 
 	return out, nil
+}
+
+func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potential_future {
+	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
+	potential_futures := []*Potential_future{}
+	for pawn := range board.Current_player_path_moves {
+		potential_game := board.Copy()
+		potential_game.Play(pawn)
+		//fmt.Println(potential_game.String())
+		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
+		score, err := GetPotentialFutureScore(organism, current_board_descriptor, potential_board)
+		//fmt.Println(score)
+		if err != nil {
+			panic(err)
+		}
+		potential_futures = append(potential_futures, &Potential_future{
+			Pawn:  pawn,
+			Score: score,
+		})
+	}
+	sort.Slice(potential_futures, func(i, j int) bool {
+		return potential_futures[i].Score < potential_futures[j].Score
+	})
+	return potential_futures
 }

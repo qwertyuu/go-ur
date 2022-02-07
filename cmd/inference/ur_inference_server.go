@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sort"
 
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
@@ -52,7 +51,6 @@ func infer(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&board_input)
 	if err != nil {
 		log.Printf("Error reading body: %v", err)
-		log.Printf("Error reading body: %v", r.Body)
 		http.Error(w, "can't read body", http.StatusBadRequest)
 		return
 	}
@@ -70,26 +68,7 @@ func infer(w http.ResponseWriter, r *http.Request) {
 	board.Mirror_print_mode = true
 	fmt.Println(board.String())
 	fmt.Println(board.Current_player_path_moves)
-	current_board_descriptor := gour.GetCurrentBoardDescriptor(board, gour.Left)
-	potential_futures := []*gour.Potential_future{}
-	for pawn := range board.Current_player_path_moves {
-		potential_game := board.Copy()
-		potential_game.Play(pawn)
-		fmt.Println(potential_game.String())
-		potential_board := gour.GetPotentialBoardDescriptor(potential_game, board.Current_player)
-		score, err := gour.GetPotentialFutureScore(ai, current_board_descriptor, potential_board)
-		fmt.Println(score)
-		if err != nil {
-			panic(err)
-		}
-		potential_futures = append(potential_futures, &gour.Potential_future{
-			Pawn:  pawn,
-			Score: score,
-		})
-	}
-	sort.Slice(potential_futures, func(i, j int) bool {
-		return potential_futures[i].Score < potential_futures[j].Score
-	})
+	potential_futures := gour.GetMoveScoresOrdered(board, ai)
 
 	json.NewEncoder(w).Encode(struct {
 		Pawn         int                      `json:"pawn"`
