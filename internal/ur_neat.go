@@ -10,6 +10,7 @@ package gour
 import (
 	"errors"
 	"fmt"
+	"os"
 	"sort"
 
 	"github.com/yaricom/goNEAT/v2/experiment"
@@ -201,4 +202,25 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 		return potential_futures[i].Score < potential_futures[j].Score
 	})
 	return potential_futures
+}
+
+func LoadUrAI(path string) (*genetics.Organism, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+
+	genome, err := genetics.ReadGenome(file, 1)
+	if err != nil {
+		return nil, err
+	}
+
+	file.Close()
+
+	ai, err := genetics.NewOrganism(0, genome, 0)
+	if err != nil {
+		return nil, err
+	}
+
+	return ai, nil
 }

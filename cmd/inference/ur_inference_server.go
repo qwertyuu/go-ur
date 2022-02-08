@@ -6,25 +6,13 @@ import (
 	gour "gour/internal"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
 func main() {
-	file, err := os.Open("trained/ur_winner_genome_61-206")
-	if err != nil {
-		panic(err)
-	}
-
-	genome, err := genetics.ReadGenome(file, 1)
-	if err != nil {
-		panic(err)
-	}
-
-	file.Close()
-
-	ai, err = genetics.NewOrganism(0, genome, 0)
+	var err error
+	ai, err = gour.LoadUrAI("trained/ur_winner_genome_58-82")
 	if err != nil {
 		panic(err)
 	}
