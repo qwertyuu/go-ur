@@ -76,9 +76,10 @@ genome:
     - {id: 52,  trait_id: 0, type: INPT, activation: NullActivation}
     - {id: 53,  trait_id: 0, type: INPT, activation: NullActivation}
     - {id: 54,  trait_id: 0, type: INPT, activation: NullActivation}
+    - {id: 55,  trait_id: 0, type: INPT, activation: NullActivation}
     # The output nodes - actuators
-    - {id: 55,  trait_id: 0, type: OUTP, activation: SigmoidBipolarActivation}
+    - {id: 56,  trait_id: 0, type: OUTP, activation: SigmoidBipolarActivation}
 
   # The genes - connection between neuron nodes within this genome
   genes: 
-    - {src_id: 1,  tgt_id: 55,  weight: 0.0, trait_id: 1, innov_num: 1,  mut_num: 0, recurrent: false, enabled: true}
+    - {src_id: 1,  tgt_id: 56,  weight: 0.0, trait_id: 1, innov_num: 1,  mut_num: 0, recurrent: false, enabled: true}
