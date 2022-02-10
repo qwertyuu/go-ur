@@ -13,14 +13,18 @@ type double_elimination struct {
 	Winner_bracket           []*genetics.Organism
 	Champion                 *genetics.Organism
 }
+
 // NB de joutes dans la winner bracket avant la loser's bracket = len(contenders) / 2 - 1
 // Commencer par évaluer la winner bracket au complet. Noter les perdants de chaque joute
 // L'ordre de correspondance entre les L et les losers est inversée. Les premiers de la losers bracket affrontent les derniers de la winners bracket
 // Les affrontements entre les losers et le L se fait à toutes les deux séries de joutes jusqu'à détermination d'un gagnant, qui va se battre contre le gagnant de la winner's bracket
 
-func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double_elimination {
-	if !IsPowerOfTwo(len(contenders)) {
+func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism, max_contenders int) double_elimination {
+	if max_contenders < len(contenders) || !IsPowerOfTwo(max_contenders) {
 		panic("oups")
+	}
+	for max_contenders > len(contenders) {
+		contenders = append(contenders, nil)
 	}
 	tournament := double_elimination{
 		Contenders:               contenders,
@@ -31,6 +35,7 @@ func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double
 
 	// determine loser and winner brackets
 	var left_player *genetics.Organism = nil
+	left_player_set := false
 	for _, right_player := range tournament.Contenders {
 		right_player.IsWinner = false
 		if left_player == nil {
