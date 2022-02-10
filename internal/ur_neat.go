@@ -54,14 +54,6 @@ func (e *urGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epo
 	epoch.WinnerGenes = best.Genotype.Extrons()
 	epoch.WinnerEvals = context.PopSize*epoch.Id + best.Genotype.Id
 	epoch.Best = best
-	if epoch.WinnerNodes == 5 {
-		// You could dump out optimal genomes here if desired
-		if optPath, err := utils.WriteGenomePlain("ur_optimal", e.OutputPath, best, epoch); err != nil {
-			neat.ErrorLog(fmt.Sprintf("Failed to dump optimal genome, reason: %s\n", err))
-		} else {
-			neat.InfoLog(fmt.Sprintf("Dumped optimal genome to: %s\n", optPath))
-		}
-	}
 
 	neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Fitness))
 

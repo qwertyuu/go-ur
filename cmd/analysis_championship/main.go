@@ -1,24 +1,30 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	gour "gour/internal"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
-var ai *genetics.Organism
+type ai_score struct {
+	Path  string
+	Score int
+}
 
 func main() {
 	contenders := []*genetics.Organism{}
 	organism_map := make(map[*genetics.Organism]string)
 	win_counts := make(map[string]int)
 	i := 0
-	for len(contenders) < 64 {
-		path := fmt.Sprintf("out/UR/%d", i)
+	for len(contenders) < 512 {
+		path := fmt.Sprintf("out/UR_server/%d", i)
 		i++
 		genome_path, err := get_genome_from_dir(path)
 		if genome_path == "" {
@@ -35,7 +41,7 @@ func main() {
 		organism_map[ai] = genome_path
 		contenders = append(contenders, ai)
 	}
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1000; i++ {
 		tournament := gour.EvaluateDoubleEliminationTournament(contenders)
 		best := tournament.Contenders[len(tournament.Contenders)-1]
 		organism_path := organism_map[best]
@@ -54,7 +60,20 @@ func main() {
 		}
 	}
 
-	fmt.Println(win_counts)
+	ai_scores := make([]ai_score, 0, len(win_counts))
+
+	for path, score := range win_counts {
+		ai_scores = append(ai_scores, ai_score{
+			Path:  path,
+			Score: score,
+		})
+	}
+	sort.Slice(ai_scores, func(i, j int) bool {
+		return ai_scores[i].Score > ai_scores[j].Score
+	})
+	json_wins, _ := json.Marshal(ai_scores)
+	fmt.Println(string(json_wins))
+	_ = ioutil.WriteFile("wins.json", json_wins, 0644)
 }
 
 func get_genome_from_dir(dir string) (string, error) {
