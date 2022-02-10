@@ -12,7 +12,7 @@ import (
 
 func main() {
 	var err error
-	ai, err = gour.LoadUrAI("trained/ur_winner_genome_58-82")
+	ai, err = gour.LoadUrAI("trained/275/ur_winner_genome_55-11")
 	if err != nil {
 		panic(err)
 	}
