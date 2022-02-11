@@ -29,8 +29,8 @@ func main() {
 		panic(err)
 	}
 
-	// The 100 runs XOR experiment
-	opts.NumRuns = 100
+	// The Ur runs
+	opts.NumRuns = 900
 	experiment := experiment2.Experiment{
 		Id:     0,
 		Trials: make(experiment2.Trials, opts.NumRuns),

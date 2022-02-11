@@ -118,18 +118,3 @@ func GetCurrentBoardDescriptor(b *board, for_player int) current_board_descripto
 		enemy_pawn_out:     float64(enemy_pawn_out) / f_pawn_per_player,
 	}
 }
-
-/*
-Rosette (rejouer)
-Position absolue, 0 sortie et 1 a 14 position
-Libère une rosette
-Libère le centre
-Arrive au centre
-Manger un ennemi
-Ya ti un pion ennemi a 1,2,3,4 cases devant
-Ya ti un pion ennemi a 1,2,3,4 cases derrière
-Ya ti un pion allié a 1,2,3,4 cases devant
-Ya ti un pion allié à 1,2,3,4 cases derrière
-Zone de combat
-Ajouter un nouveau pion
-*/
