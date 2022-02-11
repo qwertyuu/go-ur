@@ -178,10 +178,10 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 	for pawn := range board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
-		//fmt.Println(potential_game.String())
+		fmt.Println(potential_game.String())
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
 		score, err := GetPotentialFutureScore(organism, current_board_descriptor, potential_board)
-		//fmt.Println(score)
+		fmt.Println(score)
 		if err != nil {
 			panic(err)
 		}

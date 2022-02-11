@@ -217,64 +217,180 @@ neuron_type=INPT
 activation_type=NullActivation
 ];
 55 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+56 [
 neuron_type=OUTP
 activation_type=SigmoidBipolarActivation
 ];
+58 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
+97 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
+171 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
 
 // Edge definitions.
-1 -> 55 [
-weight=-2.508301
+1 -> 56 [
+weight=-3.414064
 recurrent=false
 parameters="[0.1 0 0 0 0 0 0 0]"
 ];
-3 -> 55 [
-weight=-1.714549
+1 -> 58 [
+weight=-8.794582
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+4 -> 56 [
+weight=0.413869
 recurrent=false
 parameters="[0.6 0 0 0 0 0 0 0]"
 ];
-10 -> 55 [
-weight=-0.060275
+4 -> 58 [
+weight=-0.300332
 recurrent=false
-parameters="[0.5519722915619436 0 0 0.39471759371012216 0 0 0 0]"
+parameters="[0.7 0 0 0 0 0 0 0]"
 ];
-12 -> 55 [
-weight=-3.782929
+4 -> 97 [
+weight=-6.897990
 recurrent=false
-parameters="[0.5519722915619436 0 0 0.39471759371012216 0 0 0 0]"
+parameters="[0.4 0 0 0 0 0 0 0]"
 ];
-26 -> 55 [
-weight=2.225949
+10 -> 56 [
+weight=-1.315505
 recurrent=false
-parameters="[0.2 0 0 0 0 0 0 0]"
+parameters="[0.7 0 0 0 0 0 0 0]"
 ];
-29 -> 55 [
-weight=4.844055
+10 -> 58 [
+weight=5.989402
 recurrent=false
-parameters="[0.5519722915619436 0 0 0.39471759371012216 0 0 0 0]"
+parameters="[0.2 0.592131986079237 0.8374455690328662 0 0 0 0 0]"
 ];
-43 -> 55 [
-weight=1.557081
+10 -> 97 [
+weight=8.319224
 recurrent=false
-parameters="[1.3 0 0 0 0 0 0 0]"
+parameters="[0.6 0 0 0 0 0 0 0]"
 ];
-48 -> 55 [
-weight=-2.314633
+19 -> 56 [
+weight=6.008292
 recurrent=false
-parameters="[0.3 0 0 0 0 0 0 0]"
+parameters="[1 0 0 0 0 0 0 0]"
 ];
-49 -> 55 [
-weight=6.572562
+19 -> 97 [
+weight=3.006362
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+19 -> 171 [
+weight=1.000000
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+21 -> 58 [
+weight=2.458272
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+22 -> 56 [
+weight=-3.747827
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+22 -> 58 [
+weight=2.404529
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+25 -> 97 [
+weight=2.604407
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+30 -> 56 [
+weight=-1.111167
 recurrent=false
 parameters="[1.1 0 0 0 0 0 0 0]"
 ];
-51 -> 55 [
-weight=12.608238
+30 -> 58 [
+weight=5.105022
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+49 -> 56 [
+weight=-5.086216
+recurrent=false
+parameters="[0.4 0 0 0 0 0 0 0]"
+];
+49 -> 58 [
+weight=-4.629367
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+50 -> 56 [
+weight=0.332156
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+50 -> 58 [
+weight=0.172513
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+52 -> 56 [
+weight=6.099263
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+52 -> 58 [
+weight=-9.542970
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+52 -> 97 [
+weight=-0.675473
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+53 -> 56 [
+weight=2.962224
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+53 -> 58 [
+weight=-6.513336
+recurrent=false
+parameters="[0.4 0 0 0 0 0 0 0]"
+];
+55 -> 56 [
+weight=0.848488
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+55 -> 58 [
+weight=7.874817
 recurrent=false
 parameters="[0.5 0 0 0 0 0 0 0]"
 ];
-54 -> 55 [
-weight=2.861807
+58 -> 56 [
+weight=1.282833
 recurrent=false
-parameters="[0.2 0 0 0 0 0 0 0]"
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+97 -> 58 [
+weight=-2.827046
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+171 -> 58 [
+weight=-5.509770
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
 ];
 }

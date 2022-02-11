@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	gour "gour/internal"
+	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -23,10 +24,16 @@ func main() {
 	organism_map := make(map[*genetics.Organism]string)
 	win_counts := make(map[string]int)
 	i := 0
-	for len(contenders) < 512 {
+	for {
 		path := fmt.Sprintf("out/UR_server/%d", i)
 		i++
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			break
+		}
 		genome_path, err := get_genome_from_dir(path)
+		if err != nil {
+			panic(err)
+		}
 		if genome_path == "" {
 			continue
 		}
@@ -41,7 +48,8 @@ func main() {
 		organism_map[ai] = genome_path
 		contenders = append(contenders, ai)
 	}
-	for i := 0; i < 1000; i++ {
+	total_tournaments := 1000
+	for i := 0; i < total_tournaments; i++ {
 		tournament := gour.EvaluateDoubleEliminationTournament(contenders)
 		best := tournament.Contenders[len(tournament.Contenders)-1]
 		organism_path := organism_map[best]
@@ -54,6 +62,7 @@ func main() {
 
 		fmt.Println(best.Fitness)
 		fmt.Println(organism_map[best])
+		fmt.Printf("%d/%d\n", i, total_tournaments)
 		for _, contender := range contenders {
 			contender.Fitness = 0
 			contender.Error = 0
@@ -78,7 +87,7 @@ func main() {
 
 func get_genome_from_dir(dir string) (string, error) {
 	var file string
-	err := filepath.Walk(dir, func(path string, f os.FileInfo, err error) error {
+	err := filepath.WalkDir(dir, func(path string, f fs.DirEntry, err error) error {
 		if strings.HasPrefix(filepath.Base(path), "ur_winner_genome") && filepath.Ext(path) == "" {
 			file = path
 		}

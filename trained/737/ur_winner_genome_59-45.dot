@@ -1,0 +1,466 @@
+strict digraph {
+// Node definitions.
+1 [
+neuron_type=BIAS
+activation_type=NullActivation
+];
+2 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+3 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+4 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+5 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+6 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+7 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+8 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+9 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+10 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+11 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+12 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+13 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+14 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+15 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+16 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+17 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+18 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+19 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+20 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+21 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+22 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+23 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+24 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+25 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+26 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+27 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+28 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+29 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+30 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+31 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+32 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+33 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+34 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+35 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+36 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+37 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+38 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+39 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+40 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+41 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+42 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+43 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+44 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+45 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+46 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+47 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+48 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+49 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+50 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+51 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+52 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+53 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+54 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+55 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+56 [
+neuron_type=OUTP
+activation_type=SigmoidBipolarActivation
+];
+65 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
+81 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
+214 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
+
+// Edge definitions.
+1 -> 56 [
+weight=0.126872
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+6 -> 56 [
+weight=-1.085474
+recurrent=false
+parameters="[0.4 0 0 0 0 0 0 0]"
+];
+6 -> 65 [
+weight=0.284828
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+6 -> 81 [
+weight=3.939069
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+7 -> 56 [
+weight=0.329914
+recurrent=false
+parameters="[0.4 0 0 0 0 0 0 0]"
+];
+7 -> 65 [
+weight=0.190446
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+9 -> 56 [
+weight=-5.392299
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+9 -> 65 [
+weight=-3.768451
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+9 -> 81 [
+weight=1.674073
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+14 -> 56 [
+weight=0.628780
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+14 -> 65 [
+weight=6.092000
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+14 -> 81 [
+weight=-4.636592
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+16 -> 56 [
+weight=5.347751
+recurrent=false
+parameters="[1.858787151276617 0.9799684028381533 0 0 0 0.7033375617300114 0.6486666996361864 0.1690218251979772]"
+];
+16 -> 65 [
+weight=-0.684293
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+16 -> 81 [
+weight=4.121424
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+22 -> 56 [
+weight=1.348359
+recurrent=false
+parameters="[0.5 0 0 0.9426158121766238 0.5458236778460633 0 0 0]"
+];
+22 -> 65 [
+weight=3.368918
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+22 -> 81 [
+weight=-3.730559
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+23 -> 56 [
+weight=0.346507
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+23 -> 65 [
+weight=-3.317654
+recurrent=false
+parameters="[0.4 0 0 0 0 0 0 0]"
+];
+23 -> 81 [
+weight=0.257963
+recurrent=false
+parameters="[0.5 0 0 0.9426158121766238 0.5458236778460633 0 0 0]"
+];
+25 -> 56 [
+weight=1.829560
+recurrent=false
+parameters="[1.1 0 0 0 0 0 0 0]"
+];
+25 -> 65 [
+weight=-0.955962
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+25 -> 81 [
+weight=-1.966729
+recurrent=false
+parameters="[1.858787151276617 0.9799684028381533 0 0 0 0.7033375617300114 0.6486666996361864 0.1690218251979772]"
+];
+45 -> 56 [
+weight=0.921442
+recurrent=false
+parameters="[1.1 0 0 0 0 0 0 0]"
+];
+45 -> 65 [
+weight=-0.770665
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+45 -> 81 [
+weight=-1.669410
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+48 -> 56 [
+weight=0.028403
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+48 -> 65 [
+weight=0.020406
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+48 -> 81 [
+weight=2.236097
+recurrent=false
+parameters="[1.1 0 0 0 0 0 0 0]"
+];
+50 -> 56 [
+weight=6.895905
+recurrent=false
+parameters="[1.858787151276617 0.9799684028381533 0 0 0 0.7033375617300114 0.6486666996361864 0.1690218251979772]"
+];
+50 -> 65 [
+weight=0.745991
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+52 -> 56 [
+weight=12.100418
+recurrent=false
+parameters="[0.5 0 0 0.9426158121766238 0.5458236778460633 0 0 0]"
+];
+52 -> 65 [
+weight=2.505506
+recurrent=false
+parameters="[1.858787151276617 0.9799684028381533 0 0 0 0.7033375617300114 0.6486666996361864 0.1690218251979772]"
+];
+52 -> 81 [
+weight=5.692397
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+53 -> 56 [
+weight=8.056973
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+53 -> 65 [
+weight=6.192733
+recurrent=false
+parameters="[1.858787151276617 0.9799684028381533 0 0 0 0.7033375617300114 0.6486666996361864 0.1690218251979772]"
+];
+53 -> 81 [
+weight=0.565284
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+55 -> 56 [
+weight=10.837873
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+55 -> 65 [
+weight=-0.427001
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+55 -> 81 [
+weight=-2.770658
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+55 -> 214 [
+weight=-0.010653
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+65 -> 56 [
+weight=-2.012748
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+81 -> 56 [
+weight=2.597164
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+214 -> 81 [
+weight=-2.417794
+recurrent=false
+parameters="[0.1 0 0.8080878275179755 0.047587923849461 0.5724281445413063 0 0 0]"
+];
+}
