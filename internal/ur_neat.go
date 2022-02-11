@@ -20,7 +20,7 @@ import (
 )
 
 // The fitness threshold value for successful solver
-const fitnessThreshold = 15
+const fitnessThreshold = 31
 
 type urGenerationEvaluator struct {
 	// The output path to store execution results
@@ -44,7 +44,9 @@ func NewUrGenerationEvaluator(outputPath string) experiment.GenerationEvaluator 
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
 func (e *urGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
-	tournament := EvaluateDoubleEliminationTournament(pop.Organisms)
+	tournament := EvaluateDoubleEliminationTournament(pop.Organisms, 7)
+	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 5)
+	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 3)
 	best := tournament.Contenders[len(tournament.Contenders)-1]
 	best.IsWinner = true
 	if best.Fitness >= fitnessThreshold {
