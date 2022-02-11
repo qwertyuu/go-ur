@@ -44,7 +44,7 @@ func NewUrGenerationEvaluator(outputPath string) experiment.GenerationEvaluator 
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
 func (e *urGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
-	tournament := EvaluateDoubleEliminationTournament(pop.Organisms, 1024)
+	tournament := EvaluateDoubleEliminationTournament(pop.Organisms)
 	best := tournament.Contenders[len(tournament.Contenders)-1]
 	best.IsWinner = true
 	if best.Fitness >= fitnessThreshold {
@@ -178,10 +178,10 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 	for pawn := range board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
-		//fmt.Println(potential_game.String())
+		fmt.Println(potential_game.String())
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
 		score, err := GetPotentialFutureScore(organism, current_board_descriptor, potential_board)
-		//fmt.Println(score)
+		fmt.Println(score)
 		if err != nil {
 			panic(err)
 		}
