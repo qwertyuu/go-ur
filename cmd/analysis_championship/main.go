@@ -25,7 +25,7 @@ func main() {
 	win_counts := make(map[string]int)
 	i := 0
 	for {
-		path := fmt.Sprintf("out/UR_server/%d", i)
+		path := fmt.Sprintf("out/UR_reference_ai/%d", i)
 		i++
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			break
@@ -50,7 +50,7 @@ func main() {
 	}
 	total_tournaments := 1000
 	for i := 0; i < total_tournaments; i++ {
-		tournament := gour.EvaluateDoubleEliminationTournament(contenders)
+		tournament := gour.EvaluateDoubleEliminationTournament(contenders, 7)
 		best := tournament.Contenders[len(tournament.Contenders)-1]
 		organism_path := organism_map[best]
 		_, ok := win_counts[organism_path]

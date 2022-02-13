@@ -35,7 +35,7 @@ func main() {
 		Id:     0,
 		Trials: make(experiment2.Trials, opts.NumRuns),
 	}
-	err = experiment.Execute(opts.NeatContext(), startGenome, gour.NewUrGenerationEvaluator(outDirPath), nil)
+	err = experiment.Execute(opts.NeatContext(), startGenome, gour.NewUrBootstrapGenerationEvaluator(outDirPath), nil)
 	if err != nil {
 		panic(err)
 	}

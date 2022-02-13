@@ -146,11 +146,6 @@ func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism, pawn_a
 	return tournament
 }
 
-func remove(s []*genetics.Organism, i int) []*genetics.Organism {
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
-}
-
 func getNearestPowerOfTwo(i int) int {
 	var v uint32 = uint32(i)
 	v--
