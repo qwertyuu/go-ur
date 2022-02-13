@@ -127,27 +127,27 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 
 	features_transformed := make([]float64, 0)
 
-	for _, v := range current_board.board_state { // 0 to 19
+	for _, v := range current_board.board_state { // 2 to 21
 		features_transformed = append(features_transformed, float64(v))
 	}
-	features_transformed = append(features_transformed, current_board.my_pawn_in_play)    // 20
-	features_transformed = append(features_transformed, current_board.my_pawn_queue)      // 21
-	features_transformed = append(features_transformed, current_board.my_pawn_out)        // 22
-	features_transformed = append(features_transformed, current_board.enemy_pawn_in_play) // 23
-	features_transformed = append(features_transformed, current_board.enemy_pawn_queue)   // 24
-	features_transformed = append(features_transformed, current_board.enemy_pawn_out)     // 25
+	features_transformed = append(features_transformed, current_board.my_pawn_in_play)    // 22
+	features_transformed = append(features_transformed, current_board.my_pawn_queue)      // 23
+	features_transformed = append(features_transformed, current_board.my_pawn_out)        // 24
+	features_transformed = append(features_transformed, current_board.enemy_pawn_in_play) // 25
+	features_transformed = append(features_transformed, current_board.enemy_pawn_queue)   // 26
+	features_transformed = append(features_transformed, current_board.enemy_pawn_out)     // 27
 
-	for _, v := range potential_board.board_state { // 26 to 45
+	for _, v := range potential_board.board_state { // 28 to 47
 		features_transformed = append(features_transformed, float64(v))
 	}
-	features_transformed = append(features_transformed, potential_board.my_pawn_in_play)    // 46
-	features_transformed = append(features_transformed, potential_board.my_pawn_queue)      // 47
-	features_transformed = append(features_transformed, potential_board.my_pawn_out)        // 48
-	features_transformed = append(features_transformed, potential_board.enemy_pawn_in_play) // 49
-	features_transformed = append(features_transformed, potential_board.enemy_pawn_queue)   // 50
-	features_transformed = append(features_transformed, potential_board.enemy_pawn_out)     // 51
-	features_transformed = append(features_transformed, float64(potential_board.winner))    // 52
-	features_transformed = append(features_transformed, float64(potential_board.turn))      // 53
+	features_transformed = append(features_transformed, potential_board.my_pawn_in_play)    // 48
+	features_transformed = append(features_transformed, potential_board.my_pawn_queue)      // 49
+	features_transformed = append(features_transformed, potential_board.my_pawn_out)        // 50
+	features_transformed = append(features_transformed, potential_board.enemy_pawn_in_play) // 51
+	features_transformed = append(features_transformed, potential_board.enemy_pawn_queue)   // 52
+	features_transformed = append(features_transformed, potential_board.enemy_pawn_out)     // 53
+	features_transformed = append(features_transformed, float64(potential_board.winner))    // 54
+	features_transformed = append(features_transformed, float64(potential_board.turn))      // 55
 
 	if err = organism.Phenotype.LoadSensors(features_transformed); err != nil {
 		neat.ErrorLog(fmt.Sprintf("Failed to load sensors: %s", err))
