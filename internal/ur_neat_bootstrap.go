@@ -20,9 +20,9 @@ import (
 )
 
 // The fitness threshold value for successful solver
-const fitnessThreshold = 15
+const bootstrapFitnessThreshold = 31
 
-type urGenerationEvaluator struct {
+type urBootstrapGenerationEvaluator struct {
 	// The output path to store execution results
 	OutputPath string
 }
@@ -37,17 +37,19 @@ type urGenerationEvaluator struct {
 //
 // This method performs evolution on XOR for specified number of generations and output results into outDirPath
 // It also returns number of nodes, genes, and evaluations performed per each run (context.NumRuns)
-func NewUrGenerationEvaluator(outputPath string) experiment.GenerationEvaluator {
-	return &urGenerationEvaluator{OutputPath: outputPath}
+func NewUrBootstrapGenerationEvaluator(outputPath string) experiment.GenerationEvaluator {
+	return &urBootstrapGenerationEvaluator{OutputPath: outputPath}
 }
 
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
-func (e *urGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
+func (e *urBootstrapGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
-	tournament := EvaluateDoubleEliminationTournament(pop.Organisms)
+	tournament := EvaluateDoubleEliminationTournament(pop.Organisms, 7)
+	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 5)
+	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 3)
 	best := tournament.Contenders[len(tournament.Contenders)-1]
 	best.IsWinner = true
-	if best.Fitness >= fitnessThreshold {
+	if best.Fitness >= bootstrapFitnessThreshold {
 		epoch.Solved = true
 	}
 	epoch.WinnerNodes = len(best.Genotype.Nodes)

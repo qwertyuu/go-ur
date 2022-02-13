@@ -19,7 +19,7 @@ type double_elimination struct {
 // L'ordre de correspondance entre les L et les losers est inversée. Les premiers de la losers bracket affrontent les derniers de la winners bracket
 // Les affrontements entre les losers et le L se fait à toutes les deux séries de joutes jusqu'à détermination d'un gagnant, qui va se battre contre le gagnant de la winner's bracket
 
-func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double_elimination {
+func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism, pawn_amt int) double_elimination {
 	contender_power_of_two := getNearestPowerOfTwo(len(contenders))
 	has_nil_contenders := contender_power_of_two != len(contenders)
 	for contender_power_of_two > len(contenders) {
@@ -44,7 +44,7 @@ func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double
 			left_player_set = true
 			continue
 		}
-		winner_position := Fight(left_player, right_player)
+		winner_position := Fight(left_player, right_player, pawn_amt)
 		if winner_position == Left {
 			tournament.Winner_bracket = append(tournament.Winner_bracket, left_player)
 			tournament.Loser_bracket = append(tournament.Loser_bracket, right_player)
@@ -65,7 +65,7 @@ func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double
 				left_player_set = true
 				continue
 			}
-			winner_position := Fight(left_player, right_player)
+			winner_position := Fight(left_player, right_player, pawn_amt)
 			if winner_position == Left {
 				next_winner_bracket = append(next_winner_bracket, left_player)
 				tournament.Losers_of_winner_bracket = append(tournament.Losers_of_winner_bracket, right_player)
@@ -93,18 +93,18 @@ func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double
 				left_player_set = true
 				continue
 			}
-			winner_position := Fight(left_player, right_player)
+			winner_position := Fight(left_player, right_player, pawn_amt)
 			loser_of_winner_bracket := tournament.Losers_of_winner_bracket[winner_bracket_loser_pointer]
 			winner_bracket_loser_pointer++
 			if winner_position == Left {
-				winner_of_second_fight := Fight(left_player, loser_of_winner_bracket)
+				winner_of_second_fight := Fight(left_player, loser_of_winner_bracket, pawn_amt)
 				if winner_of_second_fight == Left {
 					next_loser_bracket = append(next_loser_bracket, left_player)
 				} else {
 					next_loser_bracket = append(next_loser_bracket, loser_of_winner_bracket)
 				}
 			} else {
-				winner_of_second_fight := Fight(right_player, loser_of_winner_bracket)
+				winner_of_second_fight := Fight(right_player, loser_of_winner_bracket, pawn_amt)
 				if winner_of_second_fight == Left {
 					next_loser_bracket = append(next_loser_bracket, right_player)
 				} else {
@@ -118,7 +118,7 @@ func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double
 	}
 
 	// final epic fight
-	final_winner := Fight(tournament.Winner_bracket[0], tournament.Loser_bracket[0])
+	final_winner := Fight(tournament.Winner_bracket[0], tournament.Loser_bracket[0], pawn_amt)
 	if final_winner == Left {
 		tournament.Champion = tournament.Winner_bracket[0]
 	} else {
@@ -146,11 +146,6 @@ func EvaluateDoubleEliminationTournament(contenders []*genetics.Organism) double
 	return tournament
 }
 
-func remove(s []*genetics.Organism, i int) []*genetics.Organism {
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
-}
-
 func getNearestPowerOfTwo(i int) int {
 	var v uint32 = uint32(i)
 	v--
@@ -163,13 +158,13 @@ func getNearestPowerOfTwo(i int) int {
 	return int(v)
 }
 
-func Fight(left_player *genetics.Organism, right_player *genetics.Organism) int {
+func Fight(left_player *genetics.Organism, right_player *genetics.Organism, pawn_amt int) int {
 	if left_player == nil {
 		return Right
 	} else if right_player == nil {
 		return Left
 	}
-	game := NewBoard(7)
+	game := NewBoard(pawn_amt)
 	for game.Current_winner == 0 {
 		if len(game.Current_player_path_moves) == 1 {
 			for pawn := range game.Current_player_path_moves {
