@@ -153,6 +153,7 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 		neat.ErrorLog(fmt.Sprintf("Failed to load sensors: %s", err))
 		return 0, err
 	}
+
 	// Use depth to ensure full relaxation
 	if success, err = organism.Phenotype.ForwardSteps(netDepth); err != nil {
 		neat.ErrorLog(fmt.Sprintf("Failed to activate network: %s", err))
