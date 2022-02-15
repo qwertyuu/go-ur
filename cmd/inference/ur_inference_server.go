@@ -54,7 +54,7 @@ func infer(w http.ResponseWriter, r *http.Request) {
 		board_input.Enemy_pawn_positions,
 	)
 	board.Mirror_print_mode = true
-	fmt.Println(board.String())
+	//fmt.Println(board.String())
 	fmt.Println(board.Current_player_path_moves)
 	potential_futures := gour.GetMoveScoresOrdered(board, ai)
 

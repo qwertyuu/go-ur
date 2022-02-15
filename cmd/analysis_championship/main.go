@@ -52,16 +52,19 @@ func main() {
 	for i := 0; i < total_tournaments; i++ {
 		tournament := gour.EvaluateDoubleEliminationTournament(contenders, 7)
 		best := tournament.Contenders[len(tournament.Contenders)-1]
-		organism_path := organism_map[best]
-		_, ok := win_counts[organism_path]
-		if ok {
-			win_counts[organism_path]++
-		} else {
-			win_counts[organism_path] = 1
+		if best.GetType() == "NEAT" {
+			best := best.(*gour.Ai_ur_player)
+			organism_path := organism_map[best.Ai]
+			fmt.Println(best.Ai.Fitness)
+			fmt.Println(organism_map[best.Ai])
+			_, ok := win_counts[organism_path]
+			if ok {
+				win_counts[organism_path]++
+			} else {
+				win_counts[organism_path] = 1
+			}
 		}
 
-		fmt.Println(best.Fitness)
-		fmt.Println(organism_map[best])
 		fmt.Printf("%d/%d\n", i, total_tournaments)
 		for _, contender := range contenders {
 			contender.Fitness = 0

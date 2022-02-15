@@ -48,16 +48,18 @@ func (e *urBootstrapGenerationEvaluator) GenerationEvaluate(pop *genetics.Popula
 	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 5)
 	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 3)
 	best := tournament.Contenders[len(tournament.Contenders)-1]
-	best.IsWinner = true
-	if best.Fitness >= bootstrapFitnessThreshold {
+	best.SetWinner(true)
+	if best.GetWins() >= bootstrapFitnessThreshold {
 		epoch.Solved = true
 	}
-	epoch.WinnerNodes = len(best.Genotype.Nodes)
-	epoch.WinnerGenes = best.Genotype.Extrons()
-	epoch.WinnerEvals = context.PopSize*epoch.Id + best.Genotype.Id
-	epoch.Best = best
-
-	neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Fitness))
+	if best.GetType() == "NEAT" {
+		best := best.(*Ai_ur_player)
+		epoch.WinnerNodes = len(best.Ai.Genotype.Nodes)
+		epoch.WinnerGenes = best.Ai.Genotype.Extrons()
+		epoch.WinnerEvals = context.PopSize*epoch.Id + best.Ai.Genotype.Id
+		epoch.Best = best.Ai
+		neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Ai.Fitness))
+	}
 
 	// Fill statistics about current epoch
 	epoch.FillPopulationStatistics(pop)
@@ -181,10 +183,10 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 	for pawn := range board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
-		fmt.Println(potential_game.String())
+		//fmt.Println(potential_game.String())
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
 		score, err := GetPotentialFutureScore(organism, current_board_descriptor, potential_board)
-		fmt.Println(score)
+		//fmt.Println(score)
 		if err != nil {
 			panic(err)
 		}

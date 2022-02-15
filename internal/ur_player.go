@@ -9,6 +9,10 @@ import (
 type Ur_player interface {
 	GetMove(*board) int
 	GetName() string
+	GetType() string
+	SetWinner(bool)
+	IncrementWins(int)
+	GetWins() int
 }
 
 type Random_ur_player struct {
@@ -28,6 +32,10 @@ func (s *Random_ur_player) GetName() string {
 	return s.Name
 }
 
+func (s *Random_ur_player) GetType() string {
+	return "RANDOM"
+}
+
 type First_move_ur_player struct {
 	Ur_player
 	Name string
@@ -44,9 +52,13 @@ func (s *First_move_ur_player) GetName() string {
 	return s.Name
 }
 
+func (s *First_move_ur_player) GetType() string {
+	return "FIRST_MOVE"
+}
+
 type Ai_ur_player struct {
 	Ur_player
-	Ai *genetics.Organism
+	Ai   *genetics.Organism
 	Name string
 }
 
@@ -57,4 +69,20 @@ func (s *Ai_ur_player) GetMove(board *board) int {
 
 func (s *Ai_ur_player) GetName() string {
 	return s.Name
+}
+
+func (s *Ai_ur_player) GetType() string {
+	return "NEAT"
+}
+
+func (s *Ai_ur_player) GetWins() int {
+	return int(s.Ai.Fitness)
+}
+
+func (s *Ai_ur_player) IncrementWins(wins int) {
+	s.Ai.Fitness += float64(wins)
+}
+
+func (s *Ai_ur_player) SetWinner(winner bool) {
+	s.Ai.IsWinner = winner
 }

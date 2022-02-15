@@ -23,13 +23,13 @@ mate_multipoint_avg_prob  0.3
 mate_singlepoint_prob  0.3
 mate_only_prob  0.2
 recur_only_prob  0.0
-pop_size  256
+pop_size  500
 dropoff_age  50
 newlink_tries  50
 print_every  10
 babies_stolen  0
 num_runs  100
-num_generations 100
+num_generations 200
 log_level info
 epoch_executor parallel
 genome_compat_method linear
