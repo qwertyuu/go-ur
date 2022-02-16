@@ -18,6 +18,11 @@ type Ur_player interface {
 type Random_ur_player struct {
 	Ur_player
 	Name string
+	wins int
+}
+
+func (s *Random_ur_player) IncrementWins(wins int) {
+	s.wins += wins
 }
 
 func (s *Random_ur_player) GetMove(board *board) int {

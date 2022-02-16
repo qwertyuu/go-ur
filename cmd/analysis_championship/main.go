@@ -6,7 +6,6 @@ import (
 	gour "gour/internal"
 	"io/fs"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -23,13 +22,13 @@ func main() {
 	contenders := []*genetics.Organism{}
 	organism_map := make(map[*genetics.Organism]string)
 	win_counts := make(map[string]int)
-	i := 0
-	for {
-		path := fmt.Sprintf("out/UR_reference_ai/%d", i)
-		i++
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			break
-		}
+	paths_to_scan := []string{}
+	out_paths, _ := get_genome_dirs_from_dir("out/UR_server_three_tournament")
+	paths_to_scan = append(paths_to_scan, out_paths...)
+	out_paths, _ = get_genome_dirs_from_dir("trained/541")
+	paths_to_scan = append(paths_to_scan, out_paths...)
+
+	for _, path := range paths_to_scan {
 		genome_path, err := get_genome_from_dir(path)
 		if err != nil {
 			panic(err)
@@ -48,6 +47,7 @@ func main() {
 		organism_map[ai] = genome_path
 		contenders = append(contenders, ai)
 	}
+
 	total_tournaments := 1000
 	for i := 0; i < total_tournaments; i++ {
 		tournament := gour.EvaluateDoubleEliminationTournament(contenders, 7)
@@ -55,8 +55,8 @@ func main() {
 		if best.GetType() == "NEAT" {
 			best := best.(*gour.Ai_ur_player)
 			organism_path := organism_map[best.Ai]
-			fmt.Println(best.Ai.Fitness)
-			fmt.Println(organism_map[best.Ai])
+			//fmt.Println(best.Ai.Fitness)
+			//fmt.Println(organism_map[best.Ai])
 			_, ok := win_counts[organism_path]
 			if ok {
 				win_counts[organism_path]++
@@ -64,8 +64,12 @@ func main() {
 				win_counts[organism_path] = 1
 			}
 		}
-
-		fmt.Printf("%d/%d\n", i, total_tournaments)
+		if i%100 == 0 && i > 0 {
+			for path, score := range win_counts {
+				fmt.Printf("%s => %f\n", path, float64(score)/float64(i))
+			}
+			fmt.Printf("%d/%d\n", i, total_tournaments)
+		}
 		for _, contender := range contenders {
 			contender.Fitness = 0
 			contender.Error = 0
@@ -98,4 +102,17 @@ func get_genome_from_dir(dir string) (string, error) {
 	})
 
 	return file, err
+}
+
+func get_genome_dirs_from_dir(dir string) ([]string, error) {
+	folders := []string{}
+	err := filepath.WalkDir(dir, func(subpath string, f fs.DirEntry, err error) error {
+		if strings.HasPrefix(filepath.Base(subpath), "ur_winner_genome") && filepath.Ext(subpath) == "" {
+			fmt.Println(subpath)
+			folders = append(folders, subpath)
+		}
+		return nil
+	})
+
+	return folders, err
 }

@@ -12,6 +12,7 @@ type double_elimination struct {
 	Loser_bracket            []Ur_player
 	Winner_bracket           []Ur_player
 	Champion                 Ur_player
+	Contender_Amount         int
 }
 
 // NB de joutes dans la winner bracket avant la loser's bracket = len(contenders) / 2 - 1
@@ -37,6 +38,7 @@ func EvaluateDoubleEliminationTournament(organisms []*genetics.Organism, pawn_am
 		Losers_of_winner_bracket: make([]Ur_player, 0),
 		Loser_bracket:            make([]Ur_player, 0),
 		Winner_bracket:           make([]Ur_player, 0),
+		Contender_Amount:         contender_power_of_two,
 	}
 
 	// determine loser and winner brackets

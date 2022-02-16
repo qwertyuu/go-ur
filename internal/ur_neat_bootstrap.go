@@ -10,6 +10,7 @@ package gour
 import (
 	"errors"
 	"fmt"
+	"math"
 	"os"
 	"sort"
 
@@ -47,9 +48,12 @@ func (e *urBootstrapGenerationEvaluator) GenerationEvaluate(pop *genetics.Popula
 	tournament := EvaluateDoubleEliminationTournament(pop.Organisms, 7)
 	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 5)
 	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 3)
+	max_tournament_wins := int(math.Sqrt(float64(tournament.Contender_Amount))) + 1
+	fmt.Printf("Max fitness: %d\n", max_tournament_wins*3)
+	fmt.Printf("Expected fitness: %d\n", max_tournament_wins*2)
 	best := tournament.Contenders[len(tournament.Contenders)-1]
 	best.SetWinner(true)
-	if best.GetWins() >= bootstrapFitnessThreshold {
+	if best.GetWins() >= max_tournament_wins*2 {
 		epoch.Solved = true
 	}
 	if best.GetType() == "NEAT" {
