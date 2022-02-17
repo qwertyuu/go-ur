@@ -18,7 +18,7 @@ import (
 )
 
 // The fitness threshold value for successful solver
-const urVsAifitnessThreshold = 6
+const urVsAifitnessThreshold = 9
 
 type urVsAiGenerationEvaluator struct {
 	// The output path to store execution results
@@ -43,8 +43,7 @@ func NewUrVsAiGenerationEvaluator(outputPath string) experiment.GenerationEvalua
 func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
 	reference_ais := []string{
-		"trained/197/ur_winner_genome_59-31",
-		"trained/UR_beat_reference_Ai/0/ur_winner_genome_58-28",
+		"trained\\541\\ur_winner_genome_58-39",
 	}
 	// TODO: add number of moves as fitness (less moves, better fitness)
 	for _, reference_ai_path := range reference_ais {
@@ -59,9 +58,9 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 				Ai:   pop.Organisms[i],
 				Name: "organism",
 			}
-			OneVSOne(&organism, &reference, 3, 2)
-			OneVSOne(&organism, &reference, 5, 2)
-			OneVSOne(&organism, &reference, 7, 2)
+			OneVSOne(&organism, &reference, 3, 3)
+			OneVSOne(&organism, &reference, 5, 3)
+			OneVSOne(&organism, &reference, 7, 3)
 		}
 	}
 
