@@ -46,15 +46,15 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 		"trained\\541\\ur_winner_genome_58-39",
 	}
 	// TODO: add number of moves as fitness (less moves, better fitness)
-	for _, _ = range reference_ais {
-		//reference_ai, _ := LoadUrAI(reference_ai_path)
-		//reference := Ai_ur_player{
-		//	Ai:   reference_ai,
-		//	Name: "reference",
-		//}
-		reference := Random_ur_player{
-			Name: "Random",
+	for _, reference_ai_path := range reference_ais {
+		reference_ai, _ := LoadUrAI(reference_ai_path)
+		reference := Ai_ur_player{
+			Ai:   reference_ai,
+			Name: "reference",
 		}
+		//reference := Random_ur_player{
+		//	Name: "Random",
+		//}
 
 		for i := 0; i < len(pop.Organisms); i++ {
 			organism := Ai_ur_player{
