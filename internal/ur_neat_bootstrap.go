@@ -62,6 +62,7 @@ func (e *urBootstrapGenerationEvaluator) GenerationEvaluate(pop *genetics.Popula
 		epoch.WinnerGenes = best.Ai.Genotype.Extrons()
 		epoch.WinnerEvals = context.PopSize*epoch.Id + best.Ai.Genotype.Id
 		epoch.Best = best.Ai
+		neat.InfoLog(fmt.Sprintf("Number of species: %v", len(pop.Species)))
 		neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Ai.Fitness))
 	}
 

@@ -18,7 +18,7 @@ import (
 )
 
 // The fitness threshold value for successful solver
-const urVsAifitnessThreshold = 100
+const urVsAifitnessThreshold = 30
 
 type urVsAiGenerationEvaluator struct {
 	// The output path to store execution results
@@ -61,9 +61,9 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 				Ai:   pop.Organisms[i],
 				Name: "organism",
 			}
-			OneVSOne(&organism, &reference, 3, 33)
-			OneVSOne(&organism, &reference, 5, 33)
-			OneVSOne(&organism, &reference, 7, 34)
+			OneVSOne(&organism, &reference, 3, 10)
+			OneVSOne(&organism, &reference, 5, 10)
+			OneVSOne(&organism, &reference, 7, 10)
 		}
 	}
 
@@ -80,6 +80,7 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	epoch.WinnerEvals = context.PopSize*epoch.Id + best.Genotype.Id
 	epoch.Best = best
 
+	neat.InfoLog(fmt.Sprintf("Number of species: %v", len(pop.Species)))
 	neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Fitness))
 
 	// Fill statistics about current epoch
