@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	ai, err := gour.LoadUrAI("trained/10/ur_winner_genome_58-141")
+	ai, err := gour.LoadUrAI("trained\\UR_beat_28\\34\\ur_winner_genome_68-256-optimized")
 	if err != nil {
 		panic(err)
 	}
@@ -14,7 +14,7 @@ func main() {
 		Ai:   ai,
 		Name: "AI",
 	}
-	//ai2, err := gour.LoadUrAI("trained/10/ur_winner_genome_58-141")
+	//ai2, err := gour.LoadUrAI("trained/541/ur_winner_genome_58-39")
 	//right_player := gour.Ai_ur_player{
 	//	Ai:   ai2,
 	//	Name: "AI",
@@ -23,7 +23,9 @@ func main() {
 		Name: "Random",
 	}
 
-	ai_wins, _ := gour.OneVSOne(&left_player, &right_player, 7, 10000)
-	fmt.Printf("AI won %f times", float64(ai_wins)/10000.0)
+	ai_wins3, _ := gour.OneVSOne(&left_player, &right_player, 3, 3333)
+	ai_wins5, _ := gour.OneVSOne(&left_player, &right_player, 5, 3333)
+	ai_wins7, _ := gour.OneVSOne(&left_player, &right_player, 7, 3334)
+	fmt.Printf("AI won %f times", float64(ai_wins3+ai_wins5+ai_wins7)/10000.0)
 
 }
