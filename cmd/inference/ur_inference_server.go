@@ -12,7 +12,7 @@ import (
 
 func main() {
 	var err error
-	ai, err = gour.LoadUrAI("trained/541/ur_winner_genome_58-39")
+	ai, err = gour.LoadUrAI("trained\\UR_beat_28\\34\\ur_winner_genome_68-256-optimized")
 	if err != nil {
 		panic(err)
 	}
@@ -54,7 +54,7 @@ func infer(w http.ResponseWriter, r *http.Request) {
 		board_input.Enemy_pawn_positions,
 	)
 	board.Mirror_print_mode = true
-	fmt.Println(board.String())
+	//fmt.Println(board.String())
 	fmt.Println(board.Current_player_path_moves)
 	potential_futures := gour.GetMoveScoresOrdered(board, ai)
 

@@ -10,6 +10,7 @@ package gour
 import (
 	"errors"
 	"fmt"
+	"math"
 	"os"
 	"sort"
 
@@ -47,17 +48,23 @@ func (e *urBootstrapGenerationEvaluator) GenerationEvaluate(pop *genetics.Popula
 	tournament := EvaluateDoubleEliminationTournament(pop.Organisms, 7)
 	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 5)
 	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 3)
+	max_tournament_wins := int(math.Sqrt(float64(tournament.Contender_Amount))) + 1
+	fmt.Printf("Max fitness: %d\n", max_tournament_wins*3)
+	fmt.Printf("Expected fitness: %d\n", max_tournament_wins*2)
 	best := tournament.Contenders[len(tournament.Contenders)-1]
-	best.IsWinner = true
-	if best.Fitness >= bootstrapFitnessThreshold {
+	best.SetWinner(true)
+	if best.GetWins() >= max_tournament_wins*2 {
 		epoch.Solved = true
 	}
-	epoch.WinnerNodes = len(best.Genotype.Nodes)
-	epoch.WinnerGenes = best.Genotype.Extrons()
-	epoch.WinnerEvals = context.PopSize*epoch.Id + best.Genotype.Id
-	epoch.Best = best
-
-	neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Fitness))
+	if best.GetType() == "NEAT" {
+		best := best.(*Ai_ur_player)
+		epoch.WinnerNodes = len(best.Ai.Genotype.Nodes)
+		epoch.WinnerGenes = best.Ai.Genotype.Extrons()
+		epoch.WinnerEvals = context.PopSize*epoch.Id + best.Ai.Genotype.Id
+		epoch.Best = best.Ai
+		neat.InfoLog(fmt.Sprintf("Number of species: %v", len(pop.Species)))
+		neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Ai.Fitness))
+	}
 
 	// Fill statistics about current epoch
 	epoch.FillPopulationStatistics(pop)
@@ -181,10 +188,10 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 	for pawn := range board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
-		fmt.Println(potential_game.String())
+		//fmt.Println(potential_game.String())
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
 		score, err := GetPotentialFutureScore(organism, current_board_descriptor, potential_board)
-		fmt.Println(score)
+		//fmt.Println(score)
 		if err != nil {
 			panic(err)
 		}

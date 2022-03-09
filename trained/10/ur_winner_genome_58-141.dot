@@ -1,0 +1,942 @@
+strict digraph {
+// Node definitions.
+1 [
+neuron_type=BIAS
+activation_type=NullActivation
+];
+2 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+3 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+4 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+5 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+6 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+7 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+8 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+9 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+10 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+11 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+12 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+13 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+14 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+15 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+16 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+17 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+18 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+19 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+20 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+21 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+22 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+23 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+24 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+25 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+26 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+27 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+28 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+29 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+30 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+31 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+32 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+33 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+34 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+35 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+36 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+37 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+38 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+39 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+40 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+41 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+42 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+43 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+44 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+45 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+46 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+47 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+48 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+49 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+50 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+51 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+52 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+53 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+54 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+55 [
+neuron_type=INPT
+activation_type=NullActivation
+];
+56 [
+neuron_type=OUTP
+activation_type=SigmoidBipolarActivation
+];
+59 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
+74 [
+neuron_type=HIDN
+activation_type=SigmoidSteepenedActivation
+];
+
+// Edge definitions.
+1 -> 56 [
+weight=2.906571
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+1 -> 59 [
+weight=3.200762
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+2 -> 56 [
+weight=-6.007428
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+2 -> 59 [
+weight=0.726565
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+2 -> 74 [
+weight=-1.492449
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+3 -> 74 [
+weight=-2.339638
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+4 -> 56 [
+weight=-3.781927
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+4 -> 59 [
+weight=-0.745226
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+4 -> 74 [
+weight=-3.091817
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+5 -> 56 [
+weight=-1.303550
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+5 -> 59 [
+weight=-0.287929
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+5 -> 74 [
+weight=-1.940354
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+6 -> 56 [
+weight=1.309932
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+6 -> 59 [
+weight=-1.108471
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+6 -> 74 [
+weight=13.224561
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+7 -> 56 [
+weight=1.464744
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+7 -> 59 [
+weight=7.150340
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+7 -> 74 [
+weight=2.600141
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+8 -> 56 [
+weight=-2.682255
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+8 -> 59 [
+weight=-1.831562
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+8 -> 74 [
+weight=-0.781874
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+9 -> 56 [
+weight=-3.783638
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+9 -> 59 [
+weight=1.130645
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+9 -> 74 [
+weight=0.990089
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+10 -> 56 [
+weight=-7.553849
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+10 -> 59 [
+weight=3.468734
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+10 -> 74 [
+weight=-5.875034
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+11 -> 56 [
+weight=0.699817
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+11 -> 59 [
+weight=0.582968
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+11 -> 74 [
+weight=-5.451685
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+12 -> 74 [
+weight=3.070916
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+13 -> 56 [
+weight=0.620355
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+13 -> 59 [
+weight=-7.242776
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+13 -> 74 [
+weight=-9.030847
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+14 -> 56 [
+weight=-0.058820
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+14 -> 59 [
+weight=-1.471912
+recurrent=false
+parameters="[1.1 0 0 0 0 0 0 0]"
+];
+14 -> 74 [
+weight=-5.384961
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+15 -> 56 [
+weight=7.136380
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+15 -> 59 [
+weight=6.490086
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+15 -> 74 [
+weight=5.204333
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+16 -> 56 [
+weight=6.001817
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+16 -> 59 [
+weight=-7.044344
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+16 -> 74 [
+weight=-4.862229
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+17 -> 56 [
+weight=1.870538
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+17 -> 59 [
+weight=-2.575673
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+17 -> 74 [
+weight=7.309452
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+18 -> 56 [
+weight=-5.522259
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+18 -> 59 [
+weight=-2.826005
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+18 -> 74 [
+weight=5.170277
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+19 -> 56 [
+weight=-2.149261
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+19 -> 59 [
+weight=3.096408
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+19 -> 74 [
+weight=-8.322567
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+20 -> 56 [
+weight=4.232665
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+20 -> 59 [
+weight=-0.587683
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+20 -> 74 [
+weight=0.662859
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+21 -> 56 [
+weight=7.499633
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+21 -> 59 [
+weight=-9.361278
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+21 -> 74 [
+weight=-9.639913
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+23 -> 56 [
+weight=-0.604389
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+23 -> 59 [
+weight=-2.503765
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+23 -> 74 [
+weight=0.923393
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+24 -> 56 [
+weight=5.292435
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+24 -> 59 [
+weight=6.220748
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+24 -> 74 [
+weight=-11.332893
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+25 -> 56 [
+weight=11.675566
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+25 -> 59 [
+weight=-11.310530
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+25 -> 74 [
+weight=-0.806589
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+26 -> 56 [
+weight=-0.414444
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+26 -> 59 [
+weight=-0.630946
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+26 -> 74 [
+weight=1.376279
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+27 -> 56 [
+weight=-3.303978
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+27 -> 59 [
+weight=2.246799
+recurrent=false
+parameters="[1.1 0 0 0 0 0 0 0]"
+];
+27 -> 74 [
+weight=-6.537751
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+28 -> 56 [
+weight=3.354466
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+28 -> 59 [
+weight=1.518358
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+28 -> 74 [
+weight=-4.169135
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+29 -> 59 [
+weight=-3.423789
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+30 -> 56 [
+weight=0.097075
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+30 -> 59 [
+weight=12.914864
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+30 -> 74 [
+weight=3.529270
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+31 -> 56 [
+weight=4.917546
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+31 -> 59 [
+weight=-2.098384
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+31 -> 74 [
+weight=-0.967523
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+32 -> 56 [
+weight=0.934968
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+32 -> 59 [
+weight=4.307882
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+32 -> 74 [
+weight=3.046723
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+33 -> 56 [
+weight=-1.309827
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+33 -> 59 [
+weight=2.792458
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+33 -> 74 [
+weight=1.015600
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+34 -> 56 [
+weight=4.896821
+recurrent=false
+parameters="[1 0 0 0 0 0 0 0]"
+];
+34 -> 59 [
+weight=1.986973
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+34 -> 74 [
+weight=5.245281
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+35 -> 74 [
+weight=2.107809
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+36 -> 56 [
+weight=3.911191
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+36 -> 59 [
+weight=0.245439
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+36 -> 74 [
+weight=4.942423
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+37 -> 59 [
+weight=3.248903
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+38 -> 56 [
+weight=3.273647
+recurrent=false
+parameters="[1 0 0 0 0 0 0 0]"
+];
+38 -> 59 [
+weight=1.870181
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+38 -> 74 [
+weight=0.772180
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+39 -> 56 [
+weight=4.993604
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+39 -> 59 [
+weight=2.085856
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+40 -> 74 [
+weight=1.254540
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+42 -> 56 [
+weight=-0.752017
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+42 -> 59 [
+weight=-2.659642
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+42 -> 74 [
+weight=0.709437
+recurrent=false
+parameters="[1.1 0 0 0 0 0 0 0]"
+];
+43 -> 56 [
+weight=-0.973033
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+43 -> 59 [
+weight=-0.362266
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+43 -> 74 [
+weight=-4.642309
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+44 -> 56 [
+weight=-1.931971
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+44 -> 59 [
+weight=2.703825
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+44 -> 74 [
+weight=-0.568401
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+45 -> 56 [
+weight=7.860317
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+45 -> 59 [
+weight=-10.738605
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+45 -> 74 [
+weight=-1.985984
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+46 -> 74 [
+weight=-4.920863
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+48 -> 56 [
+weight=-1.552854
+recurrent=false
+parameters="[0.9 0 0 0 0 0 0 0]"
+];
+48 -> 59 [
+weight=8.522980
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+48 -> 74 [
+weight=-4.442505
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+49 -> 56 [
+weight=-1.705363
+recurrent=false
+parameters="[1 0 0 0 0 0 0 0]"
+];
+49 -> 59 [
+weight=1.138493
+recurrent=false
+parameters="[0.5 0 0 0 0 0 0 0]"
+];
+49 -> 74 [
+weight=-8.152007
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+50 -> 56 [
+weight=6.352003
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+50 -> 59 [
+weight=8.597013
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+50 -> 74 [
+weight=-6.574693
+recurrent=false
+parameters="[0.2 0 0 0 0 0 0 0]"
+];
+51 -> 56 [
+weight=-7.858811
+recurrent=false
+parameters="[1.3 0 0 0 0 0 0 0]"
+];
+51 -> 59 [
+weight=7.499019
+recurrent=false
+parameters="[1.401452852537805 0 0 0 0 0 0 0]"
+];
+51 -> 74 [
+weight=6.949792
+recurrent=false
+parameters="[0.8 0 0 0 0 0 0 0]"
+];
+52 -> 56 [
+weight=25.269779
+recurrent=false
+parameters="[0.7 0 0 0 0 0 0 0]"
+];
+52 -> 59 [
+weight=-1.298573
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+52 -> 74 [
+weight=-2.560398
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+53 -> 56 [
+weight=-4.290353
+recurrent=false
+parameters="[1 0 0 0 0 0 0 0]"
+];
+53 -> 59 [
+weight=-3.508728
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+54 -> 56 [
+weight=-0.073061
+recurrent=false
+parameters="[0.6 0 0 0 0 0 0 0]"
+];
+54 -> 59 [
+weight=-5.264617
+recurrent=false
+parameters="[1.1 0 0 0 0 0 0 0]"
+];
+54 -> 74 [
+weight=7.756520
+recurrent=false
+parameters="[0.3 0 0 0 0 0 0 0]"
+];
+55 -> 56 [
+weight=13.523594
+recurrent=false
+parameters="[0.1 0 0 0 0 0 0 0]"
+];
+55 -> 59 [
+weight=1.472704
+recurrent=false
+parameters="[1.2 0 0 0 0 0 0 0]"
+];
+55 -> 74 [
+weight=1.691511
+recurrent=false
+parameters="[1.4 0 0 0 0 0 0 0]"
+];
+59 -> 56 [
+weight=2.732069
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+74 -> 56 [
+weight=-2.650915
+recurrent=false
+parameters="[1.5 0 0 0 0 0 0 0]"
+];
+}

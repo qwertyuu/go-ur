@@ -3,14 +3,12 @@ package main
 import (
 	"fmt"
 	gour "gour/internal"
-
-	"github.com/yaricom/goNEAT/v2/neat/genetics"
+	"time"
 )
 
-var ai *genetics.Organism
-
 func main() {
-	ai, err := gour.LoadUrAI("trained/ur_winner_genome_61-206")
+	start := time.Now()
+	ai, err := gour.LoadUrAI("trained\\UR_beat_28\\34\\ur_winner_genome_68-256-optimized")
 	if err != nil {
 		panic(err)
 	}
@@ -18,38 +16,19 @@ func main() {
 		Ai:   ai,
 		Name: "AI",
 	}
-	right_player := gour.First_move_ur_player{
-		Name: "First move picker",
+	ai2, err := gour.LoadUrAI("trained/541/ur_winner_genome_58-39")
+	right_player := gour.Ai_ur_player{
+		Ai:   ai2,
+		Name: "AI",
 	}
+	//right_player := gour.Random_ur_player{
+	//	Name: "Random",
+	//}
 
-	ai_wins, _ := OneVSOne(&left_player, &right_player, 1000)
-	fmt.Printf("AI won %f times", float64(ai_wins)/1000.0)
-
-}
-
-func OneVSOne(left_player gour.Ur_player, right_player gour.Ur_player, number_of_games int) (int, int) {
-	left_wins := 0
-	right_wins := 0
-	for i := 0; i < number_of_games; i++ {
-		board := gour.NewBoard(7)
-		moves := 0
-		for board.Current_winner == 0 {
-			var current_player gour.Ur_player
-			if board.Current_player == gour.Left {
-				current_player = left_player
-			} else {
-				current_player = right_player
-			}
-			board.Play(current_player.GetMove(board))
-			moves++
-		}
-		if board.Current_winner == gour.Left {
-			fmt.Printf("%s wins after %d moves\n", left_player.GetName(), moves)
-			left_wins++
-		} else {
-			fmt.Printf("%s wins after %d moves\n", right_player.GetName(), moves)
-			right_wins++
-		}
-	}
-	return left_wins, right_wins
+	ai_wins3, _ := gour.OneVSOne(&left_player, &right_player, 3, 3333)
+	ai_wins5, _ := gour.OneVSOne(&left_player, &right_player, 5, 3333)
+	ai_wins7, _ := gour.OneVSOne(&left_player, &right_player, 7, 3334)
+	fmt.Printf("AI won %f times\n", float64(ai_wins3+ai_wins5+ai_wins7)/10000.0)
+	elapsed := time.Since(start)
+    fmt.Printf("Took %s", elapsed)
 }

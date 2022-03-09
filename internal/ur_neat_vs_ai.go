@@ -18,7 +18,7 @@ import (
 )
 
 // The fitness threshold value for successful solver
-const urVsAifitnessThreshold = 6
+const urVsAifitnessThreshold = 30
 
 type urVsAiGenerationEvaluator struct {
 	// The output path to store execution results
@@ -42,14 +42,28 @@ func NewUrVsAiGenerationEvaluator(outputPath string) experiment.GenerationEvalua
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
 func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
+	reference_ais := []string{
+		"trained\\541\\ur_winner_genome_58-39",
+	}
+	// TODO: add number of moves as fitness (less moves, better fitness)
+	for _, reference_ai_path := range reference_ais {
+		reference_ai, _ := LoadUrAI(reference_ai_path)
+		reference := Ai_ur_player{
+			Ai:   reference_ai,
+			Name: "reference",
+		}
+		//reference := Random_ur_player{
+		//	Name: "Random",
+		//}
 
-	reference_ai, err := LoadUrAI("out\\UR_server_three_tournament\\26\\ur_winner_genome_57-10")
-
-	for j := 0; j < 2; j++ {
 		for i := 0; i < len(pop.Organisms); i++ {
-			Fight(pop.Organisms[i], reference_ai, 3)
-			Fight(pop.Organisms[i], reference_ai, 5)
-			Fight(pop.Organisms[i], reference_ai, 7)
+			organism := Ai_ur_player{
+				Ai:   pop.Organisms[i],
+				Name: "organism",
+			}
+			OneVSOne(&organism, &reference, 3, 10)
+			OneVSOne(&organism, &reference, 5, 10)
+			OneVSOne(&organism, &reference, 7, 10)
 		}
 	}
 
@@ -58,7 +72,7 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	})
 	best := pop.Organisms[len(pop.Organisms)-1]
 	best.IsWinner = true
-	if best.Fitness >= urVsAifitnessThreshold {
+	if best.Fitness >= float64(urVsAifitnessThreshold*len(reference_ais)) {
 		epoch.Solved = true
 	}
 	epoch.WinnerNodes = len(best.Genotype.Nodes)
@@ -66,6 +80,7 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	epoch.WinnerEvals = context.PopSize*epoch.Id + best.Genotype.Id
 	epoch.Best = best
 
+	neat.InfoLog(fmt.Sprintf("Number of species: %v", len(pop.Species)))
 	neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Fitness))
 
 	// Fill statistics about current epoch

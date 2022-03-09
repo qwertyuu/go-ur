@@ -1,0 +1,103 @@
+genomestart 244
+trait 1 0.1 0 0 0 0 0 0 0
+trait 2 0.2 0 0 0 0 0 0 0
+trait 3 0.3 0 0 0 0 0 0 0
+trait 4 0.4 0 0 0 0 0 0 0
+trait 5 0.5 0 0 0 0 0 0 0
+trait 6 0.6 0 0 0 0 0 0 0
+trait 7 0.7 0 0 0 0 0 0 0
+trait 8 0.8 0 0 0 0 0 0 0
+trait 9 0.9 0 0 0 0 0 0 0
+trait 10 1 0 0 0 0 0 0 0
+trait 11 1.1 0 0 0 0 0 0 0
+trait 12 0.6730366297484083 0.13782709579926014 0.47309569981328825 0 0 0 0 0
+trait 13 1.3 0 0 0 0 0 0 0
+trait 14 1.4 0 0 0 0 0 0 0
+trait 15 1.5 0 0 0 0 0 0 0
+node 1 1 1 3 NullActivation
+node 2 1 1 1 NullActivation
+node 3 1 1 1 NullActivation
+node 4 1 1 1 NullActivation
+node 5 1 1 1 NullActivation
+node 6 1 1 1 NullActivation
+node 7 1 1 1 NullActivation
+node 8 1 1 1 NullActivation
+node 9 1 1 1 NullActivation
+node 10 1 1 1 NullActivation
+node 11 1 1 1 NullActivation
+node 12 1 1 1 NullActivation
+node 13 1 1 1 NullActivation
+node 14 1 1 1 NullActivation
+node 15 1 1 1 NullActivation
+node 16 1 1 1 NullActivation
+node 17 8 1 1 NullActivation
+node 18 1 1 1 NullActivation
+node 19 1 1 1 NullActivation
+node 20 1 1 1 NullActivation
+node 21 1 1 1 NullActivation
+node 22 1 1 1 NullActivation
+node 23 1 1 1 NullActivation
+node 24 1 1 1 NullActivation
+node 25 1 1 1 NullActivation
+node 26 1 1 1 NullActivation
+node 27 1 1 1 NullActivation
+node 28 1 1 1 NullActivation
+node 29 1 1 1 NullActivation
+node 30 1 1 1 NullActivation
+node 31 1 1 1 NullActivation
+node 32 1 1 1 NullActivation
+node 33 1 1 1 NullActivation
+node 34 1 1 1 NullActivation
+node 35 1 1 1 NullActivation
+node 36 1 1 1 NullActivation
+node 37 1 1 1 NullActivation
+node 38 1 1 1 NullActivation
+node 39 1 1 1 NullActivation
+node 40 1 1 1 NullActivation
+node 41 1 1 1 NullActivation
+node 42 1 1 1 NullActivation
+node 43 1 1 1 NullActivation
+node 44 1 1 1 NullActivation
+node 45 1 1 1 NullActivation
+node 46 1 1 1 NullActivation
+node 47 1 1 1 NullActivation
+node 48 1 1 1 NullActivation
+node 49 1 1 1 NullActivation
+node 50 1 1 1 NullActivation
+node 51 1 1 1 NullActivation
+node 52 1 1 1 NullActivation
+node 53 1 1 1 NullActivation
+node 54 1 1 1 NullActivation
+node 55 1 1 1 NullActivation
+node 56 1 0 2 SigmoidBipolarActivation
+node 63 1 0 0 SigmoidSteepenedActivation
+node 103 1 0 0 SigmoidSteepenedActivation
+gene 1 1 56 1.6204493778106734 false 1 1.6204493778106734 true
+gene 13 29 56 -4.33277095531164 false 15 -4.33277095531164 true
+gene 5 2 56 2.827014140815051 false 50 2.827014140815051 true
+gene 13 29 63 4.808096964299891 false 171 4.808096964299891 true
+gene 13 63 56 -4.650564908452439 false 172 -4.650564908452439 true
+gene 5 55 56 2.999531959918098 false 426 2.999531959918098 true
+gene 3 55 63 7.14547648025018 false 453 7.14547648025018 true
+gene 4 23 56 0.18136915509845575 false 564 0.18136915509845575 true
+gene 3 23 63 -3.43746936832509 false 566 -3.43746936832509 true
+gene 3 13 56 -0.6542883675666349 false 777 -0.6542883675666349 true
+gene 10 13 63 -1.5126712165811846 false 779 -1.5126712165811846 true
+gene 5 2 103 -0.5563831392461371 false 1185 -0.5563831392461371 true
+gene 5 103 56 1.7918659443706106 false 1186 1.7918659443706106 true
+gene 13 12 56 -0.24001855682231343 false 1703 -0.24001855682231343 true
+gene 5 12 63 -1.1634311636322563 false 1704 -1.1634311636322563 true
+gene 1 12 103 3.7658715933749636 false 1705 3.7658715933749636 true
+gene 14 30 56 -2.586558119081324 false 1823 -2.586558119081324 true
+gene 14 30 63 0.4596522248289957 false 1824 0.4596522248289957 true
+gene 14 30 103 0.6103277088824121 false 1883 0.6103277088824121 true
+gene 3 7 56 4.537068582579219 false 1954 4.537068582579219 true
+gene 12 7 63 0.6298495334622302 false 1955 0.6298495334622302 true
+gene 9 7 103 5.764202754580916 false 1956 5.764202754580916 true
+gene 11 4 56 8.440518331960735 false 2121 8.440518331960735 true
+gene 8 4 63 6.212967147862524 false 2213 6.212967147862524 true
+gene 3 4 103 6.534803561007841 false 2276 6.534803561007841 true
+gene 13 44 56 -2.322859592529002 false 2827 -2.322859592529002 true
+gene 12 44 63 2.9965248137899865 false 2828 2.9965248137899865 true
+gene 6 44 103 -6.062600936553325 false 2829 -6.062600936553325 true
+genomeend 244
