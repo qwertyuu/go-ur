@@ -1,6 +1,7 @@
 package gour
 
 import (
+	"math/rand"
 	"sort"
 
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
@@ -40,6 +41,9 @@ func EvaluateDoubleEliminationTournament(organisms []*genetics.Organism, pawn_am
 		Winner_bracket:           make([]Ur_player, 0),
 		Contender_Amount:         contender_power_of_two,
 	}
+	rand.Shuffle(len(tournament.Contenders), func(i, j int) {
+		tournament.Contenders[i], tournament.Contenders[j] = tournament.Contenders[j], tournament.Contenders[i]
+	})
 
 	// determine loser and winner brackets
 	var left_player Ur_player = nil

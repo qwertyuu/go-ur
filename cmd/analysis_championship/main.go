@@ -6,6 +6,7 @@ import (
 	gour "gour/internal"
 	"io/fs"
 	"io/ioutil"
+	"math/rand"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -14,8 +15,9 @@ import (
 )
 
 type ai_score struct {
-	Path  string
-	Score int
+	Path       string
+	Score      int
+	Proportion float64
 }
 
 func main() {
@@ -23,7 +25,9 @@ func main() {
 	organism_map := make(map[*genetics.Organism]string)
 	win_counts := make(map[string]int)
 	paths_to_scan := []string{}
-	out_paths, _ := get_genome_dirs_from_dir("out/UR_beat_28")
+	out_paths, _ := get_genome_dirs_from_dir("out/UR_oom_beat_28")
+	paths_to_scan = append(paths_to_scan, out_paths...)
+	out_paths, _ = get_genome_dirs_from_dir("out/UR_lost_current_beat_28")
 	paths_to_scan = append(paths_to_scan, out_paths...)
 	out_paths, _ = get_genome_dirs_from_dir("trained/541")
 	paths_to_scan = append(paths_to_scan, out_paths...)
@@ -49,6 +53,7 @@ func main() {
 	}
 
 	total_tournaments := 1000
+	rand.Seed(1)
 	for i := 0; i < total_tournaments; i++ {
 		tournament := gour.EvaluateDoubleEliminationTournament(contenders, 7)
 		best := tournament.Contenders[len(tournament.Contenders)-1]
@@ -65,9 +70,8 @@ func main() {
 			}
 		}
 		if i%100 == 0 && i > 0 {
-			for path, score := range win_counts {
-				fmt.Printf("%s => %f\n", path, float64(score)/float64(i))
-			}
+			json_wins := get_json_wins(win_counts, i)
+			fmt.Println(json_wins)
 			fmt.Printf("%d/%d\n", i, total_tournaments)
 		}
 		for _, contender := range contenders {
@@ -75,21 +79,25 @@ func main() {
 			contender.Error = 0
 		}
 	}
+	json_wins := get_json_wins(win_counts, total_tournaments)
+	fmt.Println(json_wins)
+	_ = ioutil.WriteFile("wins.json", []byte(json_wins), 0644)
+}
 
+func get_json_wins(win_counts map[string]int, total int) string {
 	ai_scores := make([]ai_score, 0, len(win_counts))
-
 	for path, score := range win_counts {
 		ai_scores = append(ai_scores, ai_score{
-			Path:  path,
-			Score: score,
+			Path:       path,
+			Score:      score,
+			Proportion: float64(score) / float64(total),
 		})
 	}
 	sort.Slice(ai_scores, func(i, j int) bool {
 		return ai_scores[i].Score > ai_scores[j].Score
 	})
 	json_wins, _ := json.Marshal(ai_scores)
-	fmt.Println(string(json_wins))
-	_ = ioutil.WriteFile("wins.json", json_wins, 0644)
+	return string(json_wins)
 }
 
 func get_genome_from_dir(dir string) (string, error) {
@@ -108,7 +116,6 @@ func get_genome_dirs_from_dir(dir string) ([]string, error) {
 	folders := []string{}
 	err := filepath.WalkDir(dir, func(subpath string, f fs.DirEntry, err error) error {
 		if strings.HasPrefix(filepath.Base(subpath), "ur_winner_genome") && filepath.Ext(subpath) == "" {
-			fmt.Println(subpath)
 			folders = append(folders, subpath)
 		}
 		return nil
