@@ -29,6 +29,8 @@ func main() {
 	paths_to_scan = append(paths_to_scan, out_paths...)
 	out_paths, _ = get_genome_dirs_from_dir("out/UR_lost_current_beat_28")
 	paths_to_scan = append(paths_to_scan, out_paths...)
+	out_paths, _ = get_genome_dirs_from_dir("out/UR_beat_29")
+	paths_to_scan = append(paths_to_scan, out_paths...)
 	out_paths, _ = get_genome_dirs_from_dir("trained/541")
 	paths_to_scan = append(paths_to_scan, out_paths...)
 

@@ -13,3 +13,4 @@
 out/
 .idea/
 wins.json
+*.prof

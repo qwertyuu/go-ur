@@ -386,7 +386,7 @@ func (r *board) playerValidMoves(dice int, player int) map[int]int {
 	}
 
 	// pawn => course position
-	possible_course_moves := make(map[int]int, 0)
+	possible_course_moves := make(map[int]int)
 	if pawn_in_queue > 0 && r.board[path[dice-1]] == 0 {
 		possible_course_moves[-1] = dice - 1 // In
 	}
