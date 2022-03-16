@@ -31,8 +31,12 @@ func main() {
 	paths_to_scan = append(paths_to_scan, out_paths...)
 	out_paths, _ = get_genome_dirs_from_dir("out/UR_beat_29")
 	paths_to_scan = append(paths_to_scan, out_paths...)
-	out_paths, _ = get_genome_dirs_from_dir("trained/541")
+	out_paths, _ = get_genome_dirs_from_dir("out/UR_2kgen_beat_29")
 	paths_to_scan = append(paths_to_scan, out_paths...)
+	out_paths, _ = get_genome_dirs_from_dir("out/UR_60best_random")
+	paths_to_scan = append(paths_to_scan, out_paths...)
+	//out_paths, _ = get_genome_dirs_from_dir("trained/541")
+	//paths_to_scan = append(paths_to_scan, out_paths...)
 
 	for _, path := range paths_to_scan {
 		genome_path, err := get_genome_from_dir(path)
@@ -54,7 +58,7 @@ func main() {
 		contenders = append(contenders, ai)
 	}
 
-	total_tournaments := 1000
+	total_tournaments := 2000
 	rand.Seed(1)
 	for i := 0; i < total_tournaments; i++ {
 		tournament := gour.EvaluateDoubleEliminationTournament(contenders, 7)
