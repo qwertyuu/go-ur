@@ -17,12 +17,15 @@ import (
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
-// The fitness threshold value for successful solver
-const urVsAifitnessThreshold = 30
-
-type urVsAiGenerationEvaluator struct {
+type UrVsAiGenerationEvaluator struct {
 	// The output path to store execution results
 	OutputPath string
+
+	// the number of games to play, per game size (so will be x3)
+	NumberOfGames int
+
+	// Most recent winner
+	Winner *genetics.Organism
 }
 
 // NewUrGenerationEvaluator is to create new generations evaluator to be used for the XOR experiment execution.
@@ -35,14 +38,18 @@ type urVsAiGenerationEvaluator struct {
 //
 // This method performs evolution on XOR for specified number of generations and output results into outDirPath
 // It also returns number of nodes, genes, and evaluations performed per each run (context.NumRuns)
-func NewUrVsAiGenerationEvaluator(outputPath string) experiment.GenerationEvaluator {
-	return &urVsAiGenerationEvaluator{OutputPath: outputPath}
+func NewUrVsAiGenerationEvaluator(outputPath string, numberOfGames int) *UrVsAiGenerationEvaluator {
+	return &UrVsAiGenerationEvaluator{
+		OutputPath: outputPath,
+		NumberOfGames: numberOfGames,
+	}
 }
 
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
-func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
+func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
 	ai_1, err := LoadUrAI("trained\\541\\ur_winner_genome_58-39")
+	fmt.Printf("Training against AI for %v games\n", e.NumberOfGames)
 	reference_ais := []Ur_player{
 		&Ai_ur_player{
 			Ai:   ai_1,
@@ -52,6 +59,8 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 			Name: "Random",
 		},
 	}
+	bestFitness := float64(e.NumberOfGames * 3 * len(reference_ais))
+	fmt.Printf("Best fitness: %v\n", bestFitness)
 	// TODO: add number of moves as fitness (less moves, better fitness)
 	for _, reference_ai := range reference_ais {
 		for i := 0; i < len(pop.Organisms); i++ {
@@ -59,9 +68,9 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 				Ai:   pop.Organisms[i],
 				Name: "organism",
 			}
-			OneVSOne(organism, reference_ai, 3, 10)
-			OneVSOne(organism, reference_ai, 5, 10)
-			OneVSOne(organism, reference_ai, 7, 10)
+			OneVSOne(organism, reference_ai, 3, e.NumberOfGames)
+			OneVSOne(organism, reference_ai, 5, e.NumberOfGames)
+			OneVSOne(organism, reference_ai, 7, e.NumberOfGames)
 		}
 	}
 
@@ -70,7 +79,7 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	})
 	best := pop.Organisms[len(pop.Organisms)-1]
 	best.IsWinner = true
-	if best.Fitness >= float64(urVsAifitnessThreshold*len(reference_ais)) {
+	if best.Fitness >= float64(e.NumberOfGames * 3 * len(reference_ais)) {
 		epoch.Solved = true
 	}
 	epoch.WinnerNodes = len(best.Genotype.Nodes)
@@ -95,6 +104,7 @@ func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	if epoch.Solved {
 		// print winner organism
 		org := epoch.Best
+		e.Winner = org
 		if depth, err := org.Phenotype.MaxActivationDepthFast(0); err == nil {
 			neat.InfoLog(fmt.Sprintf("Activation depth of the winner: %d\n", depth))
 		}

@@ -29,15 +29,35 @@ func main() {
 		panic(err)
 	}
 
-	opts.NumRuns = 900
+	sizes := []int{
+		1,
+		2,
+		4,
+		8,
+		16,
+		32,
+		64,
+	}
 
-	// The Ur runs
-	experiment := experiment2.Experiment{}
-	err = experiment.Execute(opts.NeatContext(), startGenome, gour.NewUrVsAiGenerationEvaluator(outDirPath, 30), nil)
-	if err != nil {
-		panic(err)
+	opts.NumRuns = 1
+	opts.NumGenerations = 99999999
+
+	genomeToEvaluate := startGenome
+
+	for i := 0; i < 900; i++ {
+		for _, size := range sizes {
+			// The Ur runs
+			experiment := experiment2.Experiment{}
+			evaluator := gour.NewUrVsAiGenerationEvaluator(outDirPath, size)
+			err = experiment.Execute(opts.NeatContext(), genomeToEvaluate, evaluator, nil)
+			if err != nil {
+				panic(err)
+			}
+			genomeToEvaluate = evaluator.Winner.Genotype
+		}
 	}
 }
+
 
 func LoadOptionsAndGenome(contextPath, genomePath string) (*neat.Options, *genetics.Genome, error) {
 	// Load context configuration

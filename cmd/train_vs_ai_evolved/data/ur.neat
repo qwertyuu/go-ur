@@ -28,8 +28,8 @@ dropoff_age  50
 newlink_tries  50
 print_every  10
 babies_stolen  0
-num_runs  1
-num_generations 2000
+num_runs  100
+num_generations 200
 log_level info
 epoch_executor parallel
 genome_compat_method fast
