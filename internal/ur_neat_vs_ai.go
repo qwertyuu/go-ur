@@ -42,28 +42,26 @@ func NewUrVsAiGenerationEvaluator(outputPath string) experiment.GenerationEvalua
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
 func (e *urVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
-	reference_ais := []string{
-		"trained\\541\\ur_winner_genome_58-39",
+	ai_1, err := LoadUrAI("trained\\541\\ur_winner_genome_58-39")
+	reference_ais := []Ur_player{
+		&Ai_ur_player{
+			Ai:   ai_1,
+			Name: "reference",
+		},
+		&Random_ur_player{
+			Name: "Random",
+		},
 	}
 	// TODO: add number of moves as fitness (less moves, better fitness)
-	for _, reference_ai_path := range reference_ais {
-		reference_ai, _ := LoadUrAI(reference_ai_path)
-		reference := Ai_ur_player{
-			Ai:   reference_ai,
-			Name: "reference",
-		}
-		//reference := Random_ur_player{
-		//	Name: "Random",
-		//}
-
+	for _, reference_ai := range reference_ais {
 		for i := 0; i < len(pop.Organisms); i++ {
-			organism := Ai_ur_player{
+			organism := &Ai_ur_player{
 				Ai:   pop.Organisms[i],
 				Name: "organism",
 			}
-			OneVSOne(&organism, &reference, 3, 10)
-			OneVSOne(&organism, &reference, 5, 10)
-			OneVSOne(&organism, &reference, 7, 10)
+			OneVSOne(organism, reference_ai, 3, 10)
+			OneVSOne(organism, reference_ai, 5, 10)
+			OneVSOne(organism, reference_ai, 7, 10)
 		}
 	}
 

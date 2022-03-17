@@ -30,11 +30,7 @@ func main() {
 	}
 
 	// The Ur runs
-	opts.NumRuns = 900
-	experiment := experiment2.Experiment{
-		Id:     0,
-		Trials: make(experiment2.Trials, opts.NumRuns),
-	}
+	experiment := experiment2.Experiment{}
 	err = experiment.Execute(opts.NeatContext(), startGenome, gour.NewUrVsAiGenerationEvaluator(outDirPath), nil)
 	if err != nil {
 		panic(err)
