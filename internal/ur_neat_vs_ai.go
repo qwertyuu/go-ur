@@ -10,7 +10,6 @@ package gour
 import (
 	"fmt"
 	"sort"
-	"strconv"
 
 	"github.com/yaricom/goNEAT/v2/experiment"
 	"github.com/yaricom/goNEAT/v2/experiment/utils"
@@ -24,9 +23,6 @@ type UrVsAiGenerationEvaluator struct {
 
 	// the number of games to play, per game size (so will be x3)
 	NumberOfGames int
-
-	// Most recent winner
-	Winner *genetics.Organism
 }
 
 // NewUrGenerationEvaluator is to create new generations evaluator to be used for the XOR experiment execution.
@@ -47,7 +43,7 @@ func NewUrVsAiGenerationEvaluator(outputPath string, numberOfGames int) *UrVsAiG
 }
 
 func (e *UrVsAiGenerationEvaluator) GetOutputPath() string {
-	return e.OutputPath + "/" + strconv.Itoa(e.NumberOfGames)
+	return e.OutputPath
 }
 
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
@@ -109,7 +105,6 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	if epoch.Solved {
 		// print winner organism
 		org := epoch.Best
-		e.Winner = org
 		if depth, err := org.Phenotype.MaxActivationDepthFast(0); err == nil {
 			neat.InfoLog(fmt.Sprintf("Activation depth of the winner: %d\n", depth))
 		}
