@@ -12,8 +12,6 @@ import (
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
-var currentSize int = 1
-
 func main() {
 	outDirPath, contextPath, genomePath := "out/UR", "data/ur.neat", "data/urstartgenes.yml"
 
@@ -35,7 +33,7 @@ func main() {
 	opts.NumGenerations = 2000
 	// The Ur runs
 	experiment := experiment2.Experiment{}
-	evaluator := gour.NewUrVsAiGenerationEvaluator(outDirPath, currentSize)
+	evaluator := gour.NewUrVsAiGenerationEvaluator(outDirPath, 1)
 	observer := &EvolveObserver{
 		evaluator: evaluator,
 	}
@@ -51,7 +49,7 @@ type EvolveObserver struct {
 }
 // TrialRunStarted invoked to notify that new trial run just started. Invoked before any epoch evaluation in that trial run
 func (eo *EvolveObserver) TrialRunStarted(trial *experiment2.Trial) {
-
+	eo.evaluator.NumberOfGames = 1
 }
 // TrialRunFinished invoked to notify that the trial run just finished. Invoked after all epochs evaluated or successful solver found.
 func (eo *EvolveObserver) TrialRunFinished(trial *experiment2.Trial) {
@@ -59,10 +57,6 @@ func (eo *EvolveObserver) TrialRunFinished(trial *experiment2.Trial) {
 }
 // EpochEvaluated invoked to notify that evaluation of specific epoch completed.
 func (eo *EvolveObserver) EpochEvaluated(trial *experiment2.Trial, epoch *experiment2.Generation) {
-	if epoch.Solved {
-		currentSize *= 2
-		eo.evaluator.NumberOfGames = currentSize
-	}
 }
 
 func LoadOptionsAndGenome(contextPath, genomePath string) (*neat.Options, *genetics.Genome, error) {

@@ -132,6 +132,9 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 			neat.InfoLog(fmt.Sprintf("Generation #%d winner's phenome Cytoscape JSON graph dumped to: %s\n",
 				epoch.Id, orgPath))
 		}
+		// TODO: Make this dynamic. don't want this if not evolved training...
+		e.NumberOfGames *= 2
+		epoch.Solved = false
 	}
 
 	return err
