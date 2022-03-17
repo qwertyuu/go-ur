@@ -58,7 +58,6 @@ func main() {
 	}
 }
 
-
 func LoadOptionsAndGenome(contextPath, genomePath string) (*neat.Options, *genetics.Genome, error) {
 	// Load context configuration
 	configFile, err := os.Open(contextPath)

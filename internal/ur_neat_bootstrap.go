@@ -20,9 +20,6 @@ import (
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
-// The fitness threshold value for successful solver
-const bootstrapFitnessThreshold = 31
-
 type urBootstrapGenerationEvaluator struct {
 	// The output path to store execution results
 	OutputPath string
@@ -139,7 +136,7 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 		features_transformed[ti] = float64(v)
 		ti++
 	}
-	
+
 	features_transformed[ti] = current_board.my_pawn_in_play // 22
 	ti++
 	features_transformed[ti] = current_board.my_pawn_queue // 23
@@ -157,7 +154,7 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 		features_transformed[ti] = float64(v)
 		ti++
 	}
-	
+
 	features_transformed[ti] = potential_board.my_pawn_in_play // 48
 	ti++
 	features_transformed[ti] = potential_board.my_pawn_queue // 49
@@ -194,7 +191,7 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 	}
 
 	if !success {
-		return 0, errors.New("Not success")
+		return 0, errors.New("not success")
 	}
 
 	return out, nil

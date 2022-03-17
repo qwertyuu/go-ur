@@ -40,7 +40,7 @@ type UrVsAiGenerationEvaluator struct {
 // It also returns number of nodes, genes, and evaluations performed per each run (context.NumRuns)
 func NewUrVsAiGenerationEvaluator(outputPath string, numberOfGames int) *UrVsAiGenerationEvaluator {
 	return &UrVsAiGenerationEvaluator{
-		OutputPath: outputPath,
+		OutputPath:    outputPath,
 		NumberOfGames: numberOfGames,
 	}
 }
@@ -60,7 +60,7 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 		},
 	}
 	bestFitness := float64(e.NumberOfGames * 3 * len(reference_ais))
-	fmt.Printf("Best fitness: %v\n", bestFitness)
+	fmt.Printf("Target fitness: %v\n", bestFitness)
 	// TODO: add number of moves as fitness (less moves, better fitness)
 	for _, reference_ai := range reference_ais {
 		for i := 0; i < len(pop.Organisms); i++ {
@@ -79,7 +79,7 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	})
 	best := pop.Organisms[len(pop.Organisms)-1]
 	best.IsWinner = true
-	if best.Fitness >= float64(e.NumberOfGames * 3 * len(reference_ais)) {
+	if best.Fitness >= float64(e.NumberOfGames*3*len(reference_ais)) {
 		epoch.Solved = true
 	}
 	epoch.WinnerNodes = len(best.Genotype.Nodes)
