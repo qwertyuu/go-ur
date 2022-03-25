@@ -42,7 +42,7 @@ func NewUrVsAiGenerationEvaluator(outputPath string, numberOfGames int, evolve b
 	return &UrVsAiGenerationEvaluator{
 		OutputPath:    outputPath,
 		NumberOfGames: numberOfGames,
-		Evolve: evolve,
+		Evolve:        evolve,
 	}
 }
 
