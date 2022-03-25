@@ -184,7 +184,9 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	right_wins := 0
 	winner := make(chan int)
 	for i := 0; i < number_of_games; i++ {
-		go RoutineFight(left_player, right_player, number_of_pawns, winner)
+		l_cp := left_player.Copy()
+		r_cp := right_player.Copy()
+		go RoutineFight(l_cp, r_cp, number_of_pawns, winner)
 	}
 	for i := 0; i < number_of_games; i++ {
 		// Await winner info

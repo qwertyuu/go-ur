@@ -29,32 +29,14 @@ func main() {
 		panic(err)
 	}
 
-	// The Ur runs
 	opts.NumRuns = 900
-	experiment := experiment2.Experiment{
-		Id:     0,
-		Trials: make(experiment2.Trials, opts.NumRuns),
-	}
-	err = experiment.Execute(opts.NeatContext(), startGenome, gour.NewUrVsAiGenerationEvaluator(outDirPath), nil)
+
+	// The Ur runs
+	experiment := experiment2.Experiment{}
+	err = experiment.Execute(opts.NeatContext(), startGenome, gour.NewUrVsAiGenerationEvaluator(outDirPath, 30, false), nil)
 	if err != nil {
 		panic(err)
 	}
-
-	// Find winner statistics
-	avgNodes, avgGenes, avgEvals, _ := experiment.AvgWinner()
-
-	fmt.Printf("avg_nodes: %.1f, avg_genes: %.1f, avg_evals: %.1f\n", avgNodes, avgGenes, avgEvals)
-	meanComplexity, meanDiversity, meanAge := 0.0, 0.0, 0.0
-	for _, t := range experiment.Trials {
-		meanComplexity += t.BestComplexity().Mean()
-		meanDiversity += t.Diversity().Mean()
-		meanAge += t.BestAge().Mean()
-	}
-	count := float64(len(experiment.Trials))
-	meanComplexity /= count
-	meanDiversity /= count
-	meanAge /= count
-	fmt.Printf("Mean best organisms: complexity=%.1f, diversity=%.1f, age=%.1f", meanComplexity, meanDiversity, meanAge)
 }
 
 func LoadOptionsAndGenome(contextPath, genomePath string) (*neat.Options, *genetics.Genome, error) {
