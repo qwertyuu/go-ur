@@ -23,6 +23,9 @@ type UrVsAiGenerationEvaluator struct {
 
 	// the number of games to play, per game size (so will be x3)
 	NumberOfGames int
+
+	// if we are in an evolving context or not
+	Evolve bool
 }
 
 // NewUrGenerationEvaluator is to create new generations evaluator to be used for the XOR experiment execution.
@@ -35,10 +38,11 @@ type UrVsAiGenerationEvaluator struct {
 //
 // This method performs evolution on XOR for specified number of generations and output results into outDirPath
 // It also returns number of nodes, genes, and evaluations performed per each run (context.NumRuns)
-func NewUrVsAiGenerationEvaluator(outputPath string, numberOfGames int) *UrVsAiGenerationEvaluator {
+func NewUrVsAiGenerationEvaluator(outputPath string, numberOfGames int, evolve bool) *UrVsAiGenerationEvaluator {
 	return &UrVsAiGenerationEvaluator{
 		OutputPath:    outputPath,
 		NumberOfGames: numberOfGames,
+		Evolve: evolve,
 	}
 }
 
@@ -132,9 +136,10 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 			neat.InfoLog(fmt.Sprintf("Generation #%d winner's phenome Cytoscape JSON graph dumped to: %s\n",
 				epoch.Id, orgPath))
 		}
-		// TODO: Make this dynamic. don't want this if not evolved training...
-		e.NumberOfGames *= 2
-		epoch.Solved = false
+		if e.Evolve {
+			e.NumberOfGames *= 2
+			epoch.Solved = false
+		}
 	}
 
 	return err

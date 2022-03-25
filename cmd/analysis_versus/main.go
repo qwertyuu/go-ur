@@ -8,7 +8,7 @@ import (
 
 func main() {
 	start := time.Now()
-	ai, err := gour.LoadUrAI("out/UR_evolving/0/ur_winner_genome_98-349")
+	ai, err := gour.LoadUrAI("out/UR_evolving/2/ur_winner_genome_98-349")
 	if err != nil {
 		panic(err)
 	}
@@ -16,14 +16,14 @@ func main() {
 		Ai:   ai,
 		Name: "AI",
 	}
-	ai2, err := gour.LoadUrAI("trained/541/ur_winner_genome_58-39")
-	right_player := gour.Ai_ur_player{
-		Ai:   ai2,
-		Name: "AI",
-	}
-	//right_player := gour.Random_ur_player{
-	//	Name: "Random",
+	//ai2, err := gour.LoadUrAI("trained/541/ur_winner_genome_58-39")
+	//right_player := gour.Ai_ur_player{
+	//	Ai:   ai2,
+	//	Name: "AI",
 	//}
+	right_player := gour.Random_ur_player{
+		Name: "Random",
+	}
 
 	ai_wins3, _ := gour.OneVSOne(&left_player, &right_player, 3, 3333)
 	ai_wins5, _ := gour.OneVSOne(&left_player, &right_player, 5, 3333)

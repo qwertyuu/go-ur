@@ -33,7 +33,7 @@ func main() {
 	opts.NumGenerations = 2000
 	// The Ur runs
 	experiment := experiment2.Experiment{}
-	evaluator := gour.NewUrVsAiGenerationEvaluator(outDirPath, 1)
+	evaluator := gour.NewUrVsAiGenerationEvaluator(outDirPath, 1, true)
 	observer := &EvolveObserver{
 		evaluator: evaluator,
 	}
