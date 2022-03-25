@@ -13,6 +13,7 @@ type Ur_player interface {
 	SetWinner(bool)
 	IncrementWins(int)
 	GetWins() int
+	Copy() Ur_player
 }
 
 type Random_ur_player struct {
@@ -41,6 +42,13 @@ func (s *Random_ur_player) GetType() string {
 	return "RANDOM"
 }
 
+func (s *Random_ur_player) Copy() Ur_player {
+	return &Random_ur_player{
+		Name: s.Name,
+		wins: s.wins,
+	}
+}
+
 type First_move_ur_player struct {
 	Ur_player
 	Name string
@@ -59,6 +67,12 @@ func (s *First_move_ur_player) GetName() string {
 
 func (s *First_move_ur_player) GetType() string {
 	return "FIRST_MOVE"
+}
+
+func (s *First_move_ur_player) Copy() Ur_player {
+	return &First_move_ur_player{
+		Name: s.Name,
+	}
 }
 
 type Ai_ur_player struct {
@@ -90,4 +104,14 @@ func (s *Ai_ur_player) IncrementWins(wins int) {
 
 func (s *Ai_ur_player) SetWinner(winner bool) {
 	s.Ai.IsWinner = winner
+}
+
+func (s *Ai_ur_player) Copy() Ur_player {
+	g, _ := s.Ai.Genotype.Duplicate(s.Ai.Genotype.Id)
+	ai, _ := genetics.NewOrganism(s.Ai.Fitness, g, s.Ai.Generation)
+	c := &Ai_ur_player{
+		Name: s.Name,
+		Ai:   ai,
+	}
+	return c
 }

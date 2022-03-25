@@ -182,20 +182,16 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	}
 	left_wins := 0
 	right_wins := 0
+	winner := make(chan int)
 	for i := 0; i < number_of_games; i++ {
-		board := NewBoard(number_of_pawns)
-		moves := 0
-		for board.Current_winner == 0 {
-			var current_player Ur_player
-			if board.Current_player == Left {
-				current_player = left_player
-			} else {
-				current_player = right_player
-			}
-			board.Play(current_player.GetMove(board))
-			moves++
-		}
-		if board.Current_winner == Left {
+		l_cp := left_player.Copy()
+		r_cp := right_player.Copy()
+		go RoutineFight(l_cp, r_cp, number_of_pawns, winner)
+	}
+	for i := 0; i < number_of_games; i++ {
+		// Await winner info
+		Current_winner := <-winner
+		if Current_winner == Left {
 			//fmt.Printf("%s wins after %d moves\n", left_player.GetName(), moves)
 			left_wins++
 		} else {
@@ -206,6 +202,20 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	left_player.IncrementWins(left_wins)
 	right_player.IncrementWins(right_wins)
 	return left_wins, right_wins
+}
+
+func RoutineFight(left_player Ur_player, right_player Ur_player, number_of_pawns int, winner chan int) {
+	board := NewBoard(number_of_pawns)
+	for board.Current_winner == 0 {
+		var current_player Ur_player
+		if board.Current_player == Left {
+			current_player = left_player
+		} else {
+			current_player = right_player
+		}
+		board.Play(current_player.GetMove(board))
+	}
+	winner <- board.Current_winner
 }
 
 func IsPowerOfTwo(x int) bool {

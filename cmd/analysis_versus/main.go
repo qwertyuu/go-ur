@@ -8,7 +8,7 @@ import (
 
 func main() {
 	start := time.Now()
-	ai, err := gour.LoadUrAI("out\\UR_60best_random\\0\\ur_winner_genome_97-521")
+	ai, err := gour.LoadUrAI("trained/UR_evolving/2/ur_winner_genome_98-349")
 	if err != nil {
 		panic(err)
 	}
@@ -30,5 +30,5 @@ func main() {
 	ai_wins7, _ := gour.OneVSOne(&left_player, &right_player, 7, 3334)
 	fmt.Printf("AI won %f times\n", float64(ai_wins3+ai_wins5+ai_wins7)/10000.0)
 	elapsed := time.Since(start)
-    fmt.Printf("Took %s", elapsed)
+	fmt.Printf("Took %s", elapsed)
 }
