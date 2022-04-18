@@ -14,3 +14,4 @@ out/
 .idea/
 wins.json
 *.prof
+.vscode/settings.json
