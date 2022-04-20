@@ -1,8 +1,6 @@
 package gour
 
 import (
-	"math/rand"
-
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
@@ -27,11 +25,17 @@ func (s *Random_ur_player) IncrementWins(wins int) {
 }
 
 func (s *Random_ur_player) GetMove(board *board) int {
-	all_pawns := []int{}
-	for k := range board.Current_player_path_moves {
-		all_pawns = append(all_pawns, k)
+	rand_key := pcg32.Bounded(uint32(len(*board.Current_player_path_moves)))
+	count := uint32(0)
+	last_k := -1
+	for k := range *board.Current_player_path_moves {
+		if count == rand_key {
+			return k
+		}
+		last_k = k
+		count++
 	}
-	return all_pawns[rand.Intn(len(all_pawns))]
+	return last_k
 }
 
 func (s *Random_ur_player) GetName() string {
@@ -55,7 +59,7 @@ type First_move_ur_player struct {
 }
 
 func (s *First_move_ur_player) GetMove(board *board) int {
-	for k := range board.Current_player_path_moves {
+	for k := range *board.Current_player_path_moves {
 		return k
 	}
 	return -2 // never happens

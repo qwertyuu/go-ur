@@ -36,7 +36,9 @@ type board struct {
 	Mirror_print_mode bool
 
 	Current_player            int
-	Current_player_path_moves map[int]int
+
+	// TODO: Use two arrays, one with the keys pointing to the values. This will be more computationally efficient when reading keys as list
+	Current_player_path_moves *map[int]int
 	Current_dice              int
 	Current_winner            int
 }
@@ -68,8 +70,8 @@ func (r *board) Copy() *board {
 	copy(p.left_pawn_path_positions[:], r.left_pawn_path_positions[:])
 	copy(p.right_pawn_path_positions[:], r.right_pawn_path_positions[:])
 	p.Soft_mode = true
-	for k, v := range r.Current_player_path_moves {
-		p.Current_player_path_moves[k] = v
+	for k, v := range *r.Current_player_path_moves {
+		(*p.Current_player_path_moves)[k] = v
 	}
 	return &p
 }
@@ -218,13 +220,8 @@ func RestoreBoard(
 }
 
 func throwDice() int {
-	dice := 0
-	for i := 0; i < 4; i++ {
-		if RandBool() {
-			dice++
-		}
-	}
-	return dice
+	four_dice := pcg32.Random() & 0xF
+	return int(four_dice & 0x1 + four_dice >> 1 & 0x1 + four_dice >> 2 & 0x1 + four_dice >> 3 & 0x1)
 }
 
 func (r *board) AsArray(for_player int) [20]int {
@@ -286,7 +283,7 @@ func (r *board) Play(pawn int) {
 		panic("Pawn out of range")
 	}
 
-	new_pawn_path_position := r.Current_player_path_moves[pawn]
+	new_pawn_path_position := (*r.Current_player_path_moves)[pawn]
 
 	// Apply move to course and to board
 	if pawn == -1 { // new pawn
@@ -357,16 +354,16 @@ func (r *board) Play(pawn int) {
 				r.Current_dice = throwDice()
 			}
 			r.Current_player_path_moves = r.playerValidMoves(r.Current_dice, r.Current_player)
-			if len(r.Current_player_path_moves) > 0 {
+			if len(*r.Current_player_path_moves) > 0 {
 				break
 			}
 		}
 	}
 }
 
-func (r *board) playerValidMoves(dice int, player int) map[int]int {
+func (r *board) playerValidMoves(dice int, player int) *map[int]int {
 	if dice == 0 {
-		return make(map[int]int, 0)
+		return &map[int]int{}
 	}
 
 	var path [14]int
@@ -386,7 +383,7 @@ func (r *board) playerValidMoves(dice int, player int) map[int]int {
 	}
 
 	// pawn => course position
-	possible_course_moves := make(map[int]int)
+	possible_course_moves := make(map[int]int, pawn_in_play+1)
 	if pawn_in_queue > 0 && r.board[path[dice-1]] == 0 {
 		possible_course_moves[-1] = dice - 1 // In
 	}
@@ -406,5 +403,5 @@ func (r *board) playerValidMoves(dice int, player int) map[int]int {
 			}
 		}
 	}
-	return possible_course_moves
+	return &possible_course_moves
 }

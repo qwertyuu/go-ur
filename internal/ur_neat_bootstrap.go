@@ -183,7 +183,7 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potential_future {
 	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
 	potential_futures := []*Potential_future{}
-	for pawn := range board.Current_player_path_moves {
+	for pawn := range *board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
 		//fmt.Println(potential_game.String())
