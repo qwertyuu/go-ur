@@ -174,7 +174,13 @@ Notes:
 - ai_pawn_positions and enemy_pawn_positions are position that reprensent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions (TODO: Add an image here to illustrate this concept, along with an explanation)
 - "ai" refers to the bot's point of view in this case (ai_pawn_positions means the pawn positions of the bot, enemy is the other player, whatever its nature)
 
-TODO:
+# Compiling to C for python bridge
+
+`go build -buildmode=c-shared -o go-ur_infer.so .\cmd\python-bridge\main.go`
+
+then run `python loadc.py`
+
+# TODO
 
 - argument to pick trained genome for inference
 - better readme.md for other people than myself
