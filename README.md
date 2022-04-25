@@ -180,6 +180,10 @@ Notes:
 
 then run `python loadc.py`
 
+Note for me:
+
+`python .\loadrpc.py` and `go run .\cmd\inference-rpc-bridge\main.go`
+
 # TODO
 
 - argument to pick trained genome for inference
