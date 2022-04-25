@@ -189,3 +189,8 @@ Note for me:
 - argument to pick trained genome for inference
 - better readme.md for other people than myself
 - support `Ur_player` interface in double-elimination tournaments
+
+# Ideas
+
+encoder le nombre d'autres moves disponibles dans la vectorisation
+enregistrer une game en infer comme csv de moves
