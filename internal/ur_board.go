@@ -37,7 +37,7 @@ type board struct {
 
 	Current_player            int
 
-	// TODO: Use two arrays, one with the keys pointing to the values. This will be more computationally efficient when reading keys as list
+	// TODO: Use two arrays, one with the keys pointing to the values. This will be more efficient when reading keys as list
 	Current_player_path_moves *map[int]int
 	Current_dice              int
 	Current_winner            int

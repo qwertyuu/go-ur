@@ -208,8 +208,7 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	return left_wins, right_wins
 }
 
-func RoutineFight(left_player *Ur_player, right_player *Ur_player, number_of_pawns int, winner chan int) {
-	board := NewBoard(number_of_pawns)
+func FightUntilWon(board *board, left_player *Ur_player, right_player *Ur_player) {
 	for board.Current_winner == 0 {
 		var current_player *Ur_player
 		if board.Current_player == Left {
@@ -219,6 +218,11 @@ func RoutineFight(left_player *Ur_player, right_player *Ur_player, number_of_paw
 		}
 		board.Play((*current_player).GetMove(board))
 	}
+}
+
+func RoutineFight(left_player *Ur_player, right_player *Ur_player, number_of_pawns int, winner chan int) {
+	board := NewBoard(number_of_pawns)
+	FightUntilWon(board, left_player, right_player)
 	winner <- board.Current_winner
 }
 

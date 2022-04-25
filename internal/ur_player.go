@@ -79,6 +79,28 @@ func (s *First_move_ur_player) Copy() Ur_player {
 	}
 }
 
+type Verbose_ai_ur_player struct {
+	Ai_ur_player
+	Played_vectors [][]float64
+}
+
+func (s *Verbose_ai_ur_player) GetMove(board *board) int {
+	vectors := GetMovesVectors(board)
+	s.Played_vectors = append(s.Played_vectors, vectors...)
+	return s.Ai_ur_player.GetMove(board)
+}
+
+func (s *Verbose_ai_ur_player) Copy() Ur_player {
+	ai := s.Ai_ur_player.Copy().(*Ai_ur_player)
+	cpy := make([][]float64, len(s.Played_vectors))
+	copy(cpy, s.Played_vectors)
+	c := &Verbose_ai_ur_player{
+		Ai_ur_player:   *ai,
+		Played_vectors: cpy,
+	}
+	return c
+}
+
 type Ai_ur_player struct {
 	Ur_player
 	Ai   *genetics.Organism
