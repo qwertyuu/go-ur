@@ -15,7 +15,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	left_player := gour.Verbose_ai_ur_player{
+
+	left_player := &gour.Verbose_ai_ur_player{
 		Ai_ur_player: gour.Ai_ur_player{
 			Ai:   ai,
 			Name: "AI",
@@ -27,18 +28,15 @@ func main() {
 	//	Ai:   ai2,
 	//	Name: "AI",
 	//}
-	right_player := gour.Random_ur_player{
+	right_player := &gour.Random_ur_player{
 		Name: "Random",
 	}
-	// Something is weird with my understanding of pointers, interfaces and structs in go... I need to do a copy in order to make this work
-	lcp := left_player.Copy()
-	rcp := right_player.Copy()
 	amt_pawns := 7
 
 	board := gour.NewBoard(amt_pawns)
-	gour.FightUntilWon(board, &lcp, &rcp)
+	gour.FightUntilWon(board, left_player, right_player)
 
-	log.Println(lcp.(*gour.Verbose_ai_ur_player).Played_vectors)
+	log.Println(left_player.Played_vectors)
 	elapsed := time.Since(start)
 	fmt.Printf("Took %s", elapsed)
 
@@ -46,7 +44,7 @@ func main() {
 		gour.GetFeatureNames(),
 	}
 
-	for _, row := range lcp.(*gour.Verbose_ai_ur_player).Played_vectors {
+	for _, row := range left_player.Played_vectors {
 		csv_strings := []string{}
 		for _, value := range row {
 			csv_strings = append(csv_strings, fmt.Sprint(value))
