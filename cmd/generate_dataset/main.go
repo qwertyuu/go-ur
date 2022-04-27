@@ -32,11 +32,14 @@ func main() {
 		Name: "Random",
 	}
 	amt_pawns := 7
+	amt_games := 200
 
-	board := gour.NewBoard(amt_pawns)
-	gour.FightUntilWon(board, left_player, right_player)
+	for i := 0; i < amt_games; i++ {
+		board := gour.NewBoard(amt_pawns)
+		gour.FightUntilWon(board, left_player, right_player)
+	}
 
-	log.Println(left_player.Played_vectors)
+	log.Println(len(left_player.Played_vectors))
 	elapsed := time.Since(start)
 	fmt.Printf("Took %s", elapsed)
 

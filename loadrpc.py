@@ -39,9 +39,9 @@ def go_ur_ai_numpy(x):
 with open('dataset_AI_Random_7.csv', 'r') as f:
     csv_reader = csv.reader(f)
 
-print(my_data)
+#print(my_data)
 print(go_ur_ai_numpy(my_data))
 
 explainer = shap.KernelExplainer(go_ur_ai_numpy, my_data[:20], link="logit")
-shap_values = explainer.shap_values(my_data[:20], nsamples=100)
+shap_values = explainer.shap_values(my_data[:40])
 print(shap_values)
