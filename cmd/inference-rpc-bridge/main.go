@@ -57,6 +57,7 @@ func main() {
 	}
 
 	rpc.Register(new(GoUr))
+	log.Println("Ready")
 
 	for {
 		conn, err := ln.Accept()
