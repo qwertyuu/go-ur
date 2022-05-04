@@ -26,14 +26,13 @@ func (s *GoUr) InferNumpy(payload []byte, ret *string) error {
 	}
 
 	shape := r.Header.Descr.Shape
-	raw := make([]float64, shape[0]*shape[1])
+	m := mat.NewDense(shape[0], shape[1], nil)
 
-	err = r.Read(&raw)
+	err = r.Read(m)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	m := mat.NewDense(shape[0], shape[1], raw)
 	scores := gour.GetScoresFromVectorized(ai, m)
 	scores_json, err := json.Marshal(scores)
 	if err != nil {
