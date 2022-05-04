@@ -16,3 +16,4 @@ out/
 wins.json
 *.prof
 .vscode/settings.json
+*.csv

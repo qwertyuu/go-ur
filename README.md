@@ -174,14 +174,23 @@ Notes:
 - ai_pawn_positions and enemy_pawn_positions are position that reprensent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions (TODO: Add an image here to illustrate this concept, along with an explanation)
 - "ai" refers to the bot's point of view in this case (ai_pawn_positions means the pawn positions of the bot, enemy is the other player, whatever its nature)
 
-# Compiling to C for python bridge
+# Shap analysis
 
-`go build -buildmode=c-shared -o go-ur_infer.so .\cmd\python-bridge\main.go`
+In the ipython notebook `notebooks/shap.ipynb`, there is a shap analysis to get to know how the inputs influence the output of the organism.
 
-then run `python loadc.py`
+To run it, first run `go run .\cmd\generate_dataset\main.go` to make a dataset of moves in csv format.
+
+Then start the go RPC inference bridge with `go run .\cmd\inference-rpc-bridge\main.go` and let it run.
+
+You can now start the notebook to see the analysis in python. 
 
 # TODO
 
 - argument to pick trained genome for inference
-- better readme.md for other people than myself
 - support `Ur_player` interface in double-elimination tournaments
+
+# Ideas
+
+- encoder le nombre d'autres moves disponibles dans la vectorisation
+- trouver comment informer le modèle des autres moves disponibles pour un lancer de dé
+- enregistrer une game en infer comme csv de moves

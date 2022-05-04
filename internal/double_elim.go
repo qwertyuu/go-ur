@@ -190,7 +190,7 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	for i := 0; i < number_of_games; i++ {
 		l_cp := left_player.Copy()
 		r_cp := right_player.Copy()
-		go RoutineFight(&l_cp, &r_cp, number_of_pawns, winner)
+		go RoutineFight(l_cp, r_cp, number_of_pawns, winner)
 	}
 	for i := 0; i < number_of_games; i++ {
 		// Await winner info
@@ -208,17 +208,21 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	return left_wins, right_wins
 }
 
-func RoutineFight(left_player *Ur_player, right_player *Ur_player, number_of_pawns int, winner chan int) {
-	board := NewBoard(number_of_pawns)
+func FightUntilWon(board *board, left_player Ur_player, right_player Ur_player) {
 	for board.Current_winner == 0 {
-		var current_player *Ur_player
+		var current_player Ur_player
 		if board.Current_player == Left {
 			current_player = left_player
 		} else {
 			current_player = right_player
 		}
-		board.Play((*current_player).GetMove(board))
+		board.Play(current_player.GetMove(board))
 	}
+}
+
+func RoutineFight(left_player Ur_player, right_player Ur_player, number_of_pawns int, winner chan int) {
+	board := NewBoard(number_of_pawns)
+	FightUntilWon(board, left_player, right_player)
 	winner <- board.Current_winner
 }
 
