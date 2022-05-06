@@ -1,6 +1,7 @@
 package gour
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -10,7 +11,7 @@ func TestBoard(t *testing.T) {
 
 	count := 0
 	for b.Current_winner == 0 {
-		for k := range b.Current_player_path_moves {
+		for k := range *b.Current_player_path_moves {
 			b.Play(k)
 			//t.Log(b.String())
 			t.Log(b.AsArray(Right))
@@ -37,4 +38,33 @@ func TestBoard(t *testing.T) {
 	t.Log(b.AsArray(Right))
 	t.Log(j.AsArray(Right))
 
+}
+
+func TestDice(m *testing.T) {
+	zero := 0
+	one := 0
+	two := 0
+	three := 0
+	four := 0
+	n := float64(1000000)
+	for i := 0.0; i < n; i++ {
+		dice := throwDice()
+		if dice == 0 {
+			zero++
+		}
+		if dice == 1 {
+			one++
+		}
+		if dice == 2 {
+			two++
+		}
+		if dice == 3 {
+			three++
+		}
+		if dice == 4 {
+			four++
+		}
+	}
+
+	fmt.Printf("0:%f, 1:%f, 2:%f, 3:%f, 4:%f\n", float64(zero)/n, float64(one)/n, float64(two)/n, float64(three)/n, float64(four)/n)
 }

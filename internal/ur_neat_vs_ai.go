@@ -1,12 +1,5 @@
 package gour
 
-// Package xor defines the XOR experiment which serves to actually check that network topology actually evolves and
-// everything works as expected.
-// Because XOR is not linearly separable, a neural network requires hidden units to solve it. The two inputs must be
-// combined at some hidden unit, as opposed to only at the output node, because there is no function over a linear
-// combination of the inputs that can separate the inputs into the proper classes. These structural requirements make
-// XOR suitable for testing NEAT’s ability to evolve structure.
-
 import (
 	"fmt"
 	"sort"
@@ -28,16 +21,6 @@ type UrVsAiGenerationEvaluator struct {
 	Evolve bool
 }
 
-// NewUrGenerationEvaluator is to create new generations evaluator to be used for the XOR experiment execution.
-// XOR is very simple and does not make a very interesting scientific experiment; however, it is a good way to
-// check whether your system works.
-// Make sure recurrency is disabled for the XOR test. If NEAT is able to add recurrent connections, it may solve XOR by
-// memorizing the order of the training set. (Which is why you may even want to randomize order to be most safe) All
-// documented experiments with XOR are without recurrent connections. Interestingly, XOR can be solved by a recurrent
-// network with no hidden nodes.
-//
-// This method performs evolution on XOR for specified number of generations and output results into outDirPath
-// It also returns number of nodes, genes, and evaluations performed per each run (context.NumRuns)
 func NewUrVsAiGenerationEvaluator(outputPath string, numberOfGames int, evolve bool) *UrVsAiGenerationEvaluator {
 	return &UrVsAiGenerationEvaluator{
 		OutputPath:    outputPath,

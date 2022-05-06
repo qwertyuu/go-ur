@@ -20,7 +20,7 @@ type double_elimination struct {
 // Commencer par évaluer la winner bracket au complet. Noter les perdants de chaque joute
 // L'ordre de correspondance entre les L et les losers est inversée. Les premiers de la losers bracket affrontent les derniers de la winners bracket
 // Les affrontements entre les losers et le L se fait à toutes les deux séries de joutes jusqu'à détermination d'un gagnant, qui va se battre contre le gagnant de la winner's bracket
-
+// TODO: Make the parameter a list of Ur_players instead of a genetics.Organism so we can have tournaments including any policies
 func EvaluateDoubleEliminationTournament(organisms []*genetics.Organism, pawn_amt int) double_elimination {
 	contenders := make([]Ur_player, len(organisms))
 	for i, organism := range organisms {
@@ -138,6 +138,9 @@ func EvaluateDoubleEliminationTournament(organisms []*genetics.Organism, pawn_am
 		tournament.Champion = tournament.Loser_bracket[0]
 	}
 
+	// Note that, contrary to the popular definition of double-elimination tournaments, here I chose not to make the loser-bracker winner win twice in order to win the championship.
+	// This is due to the property of this kind of tournament to have a fixed number of faceoffs, so easier to mathematically anticipate.
+
 	if has_nil_contenders {
 		new_contenders := []Ur_player{}
 		for _, contender := range tournament.Contenders {
@@ -168,6 +171,7 @@ func getNearestPowerOfTwo(i int) int {
 }
 
 func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int, number_of_games int) (int, int) {
+	// Handle nil players. This code exists to support double-elimination tournaments that do not have a power-of-two amount of contenders
 	if left_player == nil {
 		if right_player != nil {
 			right_player.IncrementWins(number_of_games)
@@ -204,8 +208,7 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	return left_wins, right_wins
 }
 
-func RoutineFight(left_player Ur_player, right_player Ur_player, number_of_pawns int, winner chan int) {
-	board := NewBoard(number_of_pawns)
+func FightUntilWon(board *board, left_player Ur_player, right_player Ur_player) {
 	for board.Current_winner == 0 {
 		var current_player Ur_player
 		if board.Current_player == Left {
@@ -215,6 +218,11 @@ func RoutineFight(left_player Ur_player, right_player Ur_player, number_of_pawns
 		}
 		board.Play(current_player.GetMove(board))
 	}
+}
+
+func RoutineFight(left_player Ur_player, right_player Ur_player, number_of_pawns int, winner chan int) {
+	board := NewBoard(number_of_pawns)
+	FightUntilWon(board, left_player, right_player)
 	winner <- board.Current_winner
 }
 

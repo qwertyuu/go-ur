@@ -1,8 +1,6 @@
 package gour
 
 import (
-	"math/rand"
-
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
@@ -27,11 +25,17 @@ func (s *Random_ur_player) IncrementWins(wins int) {
 }
 
 func (s *Random_ur_player) GetMove(board *board) int {
-	all_pawns := []int{}
-	for k := range board.Current_player_path_moves {
-		all_pawns = append(all_pawns, k)
+	rand_key := pcg32.Bounded(uint32(len(*board.Current_player_path_moves)))
+	count := uint32(0)
+	last_k := -1
+	for k := range *board.Current_player_path_moves {
+		if count == rand_key {
+			return k
+		}
+		last_k = k
+		count++
 	}
-	return all_pawns[rand.Intn(len(all_pawns))]
+	return last_k
 }
 
 func (s *Random_ur_player) GetName() string {
@@ -55,7 +59,7 @@ type First_move_ur_player struct {
 }
 
 func (s *First_move_ur_player) GetMove(board *board) int {
-	for k := range board.Current_player_path_moves {
+	for k := range *board.Current_player_path_moves {
 		return k
 	}
 	return -2 // never happens
@@ -73,6 +77,28 @@ func (s *First_move_ur_player) Copy() Ur_player {
 	return &First_move_ur_player{
 		Name: s.Name,
 	}
+}
+
+type Verbose_ai_ur_player struct {
+	Ai_ur_player
+	Played_vectors [][]float64
+}
+
+func (s *Verbose_ai_ur_player) GetMove(board *board) int {
+	vectors := GetMovesVectors(board)
+	s.Played_vectors = append(s.Played_vectors, vectors...)
+	return s.Ai_ur_player.GetMove(board)
+}
+
+func (s *Verbose_ai_ur_player) Copy() Ur_player {
+	ai := s.Ai_ur_player.Copy().(*Ai_ur_player)
+	cpy := make([][]float64, len(s.Played_vectors))
+	copy(cpy, s.Played_vectors)
+	c := &Verbose_ai_ur_player{
+		Ai_ur_player:   *ai,
+		Played_vectors: cpy,
+	}
+	return c
 }
 
 type Ai_ur_player struct {

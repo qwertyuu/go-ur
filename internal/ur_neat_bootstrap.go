@@ -1,12 +1,5 @@
 package gour
 
-// Package xor defines the XOR experiment which serves to actually check that network topology actually evolves and
-// everything works as expected.
-// Because XOR is not linearly separable, a neural network requires hidden units to solve it. The two inputs must be
-// combined at some hidden unit, as opposed to only at the output node, because there is no function over a linear
-// combination of the inputs that can separate the inputs into the proper classes. These structural requirements make
-// XOR suitable for testing NEAT’s ability to evolve structure.
-
 import (
 	"errors"
 	"fmt"
@@ -18,6 +11,7 @@ import (
 	"github.com/yaricom/goNEAT/v2/experiment/utils"
 	"github.com/yaricom/goNEAT/v2/neat"
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
+	"gonum.org/v1/gonum/mat"
 )
 
 type urBootstrapGenerationEvaluator struct {
@@ -25,16 +19,6 @@ type urBootstrapGenerationEvaluator struct {
 	OutputPath string
 }
 
-// NewUrGenerationEvaluator is to create new generations evaluator to be used for the XOR experiment execution.
-// XOR is very simple and does not make a very interesting scientific experiment; however, it is a good way to
-// check whether your system works.
-// Make sure recurrency is disabled for the XOR test. If NEAT is able to add recurrent connections, it may solve XOR by
-// memorizing the order of the training set. (Which is why you may even want to randomize order to be most safe) All
-// documented experiments with XOR are without recurrent connections. Interestingly, XOR can be solved by a recurrent
-// network with no hidden nodes.
-//
-// This method performs evolution on XOR for specified number of generations and output results into outDirPath
-// It also returns number of nodes, genes, and evaluations performed per each run (context.NumRuns)
 func NewUrBootstrapGenerationEvaluator(outputPath string) experiment.GenerationEvaluator {
 	return &urBootstrapGenerationEvaluator{OutputPath: outputPath}
 }
@@ -114,23 +98,59 @@ type Potential_future struct {
 	Score float64 `json:"score"`
 }
 
-func GetPotentialFutureScore(organism *genetics.Organism, current_board current_board_descriptor, potential_board potential_board_descriptor) (float64, error) {
-	netDepth, err := organism.Phenotype.MaxActivationDepthFast(0) // The max depth of the network to be activated
-	if err != nil {
-		neat.WarnLog(fmt.Sprintf(
-			"Failed to estimate maximal depth of the network with loop:\n%s\nUsing default depth: %d",
-			organism.Genotype, netDepth))
-	}
-	//neat.DebugLog(fmt.Sprintf("Network depth: %d for organism: %d\n", netDepth, organism.Genotype.Id))
-	if netDepth == 0 {
-		neat.DebugLog(fmt.Sprintf("ALERT: Network depth is ZERO for Genome: %s", organism.Genotype))
-		return 0, nil
+func GetFeatureNames() []string {
+	feature_names := make([]string, 54)
+	ti := 0
+
+	// The numbers are by NEAT id, which start at 1 and 1 is "reserved" as a BIAS node, so we start counting here at 2.
+
+	for i := 0; i < 20; i++ { // 2 to 21
+		feature_names[ti] = fmt.Sprintf("current_board_state_%v", i)
+		ti++
 	}
 
-	success := false // Check for successful activation
+	feature_names[ti] = "current_board_my_pawn_in_play" // 22
+	ti++
+	feature_names[ti] = "current_board_my_pawn_queue" // 23
+	ti++
+	feature_names[ti] = "current_board_my_pawn_out" // 24
+	ti++
+	feature_names[ti] = "current_board_enemy_pawn_in_play" // 25
+	ti++
+	feature_names[ti] = "current_board_enemy_pawn_queue" // 26
+	ti++
+	feature_names[ti] = "current_board_enemy_pawn_out" // 27
+	ti++
 
+	for i := 0; i < 20; i++ { // 28 to 47
+		feature_names[ti] = fmt.Sprintf("potential_board_state_%v", i)
+		ti++
+	}
+
+	feature_names[ti] = "potential_board_my_pawn_in_play" // 48
+	ti++
+	feature_names[ti] = "potential_board_my_pawn_queue" // 49
+	ti++
+	feature_names[ti] = "potential_board_my_pawn_out" // 50
+	ti++
+	feature_names[ti] = "potential_board_enemy_pawn_in_play" // 51
+	ti++
+	feature_names[ti] = "potential_board_enemy_pawn_queue" // 52
+	ti++
+	feature_names[ti] = "potential_board_enemy_pawn_out" // 53
+	ti++
+	feature_names[ti] = "potential_board_winner" // 54
+	ti++
+	feature_names[ti] = "potential_board_turn" // 55
+
+	return feature_names
+}
+
+func Vectorize(current_board current_board_descriptor, potential_board potential_board_descriptor) []float64 {
 	features_transformed := make([]float64, 54)
 	ti := 0
+
+	// The numbers are by NEAT id, which start at 1 and 1 is "reserved" as a BIAS node, so we start counting here at 2.
 
 	for _, v := range current_board.board_state { // 2 to 21
 		features_transformed[ti] = float64(v)
@@ -171,6 +191,24 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 	ti++
 	features_transformed[ti] = float64(potential_board.turn) // 55
 
+	return features_transformed
+}
+
+func GetPotentialFutureScore(organism *genetics.Organism, features_transformed []float64) (float64, error) {
+	success := false // Check for successful activation
+
+	netDepth, err := organism.Phenotype.MaxActivationDepthFast(0) // The max depth of the network to be activated
+	if err != nil {
+		neat.WarnLog(fmt.Sprintf(
+			"Failed to estimate maximal depth of the network with loop:\n%s\nUsing default depth: %d",
+			organism.Genotype, netDepth))
+	}
+	//neat.DebugLog(fmt.Sprintf("Network depth: %d for organism: %d\n", netDepth, organism.Genotype.Id))
+	if netDepth == 0 {
+		neat.DebugLog(fmt.Sprintf("ALERT: Network depth is ZERO for Genome: %s", organism.Genotype))
+		return 0, nil
+	}
+
 	if err = organism.Phenotype.LoadSensors(features_transformed); err != nil {
 		neat.ErrorLog(fmt.Sprintf("Failed to load sensors: %s", err))
 		return 0, err
@@ -197,15 +235,30 @@ func GetPotentialFutureScore(organism *genetics.Organism, current_board current_
 	return out, nil
 }
 
+func GetScoresFromVectorized(organism *genetics.Organism, vectorized *mat.Dense) []float64 {
+	rows, _ := vectorized.Dims()
+	scores := make([]float64, rows)
+	for i := 0; i < rows; i++ {
+		row := vectorized.RawRowView(i)
+		score, err := GetPotentialFutureScore(organism, row)
+		if err != nil {
+			panic(err)
+		}
+		scores[i] = score
+	}
+	return scores
+}
+
 func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potential_future {
 	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
 	potential_futures := []*Potential_future{}
-	for pawn := range board.Current_player_path_moves {
+	for pawn := range *board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
 		//fmt.Println(potential_game.String())
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
-		score, err := GetPotentialFutureScore(organism, current_board_descriptor, potential_board)
+		transformed_features := Vectorize(current_board_descriptor, potential_board)
+		score, err := GetPotentialFutureScore(organism, transformed_features)
 		//fmt.Println(score)
 		if err != nil {
 			panic(err)
@@ -219,6 +272,20 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 		return potential_futures[i].Score < potential_futures[j].Score
 	})
 	return potential_futures
+}
+
+func GetMovesVectors(board *board) [][]float64 {
+	all_potential_board_trf := [][]float64{}
+	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
+
+	for pawn := range *board.Current_player_path_moves {
+		potential_game := board.Copy()
+		potential_game.Play(pawn)
+		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
+		transformed_features := Vectorize(current_board_descriptor, potential_board)
+		all_potential_board_trf = append(all_potential_board_trf, transformed_features)
+	}
+	return all_potential_board_trf
 }
 
 func LoadUrAI(path string) (*genetics.Organism, error) {
