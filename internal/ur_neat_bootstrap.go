@@ -249,7 +249,7 @@ func GetScoresFromVectorized(organism *genetics.Organism, vectorized *mat.Dense)
 	return scores
 }
 
-func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potential_future {
+func GetMoveScoresOrdered(board *board, organism *genetics.Organism) ([]*Potential_future, error) {
 	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
 	potential_futures := []*Potential_future{}
 	for pawn := range *board.Current_player_path_moves {
@@ -261,7 +261,8 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 		score, err := GetPotentialFutureScore(organism, transformed_features)
 		//fmt.Println(score)
 		if err != nil {
-			panic(err)
+			return nil, err
+			//panic(err)
 		}
 		potential_futures = append(potential_futures, &Potential_future{
 			Pawn:  pawn,
@@ -271,7 +272,7 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) []*Potentia
 	sort.Slice(potential_futures, func(i, j int) bool {
 		return potential_futures[i].Score < potential_futures[j].Score
 	})
-	return potential_futures
+	return potential_futures, nil
 }
 
 func GetMovesVectors(board *board) [][]float64 {
