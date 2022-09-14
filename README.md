@@ -37,7 +37,7 @@ The concept is this one, defined in `internal/ur_neat_vs_ai.go`:
 - Rank-order the organisms by their fitness (or wins) and pick the best as a measure
 - End the run if this "best" organism fulfills fitness expectations
 
-This is a way to get good AIs but you need to be very thoughtful of the metrics you use to pick a winner and which reference AIs you use, too. I've had abysmal results and promising results just by using different reference AIs for exemple.
+This is a way to get good AIs but you need to be very thoughtful of the metrics you use to pick a winner and which reference AIs you use, too. I've had abysmal results and promising results just by using different reference AIs for example.
 
 ### train_vs_ai_evolved
 
@@ -79,9 +79,9 @@ As you read in the last analysis type, a championship analysis is a good way to 
 This way, you can go down to telling the code to run many games in a row against a fixed player, whatever its policy is.
 As the developer of this code, I think a combination of using your last "best" AI and a Random-playing bot is a good way to have an objective view of the performance of the AI you trained. Usually, if an AI performs better both against your known "best" AI and a Random-playing bot, it *should* do better against a person.
 
-One caveat is that this method is the slowest. Since you need to essentially brute-force the AIs against each other, you need to know which AIs to compare against eachother. Using this analysis on two totally new AIs might be the most computationally expensive way to rank-order your AIs. I would recomment using a Championship analysis in this case.
+One caveat is that this method is the slowest. Since you need to essentially brute-force the AIs against each other, you need to know which AIs to compare against each other. Using this analysis on two totally new AIs might be the most computationally expensive way to rank-order your AIs. I would recommend using a Championship analysis in this case.
 
-The strength of this analysis is that it is easy to understand. If you use static policies or a well-known AI as your opponent, this method is good for compiling numbersm keeping track of and comparing your best-playing AIs against eachother.
+The strength of this analysis is that it is easy to understand. If you use static policies or a well-known AI as your opponent, this method is good for compiling numbers keeping track of and comparing your best-playing AIs against each other.
 
 Another strength could be to compare humans against the metrics you used to compare your AIs and to rank-order humans against your AIs using those metrics. This way, you could statistically infer which is better, the computer or the human.
 
@@ -92,7 +92,7 @@ This analysis is very simple: Suppose 2 Ur players of equal skill over many game
 
 In other words, is there an advantage or handicap to be the starting player in Ur.
 
-To know, I coded the versus_random analysis. The "equal skill" players are two random-playing bots with the exact same policy. You can let that analysis run for as many games as you wish. I found that all the probabilities end up tending towards 50% everytime, so I deduced that there is no significant advantage or handicap to being the first or second player.
+To know, I coded the versus_random analysis. The "equal skill" players are two random-playing bots with the exact same policy. You can let that analysis run for as many games as you wish. I found that all the probabilities end up tending towards 50% every time, so I deduced that there is no significant advantage or handicap to being the first or second player.
 
 ### Is the game only luck?
 
@@ -102,20 +102,20 @@ There are many hypothesis here.
 
 Here are many things we can deduce:
 
-- If the game is only strategy, a random-playing AI would have a 0% winrate against the world best player
+- If the game is only strategy, a random-playing AI would have a 0% win rate against the world best player
   - This hypothesis can be easily thought about and dismissed as we could imaging the best player in the world only rolling 0s for the whole game, and the random-playing AI rolling normally, which would give a win to the random-playing AI.
 - If the game is only luck, a random-playing AI would have the same chance of winning as any other policies
   - This hypothesis is easy to dismiss too as it would be easy to imagine always "eating" pawns of the random-playing AI as they come out their starting zone given the appropriate dice rolls. We cannot, for sure, estimate how much we would win against such a primitive player, but we can at least deduce that the win rate would be more than 50% for the more mature policy.
 
 Therefore, the game is neither only luck and only strategy.
 
-In the numbers I have run through, here are my conclusions: Even my best AI, one that trained over many generations and beat the older best AIs by a large margin (71.08% winrate), the best it can do against a random-playing bot is `96.64%` winrate against a random-playing AI over 10k games. This means that the game tends towards 0% luck but is also more than 0 as we deduced. I would say then that the game is ~3% luck.
+In the numbers I have run through, here are my conclusions: Even my best AI, one that trained over many generations and beat the older best AIs by a large margin (71.08% win rate), the best it can do against a random-playing bot is `96.64%` win rate against a random-playing AI over 10k games. This means that the game tends towards 0% luck but is also more than 0 as we deduced. I would say then that the game is ~3% luck.
 
 A fun thing to think about is this one:
 
-My "best" AI was not the best against a random-playing AI (my best recorded score so far was `96.72%`), but since it did better against the older "best" AI in 1v1 (71.08% winrate vs. `67.98%` winrate for the other best AI against a random-playing AI), it also seemed to generalize better against humans (tested in real games against real peoples).
+My "best" AI was not the best against a random-playing AI (my best recorded score so far was `96.72%`), but since it did better against the older "best" AI in 1v1 (71.08% win rate vs. `67.98%` win rate for the other best AI against a random-playing AI), it also seemed to generalize better against humans (tested in real games against real peoples).
 
-As you can see here, one of the biggest challenges in this whole code base is to find an appropriate metric that will predict how well an AI will do against a human. Only optimizing for winrate against a random-playing AI will yield an appreciable opponent, but not a very good opponent. Using different reference points and policies seem to be the best approach so far.
+As you can see here, one of the biggest challenges in this whole code base is to find an appropriate metric that will predict how well an AI will do against a human. Only optimizing for win rate against a random-playing AI will yield an appreciable opponent, but not a very good opponent. Using different reference points and policies seem to be the best approach so far.
 
 I am eager to find better approaches in the future. Please try some out by forking and don't hesitate to open a PR to propose improvements in this matter.
 
@@ -123,13 +123,15 @@ I am eager to find better approaches in the future. Please try some out by forki
 
 In the world of chess or online games, there is a kind of metric called the ELO score. This is an avenue that I looked at to eventually implement here as a reference metric to use in my analysis and rankings in order to get the absolute strength of my trained AIs.
 
-I see many challenges with this method, such as keeping a record of the ELO of each AIs somewhere permanent, so that I can read and update them as time goes on. This seems crumbersome, so I let that idea slide.
+I see many challenges with this method, such as keeping a record of the ELO of each AIs somewhere permanent, so that I can read and update them as time goes on. This seems cumbersome, so I let that idea slide.
 
-If used only to compare AIs against eachother, it might suffer that some AIs will be analyzed more than others, so they will get excessively large ELO scores from winning so many games. Also, since there is a luck element to the game as analyzed in the previous section, the ELO score of a very good player could drop significantly against a random-playing bot policy just by bad luck, which is not desirable. Though, this is only a feeling I have, not something I researched.
+If used only to compare AIs against each other, it might suffer that some AIs will be analyzed more than others, so they will get excessively large ELO scores from winning so many games. Also, since there is a luck element to the game as analyzed in the previous section, the ELO score of a very good player could drop significantly against a random-playing bot policy just by bad luck, which is not desirable. Though, this is only a feeling I have, not something I researched.
 
 If used to compare humans and AIs, there would need to be some centralized way of keeping track of player ELOs, which would lead to many problems such as hosting the game freely and having secure gaming environments with trusted ELO counting. This seems like a job for a company to do, or someone very dedicated to hosting and developing a trustworthy Ur platform.
 
-## Inference
+# Inference
+
+## Via the API
 Find a genome you want to use for inference in the `out/` or `trained/` folder (note that the `out/` folder is only available locally on your computer and `trained/` contains a set of AIs that were pre-trained and kept for reference purposes), replace it in `cmd/inference/ur_inference_server.go` and then
 
 Run `go run cmd/inference/ur_inference_server.go` and call `http://localhost:8090/infer` using a payload like this:
@@ -171,8 +173,14 @@ Output pawns are referenced by index of the `ai_pawn_positions` input. A pawn of
 
 Notes: 
 
-- ai_pawn_positions and enemy_pawn_positions are position that reprensent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions (TODO: Add an image here to illustrate this concept, along with an explanation)
+- ai_pawn_positions and enemy_pawn_positions are position that represent the index of the path for the player (0 to 13 inclusive for both). They are NOT absolute board positions (TODO: Add an image here to illustrate this concept, along with an explanation)
 - "ai" refers to the bot's point of view in this case (ai_pawn_positions means the pawn positions of the bot, enemy is the other player, whatever its nature)
+
+## Via the Remote Procedure Call bridge and Python and numpy
+
+For the Shap analysis (see Shap analysis section), I had to develop a bridge between Go and Python. I tried a C compiling bridge but since Go had a nice library for RPC (remote procedure call) called `spiral/goridge` and Python had a library called `pygoridge`, I went ahead and used that.
+
+If you need to use it, please refer to the `notebooks/shap.ipynb` file to get an idea. 
 
 # Shap analysis
 

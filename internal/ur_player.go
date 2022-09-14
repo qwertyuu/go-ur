@@ -108,7 +108,7 @@ type Ai_ur_player struct {
 }
 
 func (s *Ai_ur_player) GetMove(board *board) int {
-	potential_futures := GetMoveScoresOrdered(board, s.Ai)
+	potential_futures, _ := GetMoveScoresOrdered(board, s.Ai)
 	return potential_futures[len(potential_futures)-1].Pawn
 }
 
