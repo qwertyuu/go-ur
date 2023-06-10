@@ -27,7 +27,7 @@ func (s *ai_pool) Get() *genetics.Organism {
 	m.Lock()
 	defer m.Unlock()
 	if s.org_pool_count == 0 {
-		ai, err := gour.LoadUrAI("trained/UR_evolving/2/ur_winner_genome_98-349")
+		ai, err := gour.LoadUrAI("out/UR/1/ur_winner_genome_72-405")
 		if err != nil {
 			panic(err)
 		}
@@ -51,6 +51,7 @@ var m sync.Mutex
 func main() {
 	pool = NewPool()
 	http.HandleFunc("/infer", infer)
+	log.Println("Running on port 8090")
 
 	http.ListenAndServe(":8090", nil)
 }
@@ -59,13 +60,11 @@ type board_contract struct {
 	Pawn_per_player      int   `json:"pawn_per_player"`
 	AI_pawn_out          int   `json:"ai_pawn_out"`
 	Enemy_pawn_out       int   `json:"enemy_pawn_out"`
-	Dice                 int   `json:"dice"`
 	AI_pawn_positions    []int `json:"ai_pawn_positions"`
 	Enemy_pawn_positions []int `json:"enemy_pawn_positions"`
 }
 
 func infer(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL)
 	var board_input board_contract
 	err := json.NewDecoder(r.Body).Decode(&board_input)
 	if err != nil {
@@ -80,24 +79,24 @@ func infer(w http.ResponseWriter, r *http.Request) {
 		board_input.AI_pawn_out,
 		board_input.Enemy_pawn_out,
 		gour.Left,
-		board_input.Dice,
 		board_input.AI_pawn_positions,
 		board_input.Enemy_pawn_positions,
 	)
-	board.Mirror_print_mode = true
+	// board.Mirror_print_mode = true
+
+	potential_board := gour.GetPotentialBoardDescriptor(board, board.Current_player)
+	transformed_features := gour.Vectorize(potential_board)
 	ai := pool.Get()
-	potential_futures, err := gour.GetMoveScoresOrdered(board, ai)
+	score, err := gour.GetPotentialFutureScore(ai, transformed_features)
 	pool.Return(ai)
-	if err != nil || len(potential_futures) == 0 {
+	if err != nil {
 		fmt.Println(r.Body)
 		panic(err)
 	}
 
 	json.NewEncoder(w).Encode(struct {
-		Pawn         int                      `json:"pawn"`
-		FutureScores []*gour.Potential_future `json:"future_scores"`
+		Score float64 `json:"score"`
 	}{
-		Pawn:         potential_futures[len(potential_futures)-1].Pawn,
-		FutureScores: potential_futures,
+		Score: score,
 	})
 }

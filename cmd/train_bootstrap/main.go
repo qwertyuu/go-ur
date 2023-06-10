@@ -47,5 +47,5 @@ func main() {
 	meanComplexity /= count
 	meanDiversity /= count
 	meanAge /= count
-	fmt.Printf("Mean best organisms: complexity=%.1f, diversity=%.1f, age=%.1f", meanComplexity, meanDiversity, meanAge)
+	fmt.Printf("Mean best organisms: complexity=%.1f, diversity=%.1f, age=%.1f\n", meanComplexity, meanDiversity, meanAge)
 }

@@ -21,7 +21,7 @@ type ai_score struct {
 }
 
 func main() {
-	contenders := []*genetics.Organism{}
+	contenders := []gour.Ur_player{}
 	organism_map := make(map[*genetics.Organism]string)
 	win_counts := make(map[string]int)
 	paths_to_scan := []string{}
@@ -39,6 +39,7 @@ func main() {
 	paths_to_scan = append(paths_to_scan, out_paths...)
 	//out_paths, _ = get_genome_dirs_from_dir("trained/541")
 	//paths_to_scan = append(paths_to_scan, out_paths...)
+	i := 0
 
 	for _, path := range paths_to_scan {
 		genome_path, err := get_genome_from_dir(path)
@@ -57,7 +58,11 @@ func main() {
 			panic(err)
 		}
 		organism_map[ai] = genome_path
-		contenders = append(contenders, ai)
+		contenders = append(contenders, &gour.Ai_ur_player{
+			Name: string(rune(i)),
+			Ai:   ai,
+		})
+		i++
 	}
 
 	total_tournaments := 2000

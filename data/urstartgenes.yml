@@ -51,35 +51,9 @@ genome:
     - {id: 27,  trait_id: 0, type: INPT, activation: NullActivation}
     - {id: 28,  trait_id: 0, type: INPT, activation: NullActivation}
     - {id: 29,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 30,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 31,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 32,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 33,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 34,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 35,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 36,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 37,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 38,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 39,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 40,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 41,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 42,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 43,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 44,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 45,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 46,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 47,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 48,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 49,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 50,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 51,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 52,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 53,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 54,  trait_id: 0, type: INPT, activation: NullActivation}
-    - {id: 55,  trait_id: 0, type: INPT, activation: NullActivation}
     # The output nodes - actuators
-    - {id: 56,  trait_id: 0, type: OUTP, activation: SigmoidSteepenedActivation}
+    - {id: 30,  trait_id: 0, type: OUTP, activation: SigmoidSteepenedActivation}
 
   # The genes - connection between neuron nodes within this genome
   genes: 
-    - {src_id: 1,  tgt_id: 56,  weight: 0.0, trait_id: 1, innov_num: 1,  mut_num: 0, recurrent: false, enabled: true}
+    - {src_id: 1,  tgt_id: 30,  weight: 0.0, trait_id: 1, innov_num: 1,  mut_num: 0, recurrent: false, enabled: true}

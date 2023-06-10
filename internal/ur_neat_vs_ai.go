@@ -36,7 +36,7 @@ func (e *UrVsAiGenerationEvaluator) GetOutputPath() string {
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
 func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
-	ai_1, err := LoadUrAI("trained\\541\\ur_winner_genome_58-39")
+	ai_1, err := LoadUrAI("trained/UR_utility/ur_winner_genome_62-138")
 	fmt.Printf("Training against AI for %v games\n", e.NumberOfGames)
 	reference_ais := []Ur_player{
 		&Ai_ur_player{
@@ -56,8 +56,8 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 				Ai:   pop.Organisms[i],
 				Name: "organism",
 			}
-			OneVSOne(organism, reference_ai, 3, e.NumberOfGames)
-			OneVSOne(organism, reference_ai, 5, e.NumberOfGames)
+			OneVSOne(organism, reference_ai, 7, e.NumberOfGames)
+			OneVSOne(organism, reference_ai, 7, e.NumberOfGames)
 			OneVSOne(organism, reference_ai, 7, e.NumberOfGames)
 		}
 	}
@@ -77,6 +77,7 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 
 	neat.InfoLog(fmt.Sprintf("Number of species: %v", len(pop.Species)))
 	neat.InfoLog(fmt.Sprintf("Best fitness: %v", best.Fitness))
+	neat.InfoLog(fmt.Sprintf("Best fitness losses: %v", best.Error))
 
 	// Fill statistics about current epoch
 	epoch.FillPopulationStatistics(pop)

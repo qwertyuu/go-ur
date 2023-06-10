@@ -3,8 +3,6 @@ package gour
 import (
 	"math/rand"
 	"sort"
-
-	"github.com/yaricom/goNEAT/v2/neat/genetics"
 )
 
 type double_elimination struct {
@@ -21,14 +19,9 @@ type double_elimination struct {
 // L'ordre de correspondance entre les L et les losers est inversée. Les premiers de la losers bracket affrontent les derniers de la winners bracket
 // Les affrontements entre les losers et le L se fait à toutes les deux séries de joutes jusqu'à détermination d'un gagnant, qui va se battre contre le gagnant de la winner's bracket
 // TODO: Make the parameter a list of Ur_players instead of a genetics.Organism so we can have tournaments including any policies
-func EvaluateDoubleEliminationTournament(organisms []*genetics.Organism, pawn_amt int) double_elimination {
-	contenders := make([]Ur_player, len(organisms))
-	for i, organism := range organisms {
-		contenders[i] = &Ai_ur_player{
-			Name: string(rune(i)),
-			Ai:   organism,
-		}
-	}
+// Caveat: The number of contenders must be a power of two, else there will be empty players to fill the roster
+// Caveat: At the end, the game is not repeated if the winner is from the loser's bracket, as to make the tournament a fixed number of games
+func EvaluateDoubleEliminationTournament(contenders []Ur_player, pawn_amt int) double_elimination {
 	contender_power_of_two := getNearestPowerOfTwo(len(contenders))
 	has_nil_contenders := contender_power_of_two != len(contenders)
 	for contender_power_of_two > len(contenders) {
@@ -138,7 +131,7 @@ func EvaluateDoubleEliminationTournament(organisms []*genetics.Organism, pawn_am
 		tournament.Champion = tournament.Loser_bracket[0]
 	}
 
-	// Note that, contrary to the popular definition of double-elimination tournaments, here I chose not to make the loser-bracker winner win twice in order to win the championship.
+	// Note that, contrary to the popular definition of double-elimination tournaments, here I chose not to make the loser-bracket winner win twice in order to win the championship.
 	// This is due to the property of this kind of tournament to have a fixed number of faceoffs, so easier to mathematically anticipate.
 
 	if has_nil_contenders {
@@ -159,6 +152,8 @@ func EvaluateDoubleEliminationTournament(organisms []*genetics.Organism, pawn_am
 }
 
 func getNearestPowerOfTwo(i int) int {
+	// Note, this will give the nearest upper power of two, not just the nearest power of two
+	// So the return value is always >= i
 	var v uint32 = uint32(i)
 	v--
 	v |= v >> 1
@@ -186,6 +181,8 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 	}
 	left_wins := 0
 	right_wins := 0
+	left_lost := 0
+	right_lost := 0
 	winner := make(chan int)
 	for i := 0; i < number_of_games; i++ {
 		l_cp := left_player.Copy()
@@ -198,13 +195,17 @@ func OneVSOne(left_player Ur_player, right_player Ur_player, number_of_pawns int
 		if Current_winner == Left {
 			//fmt.Printf("%s wins after %d moves\n", left_player.GetName(), moves)
 			left_wins++
+			right_lost++
 		} else {
 			//fmt.Printf("%s wins after %d moves\n", right_player.GetName(), moves)
 			right_wins++
+			left_lost++
 		}
 	}
 	left_player.IncrementWins(left_wins)
+	left_player.IncrementLosses(left_lost)
 	right_player.IncrementWins(right_wins)
+	right_player.IncrementLosses(right_lost)
 	return left_wins, right_wins
 }
 

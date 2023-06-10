@@ -187,7 +187,6 @@ func RestoreBoard(
 	left_player_out int,
 	right_player_out int,
 	current_player int,
-	current_dice int,
 	left_player_pawn_positions []int,
 	right_player_pawn_positions []int,
 ) *board {
@@ -200,7 +199,6 @@ func RestoreBoard(
 		right_player_out: right_player_out,
 
 		Current_player: current_player,
-		Current_dice:   current_dice,
 	}
 
 	left_player_path := leftPlayerPath()

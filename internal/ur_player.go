@@ -10,7 +10,9 @@ type Ur_player interface {
 	GetType() string
 	SetWinner(bool)
 	IncrementWins(int)
+	IncrementLosses(int)
 	GetWins() int
+	GetLosses() int
 	Copy() Ur_player
 }
 
@@ -18,10 +20,15 @@ type Random_ur_player struct {
 	Ur_player
 	Name string
 	wins int
+	losses int
 }
 
 func (s *Random_ur_player) IncrementWins(wins int) {
 	s.wins += wins
+}
+
+func (s *Random_ur_player) IncrementLosses(losses int) {
+	s.losses += losses
 }
 
 func (s *Random_ur_player) GetMove(board *board) int {
@@ -124,8 +131,16 @@ func (s *Ai_ur_player) GetWins() int {
 	return int(s.Ai.Fitness)
 }
 
+func (s *Ai_ur_player) GetLosses() int {
+	return int(s.Ai.Error)
+}
+
 func (s *Ai_ur_player) IncrementWins(wins int) {
 	s.Ai.Fitness += float64(wins)
+}
+
+func (s *Ai_ur_player) IncrementLosses(losses int) {
+	s.Ai.Error += float64(losses)
 }
 
 func (s *Ai_ur_player) SetWinner(winner bool) {

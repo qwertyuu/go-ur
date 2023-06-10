@@ -26,15 +26,26 @@ func NewUrBootstrapGenerationEvaluator(outputPath string) experiment.GenerationE
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
 func (e *urBootstrapGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
-	tournament := EvaluateDoubleEliminationTournament(pop.Organisms, 7)
-	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 5)
-	tournament = EvaluateDoubleEliminationTournament(pop.Organisms, 3)
-	max_tournament_wins := int(math.Sqrt(float64(tournament.Contender_Amount))) + 1
-	fmt.Printf("Max fitness: %d\n", max_tournament_wins*3)
-	fmt.Printf("Expected fitness: %d\n", max_tournament_wins*2)
+	
+	contenders := make([]Ur_player, len(pop.Organisms))
+	for i, org := range pop.Organisms {
+		contenders[i] = &Ai_ur_player{
+			Name: string(rune(i)),
+			Ai:   org,
+		}
+	}
+	tournament := EvaluateDoubleEliminationTournament(contenders, 7)
+	tournament = EvaluateDoubleEliminationTournament(contenders, 7)
+	tournament = EvaluateDoubleEliminationTournament(contenders, 7)
+	max_tournament_wins := int(math.Log2(float64(tournament.Contender_Amount)) * 2)
+
+	expected_fitness := max_tournament_wins * 2
+	max_fitness := max_tournament_wins * 3
+	fmt.Printf("Max fitness: %d\n", max_fitness)
+	fmt.Printf("Expected fitness: %d\n", expected_fitness)
 	best := tournament.Contenders[len(tournament.Contenders)-1]
 	best.SetWinner(true)
-	if best.GetWins() >= max_tournament_wins*2 {
+	if best.GetWins() >= expected_fitness + 5 {
 		epoch.Solved = true
 	}
 	if best.GetType() == "NEAT" {
@@ -146,50 +157,32 @@ func GetFeatureNames() []string {
 	return feature_names
 }
 
-func Vectorize(current_board current_board_descriptor, potential_board potential_board_descriptor) []float64 {
+func Vectorize(potential_board *potential_board_descriptor) []float64 {
 	features_transformed := make([]float64, 54)
 	ti := 0
 
 	// The numbers are by NEAT id, which start at 1 and 1 is "reserved" as a BIAS node, so we start counting here at 2.
 
-	for _, v := range current_board.board_state { // 2 to 21
+	for _, v := range potential_board.board_state { // 2 to 21
 		features_transformed[ti] = float64(v)
 		ti++
 	}
 
-	features_transformed[ti] = current_board.my_pawn_in_play // 22
+	features_transformed[ti] = potential_board.my_pawn_in_play // 22
 	ti++
-	features_transformed[ti] = current_board.my_pawn_queue // 23
+	features_transformed[ti] = potential_board.my_pawn_queue // 23
 	ti++
-	features_transformed[ti] = current_board.my_pawn_out // 24
+	features_transformed[ti] = potential_board.my_pawn_out // 24
 	ti++
-	features_transformed[ti] = current_board.enemy_pawn_in_play // 25
+	features_transformed[ti] = potential_board.enemy_pawn_in_play // 25
 	ti++
-	features_transformed[ti] = current_board.enemy_pawn_queue // 26
+	features_transformed[ti] = potential_board.enemy_pawn_queue // 26
 	ti++
-	features_transformed[ti] = current_board.enemy_pawn_out // 27
+	features_transformed[ti] = potential_board.enemy_pawn_out // 27
 	ti++
-
-	for _, v := range potential_board.board_state { // 28 to 47
-		features_transformed[ti] = float64(v)
-		ti++
-	}
-
-	features_transformed[ti] = potential_board.my_pawn_in_play // 48
+	features_transformed[ti] = float64(potential_board.winner) // 28
 	ti++
-	features_transformed[ti] = potential_board.my_pawn_queue // 49
-	ti++
-	features_transformed[ti] = potential_board.my_pawn_out // 50
-	ti++
-	features_transformed[ti] = potential_board.enemy_pawn_in_play // 51
-	ti++
-	features_transformed[ti] = potential_board.enemy_pawn_queue // 52
-	ti++
-	features_transformed[ti] = potential_board.enemy_pawn_out // 53
-	ti++
-	features_transformed[ti] = float64(potential_board.winner) // 54
-	ti++
-	features_transformed[ti] = float64(potential_board.turn) // 55
+	features_transformed[ti] = float64(potential_board.turn) // 29
 
 	return features_transformed
 }
@@ -250,14 +243,13 @@ func GetScoresFromVectorized(organism *genetics.Organism, vectorized *mat.Dense)
 }
 
 func GetMoveScoresOrdered(board *board, organism *genetics.Organism) ([]*Potential_future, error) {
-	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
 	potential_futures := []*Potential_future{}
 	for pawn := range *board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
 		//fmt.Println(potential_game.String())
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
-		transformed_features := Vectorize(current_board_descriptor, potential_board)
+		transformed_features := Vectorize(potential_board)
 		score, err := GetPotentialFutureScore(organism, transformed_features)
 		//fmt.Println(score)
 		if err != nil {
@@ -277,13 +269,12 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) ([]*Potenti
 
 func GetMovesVectors(board *board) [][]float64 {
 	all_potential_board_trf := [][]float64{}
-	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
 
 	for pawn := range *board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
-		transformed_features := Vectorize(current_board_descriptor, potential_board)
+		transformed_features := Vectorize(potential_board)
 		all_potential_board_trf = append(all_potential_board_trf, transformed_features)
 	}
 	return all_potential_board_trf
