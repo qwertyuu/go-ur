@@ -273,6 +273,7 @@ func generateMovePairs(moves []int) [][]int {
 	return pairs
 }
 func GetMoveScoresOrdered(board *board, organism *genetics.Organism) ([]*Potential_future, error) {
+	// TODO: Add current board descriptor to the vectorize back, I think it is lacking
 	//current_board := GetCurrentBoardDescriptor(board, Left)
 
 	// list pawns from board.Current_player_path_moves
@@ -291,6 +292,7 @@ func GetMoveScoresOrdered(board *board, organism *genetics.Organism) ([]*Potenti
 	for _, pawnPair := range pairs {
 		pawn_a := pawnPair[0]
 		pawn_b := pawnPair[1]
+		// TODO: Add current board descriptor to the vectorize back, I think it is lacking
 		transformed_features := Vectorize(move_descriptor[pawn_a], move_descriptor[pawn_b])
 		score_a, score_b, err := GetPotentialFutureScore(organism, transformed_features)
 		//fmt.Println(score)

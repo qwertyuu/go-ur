@@ -36,13 +36,13 @@ func (e *UrVsAiGenerationEvaluator) GetOutputPath() string {
 // GenerationEvaluate This method evaluates one epoch for given population and prints results into output directory if any.
 func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population, epoch *experiment.Generation, context *neat.Options) (err error) {
 	// Evaluate each organism on a test
-	ai_1, err := LoadUrAI("out\\UR\\0\\ur_winner_genome_63-236")
+	//ai_1, err := LoadUrAI("out\\UR\\0\\ur_winner_genome_63-236")
 	fmt.Printf("Training against AI for %v games\n", e.NumberOfGames)
 	reference_ais := []Ur_player{
-		&Ai_ur_player{
-			Ai:   ai_1,
-			Name: "reference",
-		},
+		//&Ai_ur_player{
+		//	Ai:   ai_1,
+		//	Name: "reference",
+		//},
 		&Random_ur_player{
 			Name: "Random",
 		},
@@ -52,7 +52,6 @@ func (e *UrVsAiGenerationEvaluator) GenerationEvaluate(pop *genetics.Population,
 	// TODO: add number of moves as fitness (less moves, better fitness)
 	for _, reference_ai := range reference_ais {
 		for i := 0; i < len(pop.Organisms); i++ {
-			
 			organism := &Ai_ur_player{
 				Ai:   pop.Organisms[i],
 				Name: "organism",
