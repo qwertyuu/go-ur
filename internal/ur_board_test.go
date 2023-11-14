@@ -40,6 +40,24 @@ func TestBoard(t *testing.T) {
 
 }
 
+func TestThousandGames(t *testing.T) {
+	pcg32.Seed(1, 1)
+	
+	for i := 0; i < 1000; i++ {
+		b := NewBoard(7)
+		for b.Current_winner == 0 {
+			// pick a random move using pcg32
+			moves := make([]int, 0, len(*b.Current_player_path_moves))
+			for k := range *b.Current_player_path_moves {
+				moves = append(moves, k)
+			}
+			m := pcg32.Bounded(uint32(len(moves)))
+			// play the move
+			b.Play(int(moves[m]))
+		}
+	}
+}
+
 func TestDice(m *testing.T) {
 	zero := 0
 	one := 0

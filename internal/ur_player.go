@@ -84,11 +84,11 @@ type Verbose_ai_ur_player struct {
 	Played_vectors [][]float64
 }
 
-func (s *Verbose_ai_ur_player) GetMove(board *board) int {
-	vectors := GetMovesVectors(board)
-	s.Played_vectors = append(s.Played_vectors, vectors...)
-	return s.Ai_ur_player.GetMove(board)
-}
+//func (s *Verbose_ai_ur_player) GetMove(board *board) int {
+//	vectors := GetMovesVectors(board)
+//	s.Played_vectors = append(s.Played_vectors, vectors...)
+//	return s.Ai_ur_player.GetMove(board)
+//}
 
 func (s *Verbose_ai_ur_player) Copy() Ur_player {
 	ai := s.Ai_ur_player.Copy().(*Ai_ur_player)
@@ -108,6 +108,13 @@ type Ai_ur_player struct {
 }
 
 func (s *Ai_ur_player) GetMove(board *board) int {
+	// return first move if one move is available
+	if len(*board.Current_player_path_moves) == 1 {
+		for k := range *board.Current_player_path_moves {
+			return k
+		}
+	}
+
 	potential_futures, _ := GetMoveScoresOrdered(board, s.Ai)
 	return potential_futures[len(potential_futures)-1].Pawn
 }

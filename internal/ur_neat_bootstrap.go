@@ -11,7 +11,6 @@ import (
 	"github.com/yaricom/goNEAT/v2/experiment/utils"
 	"github.com/yaricom/goNEAT/v2/neat"
 	"github.com/yaricom/goNEAT/v2/neat/genetics"
-	"gonum.org/v1/gonum/mat"
 )
 
 type urBootstrapGenerationEvaluator struct {
@@ -98,6 +97,13 @@ type Potential_future struct {
 	Score float64 `json:"score"`
 }
 
+type Pawn_score_compare struct {
+	PawnA  int
+	PawnB  int
+	ScoreA float64
+	ScoreB float64
+}
+
 func GetFeatureNames() []string {
 	feature_names := make([]string, 54)
 	ti := 0
@@ -146,55 +152,58 @@ func GetFeatureNames() []string {
 	return feature_names
 }
 
-func Vectorize(current_board current_board_descriptor, potential_board potential_board_descriptor) []float64 {
-	features_transformed := make([]float64, 54)
+func Vectorize(potential_move_a potential_board_descriptor, potential_move_b potential_board_descriptor) []float64 {
+	features_transformed := make([]float64, 56)
 	ti := 0
 
 	// The numbers are by NEAT id, which start at 1 and 1 is "reserved" as a BIAS node, so we start counting here at 2.
 
-	for _, v := range current_board.board_state { // 2 to 21
+	for _, v := range potential_move_a.board_state { // 2 to 21
 		features_transformed[ti] = float64(v)
 		ti++
 	}
 
-	features_transformed[ti] = current_board.my_pawn_in_play // 22
+	features_transformed[ti] = potential_move_a.my_pawn_in_play // 22
 	ti++
-	features_transformed[ti] = current_board.my_pawn_queue // 23
+	features_transformed[ti] = potential_move_a.my_pawn_queue // 23
 	ti++
-	features_transformed[ti] = current_board.my_pawn_out // 24
+	features_transformed[ti] = potential_move_a.my_pawn_out // 24
 	ti++
-	features_transformed[ti] = current_board.enemy_pawn_in_play // 25
+	features_transformed[ti] = potential_move_a.enemy_pawn_in_play // 25
 	ti++
-	features_transformed[ti] = current_board.enemy_pawn_queue // 26
+	features_transformed[ti] = potential_move_a.enemy_pawn_queue // 26
 	ti++
-	features_transformed[ti] = current_board.enemy_pawn_out // 27
+	features_transformed[ti] = potential_move_a.enemy_pawn_out // 27
 	ti++
+	features_transformed[ti] = float64(potential_move_a.winner) // 28
+	ti++
+	features_transformed[ti] = float64(potential_move_a.turn) // 29
 
-	for _, v := range potential_board.board_state { // 28 to 47
+	for _, v := range potential_move_b.board_state { // 30 to 49
 		features_transformed[ti] = float64(v)
 		ti++
 	}
 
-	features_transformed[ti] = potential_board.my_pawn_in_play // 48
+	features_transformed[ti] = potential_move_b.my_pawn_in_play // 50
 	ti++
-	features_transformed[ti] = potential_board.my_pawn_queue // 49
+	features_transformed[ti] = potential_move_b.my_pawn_queue // 51
 	ti++
-	features_transformed[ti] = potential_board.my_pawn_out // 50
+	features_transformed[ti] = potential_move_b.my_pawn_out // 52
 	ti++
-	features_transformed[ti] = potential_board.enemy_pawn_in_play // 51
+	features_transformed[ti] = potential_move_b.enemy_pawn_in_play // 53
 	ti++
-	features_transformed[ti] = potential_board.enemy_pawn_queue // 52
+	features_transformed[ti] = potential_move_b.enemy_pawn_queue // 54
 	ti++
-	features_transformed[ti] = potential_board.enemy_pawn_out // 53
+	features_transformed[ti] = potential_move_b.enemy_pawn_out // 55
 	ti++
-	features_transformed[ti] = float64(potential_board.winner) // 54
+	features_transformed[ti] = float64(potential_move_b.winner) // 56
 	ti++
-	features_transformed[ti] = float64(potential_board.turn) // 55
+	features_transformed[ti] = float64(potential_move_b.turn) // 57
 
 	return features_transformed
 }
 
-func GetPotentialFutureScore(organism *genetics.Organism, features_transformed []float64) (float64, error) {
+func GetPotentialFutureScore(organism *genetics.Organism, features_transformed []float64) (float64, float64, error) {
 	success := false // Check for successful activation
 
 	netDepth, err := organism.Phenotype.MaxActivationDepthFast(0) // The max depth of the network to be activated
@@ -206,88 +215,131 @@ func GetPotentialFutureScore(organism *genetics.Organism, features_transformed [
 	//neat.DebugLog(fmt.Sprintf("Network depth: %d for organism: %d\n", netDepth, organism.Genotype.Id))
 	if netDepth == 0 {
 		neat.DebugLog(fmt.Sprintf("ALERT: Network depth is ZERO for Genome: %s", organism.Genotype))
-		return 0, nil
+		return 0, 0, nil
 	}
 
 	if err = organism.Phenotype.LoadSensors(features_transformed); err != nil {
 		neat.ErrorLog(fmt.Sprintf("Failed to load sensors: %s", err))
-		return 0, err
+		return 0, 0, err
 	}
 
 	// Use depth to ensure full relaxation
 	if success, err = organism.Phenotype.ForwardSteps(netDepth); err != nil {
 		neat.ErrorLog(fmt.Sprintf("Failed to activate network: %s", err))
-		return 0, err
+		return 0, 0, err
 	}
 
-	out := organism.Phenotype.Outputs[0].Activation
+	outA := organism.Phenotype.Outputs[0].Activation
+	outB := organism.Phenotype.Outputs[1].Activation
 
 	// Flush network for subsequent use
 	if _, err = organism.Phenotype.Flush(); err != nil {
 		neat.ErrorLog(fmt.Sprintf("Failed to flush network: %s", err))
-		return 0, err
+		return 0, 0, err
 	}
 
 	if !success {
-		return 0, errors.New("not success")
+		return 0, 0, errors.New("not success")
 	}
 
-	return out, nil
+	return outA, outB, nil
 }
 
-func GetScoresFromVectorized(organism *genetics.Organism, vectorized *mat.Dense) []float64 {
-	rows, _ := vectorized.Dims()
-	scores := make([]float64, rows)
-	for i := 0; i < rows; i++ {
-		row := vectorized.RawRowView(i)
-		score, err := GetPotentialFutureScore(organism, row)
-		if err != nil {
-			panic(err)
+//func GetScoresFromVectorized(organism *genetics.Organism, vectorized *mat.Dense) []float64 {
+//	rows, _ := vectorized.Dims()
+//	scores := make([]float64, rows)
+//	for i := 0; i < rows; i++ {
+//		row := vectorized.RawRowView(i)
+//		score, err := GetPotentialFutureScore(organism, row)
+//		if err != nil {
+//			panic(err)
+//		}
+//		scores[i] = score
+//	}
+//	return scores
+//}
+
+func generateMovePairs(moves []int) [][]int {
+	pairs := [][]int{}
+
+	for i, moveA := range moves {
+		for j := i + 1; j < len(moves); j++ {
+			moveB := moves[j]
+			pair := []int{moveA, moveB}
+			pairs = append(pairs, pair)
 		}
-		scores[i] = score
 	}
-	return scores
-}
 
+	return pairs
+}
 func GetMoveScoresOrdered(board *board, organism *genetics.Organism) ([]*Potential_future, error) {
-	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
-	potential_futures := []*Potential_future{}
+	//current_board := GetCurrentBoardDescriptor(board, Left)
+
+	// list pawns from board.Current_player_path_moves
+	moves := []int{}
+	move_descriptor := make(map[int]potential_board_descriptor)
 	for pawn := range *board.Current_player_path_moves {
 		potential_game := board.Copy()
 		potential_game.Play(pawn)
-		//fmt.Println(potential_game.String())
 		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
-		transformed_features := Vectorize(current_board_descriptor, potential_board)
-		score, err := GetPotentialFutureScore(organism, transformed_features)
+		move_descriptor[pawn] = potential_board
+		moves = append(moves, pawn)
+	}
+	pairs := generateMovePairs(moves)
+
+	pawn_score_compare := []Pawn_score_compare{}
+	for _, pawnPair := range pairs {
+		pawn_a := pawnPair[0]
+		pawn_b := pawnPair[1]
+		transformed_features := Vectorize(move_descriptor[pawn_a], move_descriptor[pawn_b])
+		score_a, score_b, err := GetPotentialFutureScore(organism, transformed_features)
 		//fmt.Println(score)
 		if err != nil {
 			return nil, err
 			//panic(err)
 		}
-		potential_futures = append(potential_futures, &Potential_future{
-			Pawn:  pawn,
-			Score: score,
+		pawn_score_compare = append(pawn_score_compare, Pawn_score_compare{
+			PawnA:  pawn_a,
+			PawnB:  pawn_b,
+			ScoreA: score_a,
+			ScoreB: score_b,
 		})
 	}
+
+	// pick the best pawn out of the pairs by averaging the scores for each pawn and picking the highest
+	pawn_score := make(map[int]float64)
+	for _, v := range pawn_score_compare {
+		pawn_score[v.PawnA] += v.ScoreA
+		pawn_score[v.PawnB] += v.ScoreB
+	}
+
+	potential_futures := []*Potential_future{}
+	for k, v := range pawn_score {
+		potential_futures = append(potential_futures, &Potential_future{
+			Pawn:  k,
+			Score: v,
+		})
+	}
+
 	sort.Slice(potential_futures, func(i, j int) bool {
 		return potential_futures[i].Score < potential_futures[j].Score
 	})
 	return potential_futures, nil
 }
 
-func GetMovesVectors(board *board) [][]float64 {
-	all_potential_board_trf := [][]float64{}
-	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
-
-	for pawn := range *board.Current_player_path_moves {
-		potential_game := board.Copy()
-		potential_game.Play(pawn)
-		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
-		transformed_features := Vectorize(current_board_descriptor, potential_board)
-		all_potential_board_trf = append(all_potential_board_trf, transformed_features)
-	}
-	return all_potential_board_trf
-}
+//func GetMovesVectors(board *board) [][]float64 {
+//	all_potential_board_trf := [][]float64{}
+//	current_board_descriptor := GetCurrentBoardDescriptor(board, Left)
+//
+//	for pawn := range *board.Current_player_path_moves {
+//		potential_game := board.Copy()
+//		potential_game.Play(pawn)
+//		potential_board := GetPotentialBoardDescriptor(potential_game, board.Current_player)
+//		transformed_features := Vectorize(current_board_descriptor, potential_board)
+//		all_potential_board_trf = append(all_potential_board_trf, transformed_features)
+//	}
+//	return all_potential_board_trf
+//}
 
 func LoadUrAI(path string) (*genetics.Organism, error) {
 	file, err := os.Open(path)
