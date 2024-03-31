@@ -17,3 +17,4 @@ wins.json
 *.prof
 .vscode/settings.json
 *.csv
+*.txt
